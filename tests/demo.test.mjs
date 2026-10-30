@@ -67,3 +67,12 @@ test('public profile exposes identity details without email and profile editing 
  assert.equal(other.display_name,'Giulia M.');
  assert.ok((await api.publicListings(other.id)).every(l=>l.owner_id===other.id));
 });
+test('demo acceptance produces an unread message counter which clears only after opening the chat',async()=>{
+ const listing=(await api.listings()).find(l=>l.owner_id!=='demo-me');
+ const booking=await api.createBooking(listing,'2092-01-01','2092-01-02','');
+ const before=(await api.notificationCounts()).messages;
+ await api.demoAccept(booking.id);assert.equal((await api.notificationCounts()).messages,before+1);
+ const messages=await api.messages(booking.id);
+ await api.readNotifications(booking.id,'message',messages.at(-1).created_at);
+ assert.equal((await api.notificationCounts()).messages,before);
+});

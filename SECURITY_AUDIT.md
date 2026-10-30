@@ -65,3 +65,7 @@ I limiti non sono ancora attivi online: saranno applicati solo dopo l'installazi
 ## Controllo in sola lettura della demo già online
 
 Sul dominio `https://set-in-comune-app.vercel.app` la home ha restituito 200 con CSP, nosniff e HSTS. La configurazione pubblica indica che URL e chiave backend non sono impostati. I percorsi `/.env`, `/.git/config` e `/supabase/001_initial.sql` restituiscono 404. Questa osservazione riguarda la versione precedente al deploy della release 0.3; non ho creato link che aggirino la protezione dei deployment.
+
+## Estensione notifiche 0.4
+
+Le notifiche introducono nuovi test per RLS dei destinatari, lettura concorrente, endpoint consentiti, segreti server, cifratura Web Push, retry, account condivisi e assenza di prompt automatici. I risultati aggiornati si ottengono con `npm test`; i 36 test indicati sopra descrivono la release 0.3. Il database dedicato gratuito esiste con lo schema iniziale, mentre la migrazione notifiche e il relativo worker restano da attivare dopo la conferma richiesta da Supabase.

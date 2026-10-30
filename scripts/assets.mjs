@@ -1,4 +1,4 @@
-export const publicAssets=['index.html','app.js','api.js','domain.js','data.js','art.js','photos.js','security.js','style.css','icon.svg'];
+export const publicAssets=['index.html','app.js','api.js','domain.js','data.js','art.js','photos.js','security.js','style.css','icon.svg','notifications.js','sw.js','manifest.webmanifest','offline.html','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png'];
 export function securityHeaders(backend='') {
   return {
     'X-Content-Type-Options':'nosniff',

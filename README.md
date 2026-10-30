@@ -3,13 +3,13 @@
 Marketplace di attrezzatura audiovisiva tra filmmaker, prima area: Roma.
 Account unico per proprietario e richiedente. Pagamento e cauzione restano direttamente tra le parti.
 
-## Stato della versione 0.3
+## Stato della versione 0.4
 
 Interfaccia responsive e modalità demo funzionante, con ricerca, categorie, date, prezzi, quartieri, preferiti, annunci, disponibilità, richieste, messaggi e registro consegna/restituzione. Gli annunci iniziali e i proprietari sono esempi fittizi, indicati come demo. Le immagini sono illustrazioni, non fotografie dei prodotti reali.
 
 Senza configurazione Supabase, i dati restano nel localStorage del singolo browser: **non è un marketplace multiutente operativo**. La demo non invia messaggi a persone reali. La modalità connessa non mostra annunci fittizi.
 
-È inclusa l'implementazione Supabase per registrazione email/password, recupero password, profili pubblici con avatar e bio, indicatore di email confermata derivato da Auth, annunci modificabili, upload foto, prenotazioni e chat. La migrazione non è ancora stata eseguita su un database remoto. I flussi multiutente e le policy devono essere verificati su staging prima dell'apertura pubblica.
+È inclusa l'implementazione Supabase per registrazione email/password, recupero password, profili pubblici con avatar e bio, indicatore di email confermata derivato da Auth, annunci modificabili, upload foto, prenotazioni e chat. Lo schema iniziale è installato nel progetto dedicato gratuito; la migrazione notifiche e il collegamento pubblico non sono ancora completati. I flussi multiutente e le policy devono essere verificati su staging prima dell'apertura pubblica.
 
 ## Avvio
 
@@ -27,8 +27,8 @@ Aprire http://127.0.0.1:4173. Il build crea `dist/` e genera la configurazione p
 
 ## Attivazione multiutente su Supabase
 
-1. Creare un nuovo progetto Supabase, preferibilmente in regione UE.
-2. Eseguire `supabase/001_initial.sql` nel SQL editor del nuovo progetto. Non è una migrazione idempotente: eseguirla una sola volta. Non usarla su database esistenti con tabelle omonime.
+1. Il progetto dedicato gratuito `set-in-comune` (`srjdysdhxnafjrutufmk`, regione UE) è già creato. Per un ambiente nuovo separato, creare un progetto soltanto dopo aver verificato organizzazione e costo.
+2. Sul progetto attuale lo schema iniziale è già installato: non eseguirlo di nuovo. Per un ambiente nuovo, eseguire `supabase/001_initial.sql` nel SQL editor del nuovo progetto. Non è una migrazione idempotente: eseguirla una sola volta. Non usarla su database esistenti con tabelle omonime.
 3. Abilitare email/password e conferma email. Impostare una password minima di 10 caratteri lato Auth.
 4. Configurare Site URL e redirect consentiti al dominio Vercel definitivo. Il client usa PKCE S256 per conferma email e recupero password: il link va aperto nello stesso browser della richiesta. Non accetta token implicit incollati nell’URL. Abilitare SMTP dedicato per invii a utenti reali; il servizio email di test Supabase ha limitazioni.
 5. In Vercel impostare `PUBLIC_SUPABASE_URL` e `PUBLIC_SUPABASE_ANON_KEY` per gli ambienti desiderati. Sono dati pubblici del client: usare solo la chiave publishable/anon, **mai service_role o chiavi segrete**. Le variabili devono essere presenti durante il build. Non incollare credenziali private nel codice o nella chat.
@@ -83,3 +83,7 @@ Prima della produzione con utenti reali, eseguire in staging con tre account A/B
 Vedere `COSTI.md` per limiti ufficiali, esempi sul numero di foto e soglie consigliate. Vedere `PRELANCIO.md` per distinguere le funzioni demo dai requisiti ancora da verificare prima del pilota.
 
 La revisione dei venti punti del video, le correzioni, i test e i controlli ancora da svolgere sono in `SECURITY_AUDIT.md`. Per lo schema iniziale mantenere `private` fuori dagli schemi esposti della Data API.
+
+## Notifiche e installazione
+
+Manifest, service worker, preferenze per dispositivo e contatori dei non letti sono implementati. La modalità demo permette di verificare i contatori tramite una richiesta e la sua accettazione simulata; non invia push a utenti fittizi. `PUSH_SETUP.md` descrive attivazione, stato del progetto gratuito e passaggi ancora da completare. Non attivare il backend pubblico fino alla conferma della migrazione e alle prove tra dispositivi reali.

@@ -1,6 +1,6 @@
 {
   "name": "set-in-comune",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,6 +13,7 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.5.13"
+    "@electric-sql/pglite": "0.5.13",
+    "web-push": "3.6.7"
   }
 }

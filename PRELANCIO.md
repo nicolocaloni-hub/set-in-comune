@@ -1,6 +1,6 @@
 # Prima del lancio
 
-## Disponibile nella demo 0.3
+## Disponibile nella demo 0.4
 
 - Un unico account logico per cercare e mettere a noleggio; profili di esempio dichiarati come demo.
 - Profilo pubblico apribile da annuncio, richiesta e chat: nome, quartiere, foto e bio facoltative, attrezzature condivise.
@@ -12,7 +12,7 @@
 
 ## Predisposto nel codice, da collegare e verificare
 
-Il database di questa app non è ancora creato/collegato. Non usare il database di altri progetti. Prima di crearlo, scegliere l'organizzazione e verificare che il costo proposto sia zero. Il file SQL iniziale è per un progetto nuovo: non eseguirlo su un database con dati o tabelle omonime.
+Il progetto dedicato gratuito `set-in-comune` è creato e contiene lo schema iniziale, ma non è ancora collegato al sito pubblico. La migrazione notifiche attende la conferma Supabase. Non usare il database Smartset e non creare un duplicato del progetto. Il file SQL iniziale è per un progetto nuovo: non eseguirlo su un database con dati o tabelle omonime.
 
 - Supabase Auth email/password, conferma indirizzo, recupero password, profili condivisi e upload.
 - Indicatore pubblico di email confermata derivato solo da Auth, non modificabile dal profilo. Non verifica identità personale, documento, proprietà dell'attrezzatura o affidabilità.
@@ -37,3 +37,7 @@ Misurare spazio, banda e uso; confrontare le soglie in COSTI.md. Valutare recens
 ## Sicurezza 0.3
 
 Consultare `SECURITY_AUDIT.md`: PKCE, sessione per scheda, validazione delle chiavi pubbliche, build con asset consentiti, policy e limiti server sono verificati localmente. Restano prove e configurazione su Supabase/Vercel reali. Nessuna garanzia di sicurezza assoluta.
+
+## Notifiche 0.4
+
+Funzioni implementate e testate localmente; attivazione remota in sospeso per conferma Supabase scaduta. Vedere `PUSH_SETUP.md`. Nessuna push reale è dichiarata operativa prima di un test con account e dispositivi distinti.
