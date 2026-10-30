@@ -6,3 +6,12 @@ export const sampleListings = [
   {id:'demo-tripod',owner_id:'demo-owner-1',owner_name:'Giulia M.',title:'Manfrotto · Treppiede video',category:'Supporti',zone:'San Lorenzo',price:12,deposit:80,description:'Treppiede con testa fluida e piastra rapida per riprese stabili.',accessories:'Gambe, testa fluida, piastra e borsa.',conditions:'Verifica il peso della tua configurazione prima di prenotare.',insurance:'Nessuna copertura inclusa.',art:'tripod',color:'lavender',blocked:[],images:[],active:true},
   {id:'demo-reflector',owner_id:'demo-owner-5',owner_name:'Luca F.',title:'Pannello riflettente 5 in 1',category:'Accessori',zone:'Monteverde',price:0,deposit:20,description:'Un piccolo aiuto per il tuo prossimo corto. Lo presto volentieri a chi sta iniziando.',accessories:'Pannello da 110 cm, cinque superfici e custodia.',conditions:'Prestito gratuito. Riportalo pulito e asciutto.',insurance:'Nessuna copertura inclusa.',art:'reflector',color:'sand',blocked:[],images:[],active:true}
 ];
+
+// Fictional profiles for the local demo. Email is never included in public profiles.
+export const sampleProfiles = [
+ {id:'demo-owner-1',display_name:'Giulia M.',zone:'San Lorenzo',bio:'Profilo di esempio. Mi occupo di fotografia e piccoli set indipendenti. Condivido la mia attrezzatura tra un progetto e l’altro.',avatar_url:'',email_verified:false},
+ {id:'demo-owner-2',display_name:'Marco R.',zone:'Pigneto',bio:'Profilo di esempio. Lavoro con la luce: interviste, videoclip e cortometraggi. Ritiro e restituzione da concordare in chat.',avatar_url:'',email_verified:false},
+ {id:'demo-owner-3',display_name:'Alessia P.',zone:'Prati',bio:'Profilo di esempio. Filmmaker a Roma, appassionata di documentario e racconti di quartiere.',avatar_url:'',email_verified:false},
+ {id:'demo-owner-4',display_name:'Davide L.',zone:'Ostiense',bio:'',avatar_url:'',email_verified:false},
+ {id:'demo-owner-5',display_name:'Luca F.',zone:'Monteverde',bio:'Profilo di esempio. Sto iniziando a girare i miei primi corti e presto volentieri gli accessori che non uso.',avatar_url:'',email_verified:false}
+];

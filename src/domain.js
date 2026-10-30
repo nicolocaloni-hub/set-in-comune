@@ -37,3 +37,26 @@ export function nextActions(status, owner) {
   return [];
 }
 export function escapeHtml(value='') { return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+export function validateListing(data) {
+  const fields = [['title',5,90,'titolo'],['description',20,2000,'descrizione'],['accessories',1,1500,'accessori'],['conditions',1,1500,'condizioni'],['insurance',1,1000,'assicurazione']];
+  const clean = {};
+  for (const [key,min,max,label] of fields) {
+    clean[key] = String(data[key] ?? '').trim();
+    if (clean[key].length < min || clean[key].length > max) throw new Error(`Controlla ${label}: da ${min} a ${max} caratteri.`);
+  }
+  if (!categories.slice(1).includes(data.category) || !zones[data.zone]) throw new Error('Scegli categoria e quartiere validi.');
+  clean.category = data.category; clean.zone = data.zone;
+  for (const [key,max] of [['price',10000],['deposit',100000]]) {
+    const value = Number(data[key]);
+    if (data[key] === '' || data[key] == null || !Number.isFinite(value) || value < 0 || value > max || Math.abs(value*100-Math.round(value*100)) > 0.000001) throw new Error('Prezzo e cauzione devono essere importi validi, con massimo due decimali.');
+    clean[key] = Math.round(value*100)/100;
+  }
+  if (!Array.isArray(data.images) || data.images.length > 4 || data.images.some(x=>typeof x !== 'string')) throw new Error('Puoi aggiungere al massimo quattro foto.');
+  clean.images = [...data.images];
+  return clean;
+}
+export function filterBookings(bookings, userId, role='all', group='all') {
+  const groups = {pending:['requested'],active:['accepted','collected','returned'],history:['completed','declined','cancelled']};
+  return bookings.filter(b=>(role==='all'||(role==='owner'?b.owner_id===userId:b.renter_id===userId))&&(!groups[group]||groups[group].includes(b.status)));
+}

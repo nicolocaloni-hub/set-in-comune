@@ -1,15 +1,16 @@
-import { mkdir, cp, writeFile, rm } from 'node:fs/promises';
-await rm('dist', { recursive: true, force: true });
-await mkdir('dist', { recursive: true });
-await cp('src', 'dist', { recursive: true });
-const url = process.env.PUBLIC_SUPABASE_URL || '';
-const key = process.env.PUBLIC_SUPABASE_ANON_KEY || '';
-if (Boolean(url) !== Boolean(key)) throw new Error('Configure both public Supabase variables.');
-if (url && new URL(url).protocol !== 'https:') throw new Error('Supabase requires HTTPS.');
-if (key.startsWith('sb_secret_')) throw new Error('Use a publishable / anon key, never a secret key.');
-if (key.split('.').length === 3) {
-  const payload = JSON.parse(Buffer.from(key.split('.')[1], 'base64url').toString());
-  if (payload.role !== 'anon') throw new Error('Only an anon JWT may be included in the frontend.');
-}
-await writeFile('dist/config.js', `export default ${JSON.stringify({ url, key })};\n`);
-console.log(`Built Set in comune (${url ? 'connected' : 'demo'} mode).`);
+import {mkdir,copyFile,readFile,writeFile,rm,rename} from 'node:fs/promises';
+import {validatePublicConfig} from '../src/security.js';
+import {publicAssets,securityHeaders} from './assets.mjs';
+// Validate before writing: no arbitrary env value may reach the public artifact.
+const config=validatePublicConfig(process.env.PUBLIC_SUPABASE_URL||'',process.env.PUBLIC_SUPABASE_ANON_KEY||'');
+const staging='.build-staging';
+await rm(staging,{recursive:true,force:true});
+await mkdir(staging);
+for(const file of publicAssets)await copyFile('src/'+file,staging+'/'+file);
+await writeFile(staging+'/config.js',`export default ${JSON.stringify(config)};\n`);
+const csp=securityHeaders(config.url)['Content-Security-Policy'].replace(/; frame-ancestors 'none'/,'');
+const html=await readFile(staging+'/index.html','utf8');
+await writeFile(staging+'/index.html',html.replace('<meta name="viewport"',`<meta http-equiv="Content-Security-Policy" content="${csp}">\n  <meta name="viewport"`));
+await rm('dist',{recursive:true,force:true});
+await rename(staging,'dist');
+console.log(`Built Set in comune (${config.url?'connected':'demo'} mode).`);
