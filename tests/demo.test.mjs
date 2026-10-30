@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+const storage=new Map();
+globalThis.localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
+const {api}=await import('../src/api.js');
+test('demo supports request, conversation, pickup, return, closure and persistence',async()=>{
+ const listing=(await api.listings())[0];
+ const b=await api.createBooking(listing,'2090-01-01','2090-01-03','Un cortometraggio.');
+ assert.equal(b.total,listing.price*3);
+ assert.equal(b.deposit,listing.deposit);
+ assert.equal(b.status,'requested');
+ assert.equal((await api.messages(b.id))[0].body,'Un cortometraggio.');
+ await assert.rejects(api.transition(b.id,'accepted'),/non disponibile/);
+ await api.demoAccept(b.id);
+ await assert.rejects(api.createBooking(listing,'2090-01-02','2090-01-04',''),/impegnata/);
+ await api.send(b.id,'Ritiro alle 9?');
+ assert.equal((await api.messages(b.id)).length,3);
+ await api.demoHandoff(b.id);
+ await api.transition(b.id,'returned','Tutto in ordine');
+ assert.equal((await api.evidence(b.id))[0].note,'Tutto in ordine');
+ await api.demoHandoff(b.id);
+ assert.equal((await api.bookings())[0].status,'completed');
+ assert.ok(storage.get('sic-demo-v1').includes('completed'));
+});
+test('own listing cannot be booked; paused listing disappears from search',async()=>{
+ const row=await api.publish({title:'Una camera personale',category:'Camere',zone:'Prati',price:10,deposit:20,images:[],description:'Camera di prova',accessories:'Borsa',conditions:'Ritiro',insurance:'Nessuna'});
+ await assert.rejects(api.createBooking(row,'2090-03-01','2090-03-01',''),/tua attrezzatura/);
+ await api.toggleListing(row.id,false);
+ assert.ok(!(await api.listings()).some(l=>l.id===row.id));
+ assert.ok((await api.myListings()).some(l=>l.id===row.id));
+});
