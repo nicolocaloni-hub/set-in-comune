@@ -18,11 +18,11 @@ Le email restano limitate a conferma indirizzo e recupero password. Non sono int
 
 Il 30 ottobre 2026 è stato creato il progetto Supabase gratuito `set-in-comune`, regione UE, riferimento `srjdysdhxnafjrutufmk`, nell'organizzazione scelta dal proprietario. Il preventivo restituito dal provider è 0 USD/mese. È installato lo schema iniziale, senza dati utente reali.
 
-La migrazione `supabase/migrations/20261030174113_notifications.sql` è stata testata localmente ma non è stata applicata al progetto remoto: il provider ha restituito una conferma scaduta durante l'operazione. Prima dell'attivazione tra persone reali va completato quel passaggio. Non aggirare la conferma richiesta da Supabase.
+Dopo la conferma del proprietario sono state applicate le migrazioni `20261030174113_notifications.sql` e `20261030182051_push_delivery_runtime.sql`. Sono attivi pg_net, pg_cron e il job `set-in-comune-push-retry` ogni minuto. Le chiavi VAPID e il segreto del webhook sono conservati in Vault; `private.push_settings.enabled` è attivo. La funzione `push-dispatch` è distribuita con autenticazione tramite il proprio segreto, senza accesso anonimo alla coda o alle credenziali.
 
-Le push non sono attive tra utenti reali finché non sono completati migrazione, configurazione e verifiche sottostanti. Il sito resta in modalità demo e non mostra una falsa conferma di attivazione.
+Il server è configurato, ma le push non sono ancora disponibili dal sito pubblico: il frontend resta in demo, senza account reali o dispositivi sottoscritti. Il collegamento pubblico attende Auth/redirect, un mittente SMTP gratuito per conferma indirizzo e recupero password, e le prove tra dispositivi. Nessun piano a pagamento attivato.
 
-## Attivazione dopo la conferma
+## Configurazione ripetibile e passaggi rimanenti
 
 1. Applicare la migrazione notifiche al progetto dedicato già inizializzato. Non eseguire di nuovo `001_initial.sql` e non usare il progetto Smartset.
 2. Abilitare `pg_net` e `pg_cron` sul progetto. La migrazione applicativa non abilita servizi a pagamento.
@@ -47,3 +47,10 @@ La generazione locale dei segreti di configurazione non equivale alla loro attiv
 `npm ci`, `npm test`, `npm run build`, `npm run security:scan`, `npm audit`.
 
 I test coprono RLS, destinatari, soppressione dei duplicati della nota iniziale, cursori di lettura, preferenze, protezione da SSRF, cifratura/VAPID, lease, retry, endpoint scaduti, nessun prompt automatico, vincolo Home su iPhone, disattivazione e protezione da notifiche per account precedenti. I test del database usano PostgreSQL locale/PGlite con fixture Auth/Vault/HTTP: non dimostrano da soli la consegna da parte di Apple/Google/Mozilla.
+
+## Verifica remota dopo l’attivazione server
+
+- `supabase/tests/notifications_smoke.sql` eseguito sul progetto reale: richiesta, soppressione della nota duplicata, destinatario del messaggio, isolamento RLS, privilegi RPC e cursore di lettura verificati. Tutte le fixture sono state annullate nella stessa transazione. Nessuna email o push a persone reali.
+- Invocazione HTTP autenticata tramite pg_net: 200, coda vuota (`processed: 0`). Senza autenticazione: 401. Questo verifica il collegamento database → Edge Function → RPC/Vault; non dimostra la consegna a un telefono.
+- Controllo finale: zero profili, annunci, prenotazioni, messaggi, notifiche, sottoscrizioni e job. Scheduler attivo ogni minuto.
+- Advisor sicurezza: soltanto informazioni `rls_enabled_no_policy` sulle quattro tabelle private, intenzionalmente prive di accesso diretto per client; nessun avviso o errore.

@@ -9,7 +9,7 @@ Interfaccia responsive e modalità demo funzionante, con ricerca, categorie, dat
 
 Senza configurazione Supabase, i dati restano nel localStorage del singolo browser: **non è un marketplace multiutente operativo**. La demo non invia messaggi a persone reali. La modalità connessa non mostra annunci fittizi.
 
-È inclusa l'implementazione Supabase per registrazione email/password, recupero password, profili pubblici con avatar e bio, indicatore di email confermata derivato da Auth, annunci modificabili, upload foto, prenotazioni e chat. Lo schema iniziale è installato nel progetto dedicato gratuito; la migrazione notifiche e il collegamento pubblico non sono ancora completati. I flussi multiutente e le policy devono essere verificati su staging prima dell'apertura pubblica.
+È inclusa l'implementazione Supabase per registrazione email/password, recupero password, profili pubblici con avatar e bio, indicatore di email confermata derivato da Auth, annunci modificabili, upload foto, prenotazioni e chat. Lo schema iniziale è installato nel progetto dedicato gratuito; le migrazioni notifiche, il server di invio e lo scheduler sono attivi. Il collegamento pubblico resta da completare dopo Auth/email e verifica tra dispositivi. I flussi multiutente e le policy devono essere verificati su staging prima dell'apertura pubblica.
 
 ## Avvio
 
@@ -86,4 +86,4 @@ La revisione dei venti punti del video, le correzioni, i test e i controlli anco
 
 ## Notifiche e installazione
 
-Manifest, service worker, preferenze per dispositivo e contatori dei non letti sono implementati. La modalità demo permette di verificare i contatori tramite una richiesta e la sua accettazione simulata; non invia push a utenti fittizi. `PUSH_SETUP.md` descrive attivazione, stato del progetto gratuito e passaggi ancora da completare. Non attivare il backend pubblico fino alla conferma della migrazione e alle prove tra dispositivi reali.
+Manifest, service worker, preferenze per dispositivo e contatori dei non letti sono implementati. La modalità demo permette di verificare i contatori tramite una richiesta e la sua accettazione simulata; non invia push a utenti fittizi. `PUSH_SETUP.md` descrive attivazione, stato del progetto gratuito e passaggi ancora da completare. Il server notifiche è configurato e verificato senza destinatari reali. Il frontend pubblico resta in demo fino alla configurazione Auth/email e alle prove tra dispositivi reali.

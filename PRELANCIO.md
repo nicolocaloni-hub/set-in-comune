@@ -12,7 +12,7 @@
 
 ## Predisposto nel codice, da collegare e verificare
 
-Il progetto dedicato gratuito `set-in-comune` è creato e contiene lo schema iniziale, ma non è ancora collegato al sito pubblico. La migrazione notifiche attende la conferma Supabase. Non usare il database Smartset e non creare un duplicato del progetto. Il file SQL iniziale è per un progetto nuovo: non eseguirlo su un database con dati o tabelle omonime.
+Il progetto dedicato gratuito `set-in-comune` è creato e contiene lo schema iniziale, ma non è ancora collegato al sito pubblico. Le migrazioni notifiche, il server di invio e lo scheduler sono attivi; il sito pubblico resta in demo in attesa della configurazione Auth/email e delle prove sui telefoni. Non usare il database Smartset e non creare un duplicato del progetto. Il file SQL iniziale è per un progetto nuovo: non eseguirlo su un database con dati o tabelle omonime.
 
 - Supabase Auth email/password, conferma indirizzo, recupero password, profili condivisi e upload.
 - Indicatore pubblico di email confermata derivato solo da Auth, non modificabile dal profilo. Non verifica identità personale, documento, proprietà dell'attrezzatura o affidabilità.
@@ -40,4 +40,4 @@ Consultare `SECURITY_AUDIT.md`: PKCE, sessione per scheda, validazione delle chi
 
 ## Notifiche 0.4
 
-Funzioni implementate e testate localmente; attivazione remota in sospeso per conferma Supabase scaduta. Vedere `PUSH_SETUP.md`. Nessuna push reale è dichiarata operativa prima di un test con account e dispositivi distinti.
+Funzioni implementate e testate localmente; migrazioni e servizio di invio attivati dopo la conferma del proprietario. Le verifiche sul database reale e sul webhook autenticato sono passate; il frontend resta in demo in attesa di Auth/email e delle prove sui dispositivi. Vedere `PUSH_SETUP.md`. Nessuna push reale è dichiarata operativa prima di un test con account e dispositivi distinti.
