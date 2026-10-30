@@ -50,7 +50,7 @@ Il client conserva la sessione nel browser, rinnova il token quando necessario e
 
 ## Deploy Vercel
 
-Il progetto è predisposto per Vercel con `vercel.json`: build `npm run build`, output `dist`, nessun framework richiesto. Dopo la creazione della repository GitHub privata collegare il progetto Vercel a `nicolocaloni-hub/set-in-comune`. Il codice può essere pubblicato inizialmente anche tramite il tool di deploy Vercel senza collegamento Git.
+Il progetto è predisposto per Vercel con `vercel.json`: build `npm run build`, output `dist`, nessun framework richiesto. Repository privata: https://github.com/nicolocaloni-hub/set-in-comune. Progetto Vercel collegato: `set-in-comune-app` (ID `prj_Zo54HpvO655WojjmyK7cN1LWmdCN`). Demo verificata online: https://set-in-comune-app.vercel.app/. Il progetto `set-in-comune` rimane la prima anteprima senza collegamento Git; per gli aggiornamenti usare `set-in-comune-app`.
 
 Non eseguire upgrade a piani a pagamento senza una scelta esplicita del proprietario dell'account. La protezione Vercel esistente non viene disattivata dal codice.
 
