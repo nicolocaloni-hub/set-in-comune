@@ -92,8 +92,8 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-acti
  if(action==='transition')transitionDialog(id,value);
  if(action==='chat'){state.currentChat=id;go('messages');}
  if(action==='select-chat'){state.currentChat=id;await messagesPage();}
- if(action==='demo-accept'){await api.demoAccept(id);await refreshCounts();await bookingsPage();toast('Risposta simulata: nessun messaggio inviato a persone reali.');}
- if(action==='demo-handoff'){await api.demoHandoff(id);await bookingsPage();}
+ if(action==='demo-accept'){await api.demoAccept(id);await reload();await bookingsPage();toast('Risposta simulata: nessun messaggio inviato a persone reali.');}
+ if(action==='demo-handoff'){await api.demoHandoff(id);await reload();await bookingsPage();}
  if(action==='toggle-listing'){await api.toggleListing(id,value==='true');await reload();await profilePage();}
  if(action==='availability'){const l=(await api.myListings()).find(l=>l.id===id);open(`<h2>Disponibilità</h2><p>${esc(l.title)}</p><p class="fineprint">Le prenotazioni accettate bloccano automaticamente le date. Qui puoi bloccare i giorni in cui la usi tu.</p>${(l.blocked||[]).map(p=>`<p>${period(p)}</p>`).join('')}<form id="block-form" data-id="${id}" class="stack"><div class="form-grid"><label>Dal<input type="date" name="start" min="${today()}" required></label><label>Al<input type="date" name="end" min="${today()}" required></label></div><button class="btn primary">Blocca periodo</button><p class="form-error" role="alert"></p></form>${l.blocked?.length?`<button class="text-button" data-action="unblock" data-id="${id}">Rimuovi tutti i blocchi manuali</button>`:''}`);}
  if(action==='unblock'){await api.unblock(id);close();await reload();await profilePage();}
@@ -117,7 +117,7 @@ document.addEventListener('submit',async e=>{const f=e.target;if(!f.id)return;e.
  if(f.id==='profile-form'){await api.saveProfile({display_name:data.get('display_name').trim(),zone:data.get('zone'),bio:data.get('bio').trim()});await reload();await profilePage();toast('Profilo aggiornato.');}
  if(f.id==='avatar-form'){await saveWithPhotos(state.photoDraft,null,refs=>api.saveProfile({avatar_url:refs[0]||''}));close(true);await profilePage();toast('Foto profilo aggiornata.');}
  if(f.id==='publish-form'){const draft=state.photoDraft;if(!isDemo&&!draft?.photos.length)throw new Error('Aggiungi almeno una foto dell’attrezzatura.');const fields=Object.fromEntries(['title','category','zone','description','accessories','conditions','insurance'].map(k=>[k,data.get(k).trim()]));await saveWithPhotos(draft,null,images=>{const row={...fields,price:Number(data.get('price')),deposit:Number(data.get('deposit')),images};return f.dataset.id?api.updateListing(f.dataset.id,row):api.publish(row);});close(true);await reload();go('profile');toast(f.dataset.id?'Annuncio aggiornato.':isDemo?'Annuncio aggiunto alla demo.':'Annuncio pubblicato.');}
- if(f.id==='transition-form'){await saveWithPhotos(state.photoDraft,f.dataset.id,photos=>api.transition(f.dataset.id,f.dataset.status,data.get('note').trim(),photos));close(true);await bookingsPage();toast('Stato del noleggio aggiornato.');}
+ if(f.id==='transition-form'){await saveWithPhotos(state.photoDraft,f.dataset.id,photos=>api.transition(f.dataset.id,f.dataset.status,data.get('note').trim(),photos));close(true);await reload();await bookingsPage();toast('Stato del noleggio aggiornato.');}
  if(f.id==='block-form'){await api.block(f.dataset.id,data.get('start'),data.get('end'));close(true);await reload();await profilePage();toast('Periodo bloccato.');}
  if(f.id==='message-form'){await api.send(f.dataset.id,data.get('body'));f.reset();await loadMessages();}
 }catch(ex){if(err)err.textContent=ex.message;else error(ex);}finally{f.dataset.submitting='false';if(button)button.disabled=false;}});
