@@ -16,4 +16,4 @@ const digest=createHash('sha256').update(html+csp);for(const asset of publicAsse
 await writeFile(staging+'/sw.js',(await readFile('src/sw.js','utf8')).replaceAll('__BUILD_REVISION__',revision));
 await rm('dist',{recursive:true,force:true});
 await rename(staging,'dist');
-console.log(`Built Set in comune (${config.url?'connected':'demo'} mode).`);
+console.log(`Built RENT TO A FRIEND (${config.url?'connected':'demo'} mode).`);

@@ -16,7 +16,7 @@ self.addEventListener('push',event=>event.waitUntil((async()=>{
  const response=await caches.match(STATE_URL);let binding;try{binding=await response?.json();}catch{}
  if(!binding||binding.userId!==data.userId)return;
  const url=notificationUrl(data.url);
- await self.registration.showNotification(data.kind==='message'?'Nuovo messaggio':'Nuova richiesta di noleggio',{body:data.kind==='message'?'Qualcuno ti ha scritto su Set in comune.':'Apri l’app per vedere la richiesta ricevuta.',icon:'/icon-192.png',badge:'/icon-192.png',tag:String(data.tag||'set-in-comune').slice(0,100),data:{url},renotify:false});
+ await self.registration.showNotification(data.kind==='message'?'Nuovo messaggio':'Nuova richiesta di noleggio',{body:data.kind==='message'?'Qualcuno ti ha scritto su RENT TO A FRIEND.':'Apri l’app per vedere la richiesta ricevuta.',icon:'/icon-192.png',badge:'/icon-192.png',tag:String(data.tag||'set-in-comune').slice(0,100),data:{url},renotify:false});
  if(Number.isInteger(data.unreadTotal)&&data.unreadTotal>=0)try{if(data.unreadTotal)await self.navigator.setAppBadge?.(data.unreadTotal);else await self.navigator.clearAppBadge?.();}catch{}
  for(const client of await self.clients.matchAll({type:'window',includeUncontrolled:true}))client.postMessage({type:'NOTIFICATIONS_CHANGED'});
 })()));

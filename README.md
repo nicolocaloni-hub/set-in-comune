@@ -1,4 +1,4 @@
-# Set in comune
+# RENT TO A FRIEND
 
 Marketplace di attrezzatura audiovisiva tra filmmaker, prima area: Roma.
 Account unico per proprietario e richiedente. Pagamento e cauzione restano direttamente tra le parti.
@@ -90,4 +90,6 @@ Manifest, service worker, preferenze per dispositivo e contatori dei non letti s
 
 ## Interfaccia marketplace 0.5
 
-Design ispirato ai pattern di Wallapop e adattato al noleggio audiovisivo: ricerca sempre accessibile, categorie a scorrimento, filtri per quartiere/date, annunci con prezzo in evidenza, preferiti, profili e chat nello stesso sistema visivo bianco/turchese. Identità Set in comune e icone PWA aggiornate. Su mobile: Esplora, Preferiti, Pubblica, Messaggi, Profilo; i noleggi restano raggiungibili dal profilo. Il sito rimane in demo e non attiva servizi a pagamento.
+Design ispirato ai pattern di Wallapop e adattato al noleggio audiovisivo: ricerca sempre accessibile, categorie a scorrimento, filtri per quartiere/date, annunci con prezzo in evidenza, preferiti, profili e chat nello stesso sistema visivo bianco/turchese. Identità RENT TO A FRIEND e icone PWA aggiornate. Su mobile: Esplora, Preferiti, Pubblica, Messaggi, Profilo; i noleggi restano raggiungibili dal profilo. Il sito rimane in demo e non attiva servizi a pagamento.
+
+Il nome pubblico dell’app è **RENT TO A FRIEND**. Repository, dominio tecnico, progetto database, chiavi locali e identità dell’app installata sono conservati per mantenere continuità con i dati e le installazioni esistenti.
