@@ -15,3 +15,14 @@ export const sampleProfiles = [
  {id:'demo-owner-4',display_name:'Davide L.',zone:'Ostiense',bio:'',avatar_url:'',email_verified:false},
  {id:'demo-owner-5',display_name:'Luca F.',zone:'Monteverde',bio:'Profilo di esempio. Sto iniziando a girare i miei primi corti e presto volentieri gli accessori che non uso.',avatar_url:'',email_verified:false}
 ];
+
+// Structured technical details are example data, never reputation or identity claims.
+const sampleTechnical=[
+ {brand:'Sony',model:'FX3',lens_mount:'Sony E',equipment_condition:'Ottime',included_tags:['Batterie','Caricatore','Custodia']},
+ {brand:'Amaran',model:'200x S',light_power_w:200,equipment_condition:'Buone',included_tags:['Stativo','Softbox','Custodia']},
+ {brand:'Sigma',model:'24–70 mm f/2.8',lens_mount:'Sony E',equipment_condition:'Ottime',included_tags:['Custodia']},
+ {brand:'Zoom',model:'H6',equipment_condition:'Buone',included_tags:['Microfono','Custodia']},
+ {brand:'Manfrotto',model:'Treppiede video',equipment_condition:'Buone',included_tags:['Custodia']},
+ {brand:'',model:'Riflettente 5 in 1',equipment_condition:'Buone',included_tags:['Custodia']}
+];
+sampleListings.forEach((l,i)=>Object.assign(l,sampleTechnical[i]));

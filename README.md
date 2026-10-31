@@ -3,7 +3,7 @@
 Marketplace di attrezzatura audiovisiva tra filmmaker, prima area: Roma.
 Account unico per proprietario e richiedente. Pagamento e cauzione restano direttamente tra le parti.
 
-## Stato della versione 0.5
+## Stato della versione 0.6
 
 Interfaccia responsive e modalità demo funzionante, con ricerca, categorie, date, prezzi, quartieri, preferiti, annunci, disponibilità, richieste, messaggi e registro consegna/restituzione. Gli annunci iniziali e i proprietari sono esempi fittizi, indicati come demo. Le immagini sono illustrazioni, non fotografie dei prodotti reali.
 
@@ -93,3 +93,17 @@ Manifest, service worker, preferenze per dispositivo e contatori dei non letti s
 Design ispirato ai pattern di Wallapop e adattato al noleggio audiovisivo: ricerca sempre accessibile, categorie a scorrimento, filtri per quartiere/date, annunci con prezzo in evidenza, preferiti, profili e chat nello stesso sistema visivo bianco/turchese. Identità RENT TO A FRIEND e icone PWA aggiornate. Su mobile: Esplora, Preferiti, Pubblica, Messaggi, Profilo; i noleggi restano raggiungibili dal profilo. Il sito rimane in demo e non attiva servizi a pagamento.
 
 Il nome pubblico dell’app è **RENT TO A FRIEND**. Repository, dominio tecnico, progetto database, chiavi locali e identità dell’app installata sono conservati per mantenere continuità con i dati e le installazioni esistenti.
+
+## Fiducia, conversazioni e disponibilità 0.6
+
+- Domande prima della prenotazione, separate dalle richieste di noleggio, con messaggi privati e notifiche push dedicate.
+- Recensioni reciproche soltanto per i partecipanti a noleggi conclusi; conteggio dei noleggi derivato dal server. Nessuna stella automatica.
+- Completezza informativa del profilo, con foto/bio sempre facoltative.
+- Blocchi bidirezionali per nuovi messaggi/richieste, segnalazioni riservate e pannello moderatori con accesso assegnato dal gestore nel database. Nessun utente può nominarsi moderatore.
+- Calendario mensile visuale, giorni occupati non selezionabili, intervalli senza sovrapposizioni e riepilogo noleggio/cauzione.
+- Marca, modello, attacco, potenza, condizioni, accessori e distanza tra quartieri nei filtri e negli annunci.
+- Checklist di funzionamento/accessori/condizioni prima di consegna, restituzione e chiusura. Foto del registro riservate ai partecipanti, distinte per fase. Scelta della copertina e suggerimenti per 2–3 foto reali.
+
+Migrazione remota `20261031103706_marketplace_trust_and_inquiries.sql` applicata. Verifica locale con `npm test`; verifica remota con `supabase/tests/marketplace_smoke.sql` (fixture annullate). Le funzioni di moderazione sono implementate ma nessun moderatore reale è assegnato finché non esiste l’account del gestore.
+
+Il frontend resta in demo mentre si completano accesso al pannello Supabase, redirect Auth e un mittente SMTP gratuito per conferma/reset. Non disattivare la conferma email per aggirare questo passaggio. Le prove tra due telefoni reali rimangono necessarie.

@@ -10,7 +10,7 @@ self.addEventListener('message',event=>{
  if(data.type==='BIND_PUSH_USER'&&/^[a-f0-9-]{36}$/i.test(data.userId))event.waitUntil((async()=>{const cache=await caches.open(STATE_CACHE);await cache.put(STATE_URL,new Response(JSON.stringify({userId:data.userId}),{headers:{'Content-Type':'application/json'}}));})());
  if(data.type==='CLEAR_PUSH_USER')event.waitUntil((async()=>{const cache=await caches.open(STATE_CACHE);await cache.delete(STATE_URL);for(const n of await self.registration.getNotifications())n.close();await self.navigator.clearAppBadge?.();})());
 });
-function notificationUrl(value){try{const u=new URL(value,self.location.origin);return u.origin===self.location.origin&&/^\/#(?:messages|bookings)\?booking=[a-f0-9-]{36}$/i.test(u.pathname+u.hash)?u.href:new URL('/#messages',self.location.origin).href;}catch{return new URL('/#messages',self.location.origin).href;}}
+function notificationUrl(value){try{const u=new URL(value,self.location.origin);return u.origin===self.location.origin&&/^\/#(?:(?:messages|bookings)\?booking|messages\?conversation)=[a-f0-9-]{36}$/i.test(u.pathname+u.hash)?u.href:new URL('/#messages',self.location.origin).href;}catch{return new URL('/#messages',self.location.origin).href;}}
 self.addEventListener('push',event=>event.waitUntil((async()=>{
  let data;try{data=event.data?.json();}catch{}if(!data||!['message','request'].includes(data.kind))return;
  const response=await caches.match(STATE_URL);let binding;try{binding=await response?.json();}catch{}

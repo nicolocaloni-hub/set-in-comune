@@ -19,3 +19,4 @@ test('Web Push library encrypts payload and signs VAPID without exposing its pri
  assert.ok(Buffer.isBuffer(request.body));assert.ok(!request.body.toString().includes('private test payload'));assert.match(request.headers.Authorization,/vapid/);assert.ok(!JSON.stringify(request.headers).includes(keys.privateKey));
 });
 test('webhook secret validation compares hashed values',async()=>{assert.equal(await sameSecret('fixture','fixture'),true);assert.equal(await sameSecret('fixture','other'),false);assert.equal(await sameSecret(null,'fixture'),false);});
+test('inquiry push opens the question thread, without inventing a rental',()=>{const p=pushPayload({kind:'message',threadType:'inquiry',bookingId:id,userId:id});assert.equal(p.url,'/#messages?conversation='+id);});

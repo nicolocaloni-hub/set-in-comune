@@ -2,7 +2,7 @@ const hosts=new Set(['fcm.googleapis.com','updates.push.services.mozilla.com','w
 export function allowedPushEndpoint(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.hash&&value.length<=2048&&(hosts.has(u.hostname)||/^[a-z0-9-]+\.notify\.windows\.com$/.test(u.hostname));}catch{return false;}}
 export function pushPayload(job){
  if(!/^[a-f0-9-]{36}$/i.test(job.bookingId)||!/^[a-f0-9-]{36}$/i.test(job.userId)||!['message','request'].includes(job.kind))throw new Error('Invalid job');
- return {kind:job.kind,userId:job.userId,url:`/#${job.kind==='message'?'messages':'bookings'}?booking=${job.bookingId}`,tag:`${job.kind}-${job.bookingId}`,unreadTotal:Math.max(0,Number(job.unreadTotal)||0)};
+ return {kind:job.kind,userId:job.userId,url:job.threadType==='inquiry'?`/#messages?conversation=${job.bookingId}`:`/#${job.kind==='message'?'messages':'bookings'}?booking=${job.bookingId}`,tag:`${job.kind}-${job.bookingId}`,unreadTotal:Math.max(0,Number(job.unreadTotal)||0)};
 }
 export async function processPushJobs({jobs,config,send,finish}){
  const result={processed:0,sent:0,retry:0,expired:0,failed:0};

@@ -16,8 +16,8 @@ test('demo supports request, conversation, pickup, return, closure and persisten
  await api.send(b.id,'Ritiro alle 9?');
  assert.equal((await api.messages(b.id)).length,3);
  await api.demoHandoff(b.id);
- await api.transition(b.id,'returned','Tutto in ordine');
- assert.equal((await api.evidence(b.id))[0].note,'Tutto in ordine');
+ await api.transition(b.id,'returned','Tutto in ordine',[],{equipment:true,accessories:true,condition:true});
+ assert.equal((await api.evidence(b.id)).find(e=>e.stage==='returned').note,'Tutto in ordine');
  await api.demoHandoff(b.id);
  assert.equal((await api.bookings())[0].status,'completed');
  assert.ok(storage.get('sic-demo-v1').includes('completed'));

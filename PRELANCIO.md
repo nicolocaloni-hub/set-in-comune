@@ -1,6 +1,6 @@
 # Prima del lancio
 
-## Disponibile nella demo 0.4
+## Disponibile nella demo 0.6
 
 - Un unico account logico per cercare e mettere a noleggio; profili di esempio dichiarati come demo.
 - Profilo pubblico apribile da annuncio, richiesta e chat: nome, quartiere, foto e bio facoltative, attrezzature condivise.
@@ -25,14 +25,14 @@ Il progetto dedicato gratuito `set-in-comune` è creato e contiene lo schema ini
 1. Progetto gratuito separato in UE, Auth con conferma email e SMTP dedicato (anche con eventuale quota gratuita da verificare). Configurazione redirect sul dominio corretto.
 2. Prove A/B/C su browser indipendenti: B non può vedere chat e riscontri A/C, modificare profilo/annunci di A o marcare la propria email come confermata.
 3. Prove prenotazioni simultanee, modifica annuncio mentre arrivano richieste, upload falliti, sessioni scadute, logout e recupero password.
-4. Contatti e procedure del gestore per assistenza, segnalazioni, moderazione e abusi; meccanismi di blocco utenti/segnalazione da implementare.
+4. Contatti e procedure del gestore per assistenza, segnalazioni, moderazione e abusi; blocchi e segnalazioni implementati; assegnare l’account del gestore a private.app_moderators e verificare il processo di risposta.
 5. Privacy, termini, tempi di conservazione, cancellazione/esportazione dati e regole in caso di mancata consegna o danni. La schermata attuale non sostituisce documenti definitivi.
 6. Accessibilità e prove sui telefoni reali; paginazione del catalogo e della chat prima di volumi elevati.
 7. Valutazione dell'idoneità di Vercel Hobby alla natura del pilota; nessun piano a pagamento senza richiesta esplicita del proprietario.
 
 ## Dopo il pilota
 
-Misurare spazio, banda e uso; confrontare le soglie in COSTI.md. Valutare recensioni legate a noleggi conclusi, notifiche email, controllo identità e pagamenti integrati soltanto con processi e costi definiti. Un profilo completo è un elemento utile per decidere, non una garanzia.
+Misurare spazio, banda e uso; confrontare le soglie in COSTI.md. Le recensioni per noleggi conclusi sono implementate. Valutare controllo identità e pagamenti integrati soltanto con processi e costi definiti. Le email restano limitate a conferma indirizzo e recupero password. Un profilo completo è un elemento utile per decidere, non una garanzia.
 
 ## Sicurezza 0.3
 
