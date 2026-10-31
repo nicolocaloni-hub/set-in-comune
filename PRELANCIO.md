@@ -1,5 +1,16 @@
 # Prima del lancio
 
+## Promemoria obbligatorio prima del lancio
+
+Richiesto da Nicolò il 1 novembre 2026: rileggere **tutte le diciture dell’app** e sostituire i testi demo, provvisori e di pre-lancio con descrizioni veritiere dello stato effettivo. Non basta rimuovere la parola demo.
+
+- [ ] Banner, schermate, profili, annunci, recensioni e contatori: eliminare o distinguere chiaramente gli esempi; usare soltanto dati reali verificabili.
+- [ ] Privacy, cookie, condizioni, costi, email e notifiche: descrivere esclusivamente servizi effettivamente attivi e relative limitazioni.
+- [ ] Titolare, recapiti, fornitori e conservazione: completare e approvare i dati definitivi.
+- [ ] Cancellazione, sicurezza, identità e affidabilità: non dichiarare garanzie o funzioni non collaudate; mantenere le limitazioni applicabili.
+- [ ] Ambito confermato: soli privati maggiorenni. Riesaminare i testi se questa scelta cambia.
+- [ ] Controllo conclusivo prima di abilitare utenti reali, senza togliere prematuramente i blocchi di pre-lancio.
+
 ## Disponibile nella demo 0.6
 
 - Un unico account logico per cercare e mettere a noleggio; profili di esempio dichiarati come demo.
