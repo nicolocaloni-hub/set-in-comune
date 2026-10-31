@@ -3,7 +3,7 @@
 Marketplace di attrezzatura audiovisiva tra filmmaker, prima area: Roma.
 Account unico per proprietario e richiedente. Pagamento e cauzione restano direttamente tra le parti.
 
-## Stato della versione 0.4
+## Stato della versione 0.5
 
 Interfaccia responsive e modalità demo funzionante, con ricerca, categorie, date, prezzi, quartieri, preferiti, annunci, disponibilità, richieste, messaggi e registro consegna/restituzione. Gli annunci iniziali e i proprietari sono esempi fittizi, indicati come demo. Le immagini sono illustrazioni, non fotografie dei prodotti reali.
 
@@ -87,3 +87,7 @@ La revisione dei venti punti del video, le correzioni, i test e i controlli anco
 ## Notifiche e installazione
 
 Manifest, service worker, preferenze per dispositivo e contatori dei non letti sono implementati. La modalità demo permette di verificare i contatori tramite una richiesta e la sua accettazione simulata; non invia push a utenti fittizi. `PUSH_SETUP.md` descrive attivazione, stato del progetto gratuito e passaggi ancora da completare. Il server notifiche è configurato e verificato senza destinatari reali. Il frontend pubblico resta in demo fino alla configurazione Auth/email e alle prove tra dispositivi reali.
+
+## Interfaccia marketplace 0.5
+
+Design ispirato ai pattern di Wallapop e adattato al noleggio audiovisivo: ricerca sempre accessibile, categorie a scorrimento, filtri per quartiere/date, annunci con prezzo in evidenza, preferiti, profili e chat nello stesso sistema visivo bianco/turchese. Identità Set in comune e icone PWA aggiornate. Su mobile: Esplora, Preferiti, Pubblica, Messaggi, Profilo; i noleggi restano raggiungibili dal profilo. Il sito rimane in demo e non attiva servizi a pagamento.
