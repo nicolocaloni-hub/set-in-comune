@@ -1,4 +1,46 @@
-# Revisione del video: privacy e trasparenza
+# Revisione dei video: privacy e trasparenza
+
+## Nuovo video allegato · sette controlli prima della pubblicazione
+
+31 ottobre 2026 · file `SaveClip.App_AQN0jZGZ7yKYSD-nJpFmeDnBN0tddd52FEMa-yf0h-K9Eegj99mcK7GWrtJAwm-F0Bq0OfXBnsSavPMKCjXOVlKOz0aHcLXDMP2SGOk.mp4`, durata 48,85 secondi. Analizzati fotogrammi ogni mezzo secondo, didascalie e lista riepilogativa a circa 40 secondi. Non si assume di avere una trascrizione audio integrale; i sette punti sono leggibili nel video. Non sono stati contattati il creatore del video né i servizi pubblicizzati.
+
+| Indicazione nel video | Riscontro e intervento su RENT TO A FRIEND |
+|---|---|
+| 1. Prima il consenso (11–18 s) | Nessun Google Analytics, Meta Pixel, SDK pubblicitario o strumento di profilazione negli asset distribuiti. CSP limita script a origine propria e blocca gli script inline. Aggiunto controllo di build contro tracker noti, script/iframe esterni e import remoti. Il controllo è limitato ai pattern e ai sorgenti analizzati: non sostituisce un audit del traffico né implementa un CMP. Non è stato introdotto alcun tracker. |
+| 2. Rifiuta visibile come Accetta (19–22 s) | Senza tracciamento facoltativo non è stato creato un banner di consenso fittizio. Pagina pubblica `/#cookies` spiega memoria tecnica, scopi, durata e rimozione. Un futuro tracker richiederà prima consenso effettivo, blocco preventivo, rifiuto equivalente e revoca: questa release non ne autorizza l’attivazione. |
+| 3. Privacy policy vera (22–26 s) | Titolare Nicolò Caloni e contatto già indicati; precisati dati locali, IP tecnico, foto, messaggi, fornitori, finalità, retention non ancora approvata e diritti. Aggiunta matrice dei riferimenti locali. PKCE scaduto o malformato viene ora rimosso anche aprendo normalmente l’app, senza invio a terzi. Restano recapito, durate per finalità e accordi effettivi da completare; non marcati come approvati. |
+| 4. Scarica ed elimina (26–29 s) | Esportazione e gestione richieste già presenti. Cancellazione automatica già predisposta soltanto per account senza rapporti condivisi o ruolo operatore; gli altri passano al gestore. Demo: dati locali e simulazioni dichiarate. Nessuna cancellazione reale eseguita. Il flusso completo con Auth e file reali rimane da collaudare prima del lancio. |
+| 5. Termini e mail (29–32 s) | Condizioni e email `rent.to.a.friend@gmail.com` già pubbliche. Rafforzate spiegazioni dei segnali profilo, delle recensioni e dell’ordinamento. Le condizioni definitive e la relativa accettazione documentata devono essere completate prima di abilitare account reali. Non è stato dato per approvato un documento legale. |
+| 6. Carte su Stripe (33–36 s) | Non applicabile alla versione attuale: nessuna raccolta di carte, nessun checkout, abbonamento, rinnovo o addebito automatico. Non è stato creato un account Stripe, non è stato attivato un piano o sostenuto un costo. Stripe è un esempio di prestatore di pagamento, non un obbligo di scegliere quel fornitore; un’integrazione futura richiederà un progetto dedicato. |
+| 7. Niente badge falsi (37–42 s) | Email confermata deriva da Auth e non è verifica d’identità. Foto e bio sono dichiarazioni dell’utente. Ora è esplicito che completezza profilo, noleggi conclusi e recensioni non certificano affidabilità, consegna o pagamento indipendenti. Recensioni solo da controparti di noleggi conclusi, una per autore e noleggio; nessuna stella preassegnata. Ordine iniziale rinominato Ordine demo/Più recenti e criteri dichiarati, senza posizionamento a pagamento. |
+
+### Verifiche di questa revisione
+
+94 test locali superati, inclusi controlli sui tracker, pulizia dei riferimenti PKCE scaduti, isolamento dei dati, recensioni ed esportazione/cancellazione. Build demo riuscito; il test di build collegato continua a respingere la configurazione non approvata. Nessun cambiamento allo schema remoto, nessun nuovo fornitore o pagamento introdotto.
+
+### Decisioni che il codice non può prendere per il titolare
+
+- Recapito da pubblicare e dati dell’attività, se applicabili; il proprietario ha già scelto di aggiungere il recapito prima del lancio. Nessun indirizzo personale ricavato o inventato.
+- Stabilire se il pilota ammetterà solo privati o anche operatori professionali: influenza informazioni degli inserzionisti, condizioni e diritti del consumatore. Non sono stati attribuiti automaticamente status professionali agli utenti.
+- Approvare finalità, basi giuridiche e durate; verificare DPA, trasferimenti, backup e log dei fornitori. Il build con backend resta bloccato.
+- Risolvere il limite di Vercel Hobby per uso commerciale e l’applicabilità del DPA. Nessun upgrade autorizzato o attivato; dominio e demo non equivalgono a lancio commerciale.
+- Completare SMTP/Resend, assegnare account operatore, provare esportazione e cancellazione con account reali di test e verificare la coda e il contatto email. Nessuna nuova email inviata da questa revisione.
+
+### Fonti primarie rilette per questa verifica
+
+- Garante, Linee guida cookie e altri strumenti di tracciamento, 10 giugno 2021: https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9677876
+- Garante, FAQ cookie: https://www.garanteprivacy.it/faq/cookie
+- Garante, informativa e basi giuridiche: https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/8981258
+- EDPB, diritti e termine di riscontro: https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en
+- AGCM, trasparenza di recensioni, ordinamento e venditori: https://convienesaperlo.agcm.it/diritto/diritto-alla-trasparenza/
+- Stripe, ambito PCI e strumenti ospitati: https://stripe.com/guides/pci-compliance
+- Vercel, DPA: https://vercel.com/legal/dpa ; uso Hobby: https://vercel.com/docs/limits/fair-use-guidelines
+
+Le cifre delle sanzioni e il caso SHEIN citati nel video non sono utilizzati come previsione di una multa per questa app. Nessuna dichiarazione di conformità totale o assenza di rischio.
+
+## Video precedente · dieci rischi
+
+Questa sezione conserva la verifica precedente. Per la cancellazione automatica introdotta dopo quella verifica fanno fede la sezione nuova qui sopra e `LEGAL_SETUP.md`.
 
 31 ottobre 2026 · RENT TO A FRIEND · Video allegato di circa 47 secondi.
 La lista è stata letta dai fotogrammi del video. Le cifre mostrate non sono state assunte come sanzioni applicabili in Italia o come preventivi. Questa revisione tecnica non certifica conformità legale.

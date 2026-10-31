@@ -1,4 +1,17 @@
-export const publicAssets=['index.html','app.js','api.js','domain.js','marketplace.js','privacy.js','retention.js','data.js','art.js','photos.js','security.js','style.css','logo-mark.webp','notifications.js','sw.js','manifest.webmanifest','offline.html','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png'];
+export const publicAssets=['index.html','app.js','api.js','domain.js','marketplace.js','privacy.js','browser-storage.js','retention.js','data.js','art.js','photos.js','security.js','style.css','logo-mark.webp','notifications.js','sw.js','manifest.webmanifest','offline.html','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png'];
+
+// This release has no consent manager: known trackers and external executable
+// embeds must not silently enter the build. This is a bounded source check,
+// not a general-purpose runtime tracker detector or legal certification.
+export function assertTrackingFree(sources){
+ const tracker=/(?:googletagmanager\.com|google-analytics\.com|connect\.facebook\.net|static\.hotjar\.com|clarity\.ms|@vercel\/(?:analytics|speed-insights)|\/_vercel\/(?:insights|speed-insights)\/)|\b(?:gtag|fbq|hj|clarity)\s*\(/i;
+ for(const {name,text} of sources){
+  const externalEmbed=/<(?:script|iframe)\b[^>]*\bsrc\s*=\s*["']\s*(?:https?:)?\/\//i;
+  const externalImport=/\b(?:import|export)\s+(?:[^;\n]*?\sfrom\s*)?["'](?:https?:)?\/\//i;
+  const dynamicImport=/\bimport\s*\(\s*["'](?:https?:)?\/\//i;
+  if(tracker.test(text)||externalEmbed.test(text)||externalImport.test(text)||dynamicImport.test(text))throw new Error(`Revisione privacy richiesta: tracker o codice esterno in ${name}. Questa versione non attiva tracciamento facoltativo.`);
+ }
+}
 export function securityHeaders(backend='') {
   return {
     'X-Content-Type-Options':'nosniff',

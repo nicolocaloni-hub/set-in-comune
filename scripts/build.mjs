@@ -2,10 +2,11 @@ import {mkdir,copyFile,readFile,writeFile,rm,rename} from 'node:fs/promises';
 import {assertPrivacyReady} from '../src/privacy.js';
 import {validatePublicConfig} from '../src/security.js';
 import {createHash} from 'node:crypto';
-import {publicAssets,securityHeaders} from './assets.mjs';
+import {publicAssets,securityHeaders,assertTrackingFree} from './assets.mjs';
 // Validate before writing: no arbitrary env value may reach the public artifact.
 const config=validatePublicConfig(process.env.PUBLIC_SUPABASE_URL||'',process.env.PUBLIC_SUPABASE_ANON_KEY||'');
 if(config.url)assertPrivacyReady();
+assertTrackingFree(await Promise.all(publicAssets.filter(f=>/\.(?:js|html)$/.test(f)).map(async name=>({name,text:await readFile('src/'+name,'utf8')}))));
 const staging='.build-staging';
 await rm(staging,{recursive:true,force:true});
 await mkdir(staging);

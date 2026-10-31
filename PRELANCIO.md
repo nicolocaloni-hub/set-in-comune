@@ -49,3 +49,8 @@ Pagine Privacy, Condizioni e I tuoi dati aggiunte; esportazione JSON, richiesta 
 ## Cancellazione account e titolare · release 0.8
 
 Nicolò Caloni confermato come titolare; contatto rent.to.a.friend@gmail.com. Recapito rinviato dal proprietario a prima del lancio. Cancellazione automatica predisposta per account senza noleggi, conversazioni, segnalazioni o ruoli operatore, con verifica password, chiusura accessi, eliminazione file via Storage API, cancellazione Auth e retry. Gli altri casi passano alla verifica del gestore con motivo visibile. Matrice di conservazione pubblicata come bozza, non approvata; non sono attivi job di eliminazione periodica generale. Vedere `LEGAL_SETUP.md` per limiti, riscontro DPA dei fornitori e blocco da risolvere sull’hosting Hobby. Migrazione automatic_account_erasure applicata, worker account-erasure attivo e retry ogni cinque minuti configurato. Smoke test remoto superato con rollback di tutte le fixture; endpoint respinge accessi non autorizzati. Non è stata cancellata alcuna utenza reale tramite Auth admin.
+
+
+## Secondo video · cookie, pagamenti e badge
+
+Verificati i sette punti del nuovo video di 48,85 secondi in `PRIVACY_VIDEO_AUDIT.md`. Pagina Cookie e memoria accessibile da footer e I tuoi dati, inventario della memoria locale e controlli sul tracciamento in build; pulizia PKCE scaduto anche senza callback. Più trasparenza su segnali profilo, recensioni e ordinamento. Nessun tracker facoltativo, consenso pubblicitario, Stripe o sistema di addebito introdotto. Le condizioni definitive, la scelta privati/professionisti e la prova della relativa accettazione restano attività di pre-lancio. I blocchi di privacy e hosting restano aperti.

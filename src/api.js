@@ -9,6 +9,7 @@ export const isDemo = !config.url || !config.key || new URLSearchParams(globalTh
 const uuid=()=>{if(crypto.randomUUID)return crypto.randomUUID();const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&15)|64;b[8]=(b[8]&63)|128;const h=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;};
 const SESSION_KEY='sic-session-v2', PKCE_KEY='sic-pkce-v1', DEMO_KEY='sic-demo-v1';
 function read(key,fallback,storage=localStorage) {try{return JSON.parse(storage.getItem(key)) || fallback;}catch{return fallback;}}
+function pkceFlow(){const flow=read(PKCE_KEY,null);if(!flow||typeof flow.verifier!=='string'||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000){localStorage.removeItem(PKCE_KEY);return null;}return flow;}
 let session=read(SESSION_KEY,null,globalThis.sessionStorage);
 let db=read(DEMO_KEY,{listings:sampleListings,bookings:[],messages:[],evidence:[],profile:{display_name:'Il tuo profilo demo',bio:'Filmmaker a Roma',zone:'Prati'}});
 db.privacyRequests ||= [];db.notifications ||= [];db.inquiries ||= [];db.reviews ||= [];db.blocks ||= [];db.reports ||= [];
@@ -54,6 +55,7 @@ export const api={
   user:()=>isDemo?{id:'demo-me',email:'Modalità dimostrativa'}:session?.user || null,
   async init(){
     if(isDemo)return false;
+    pkceFlow();
     // Drop old persistent bearer tokens; the new session lives only in this tab.
     localStorage.removeItem('sic-session-v1');
     const url=new URL(location.href),fragment=new URLSearchParams(url.hash.slice(1));
@@ -62,7 +64,7 @@ export const api={
       url.searchParams.delete('code');url.searchParams.delete('error');url.searchParams.delete('error_code');url.searchParams.delete('error_description');url.hash='profile';
       history.replaceState(null,'',url.pathname+url.search+url.hash);
       if(!code)throw new Error('Richiedi un nuovo link e aprilo nello stesso browser usato per la richiesta.');
-      const flow=read(PKCE_KEY,null);
+      const flow=pkceFlow();
       localStorage.removeItem(PKCE_KEY);
       if(!flow||!flow.verifier||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000)throw new Error('Richiedi un nuovo link e aprilo nello stesso browser usato per la richiesta.');
       const result=await auth('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});
