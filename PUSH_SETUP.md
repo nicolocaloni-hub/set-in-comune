@@ -20,7 +20,7 @@ Il 30 ottobre 2026 è stato creato il progetto Supabase gratuito `set-in-comune`
 
 Dopo la conferma del proprietario sono state applicate le migrazioni `20261030174113_notifications.sql` e `20261030182051_push_delivery_runtime.sql`. Sono attivi pg_net, pg_cron e il job `set-in-comune-push-retry` ogni minuto. Le chiavi VAPID e il segreto del webhook sono conservati in Vault; `private.push_settings.enabled` è attivo. La funzione `push-dispatch` è distribuita con autenticazione tramite il proprio segreto, senza accesso anonimo alla coda o alle credenziali.
 
-Il server è configurato, ma le push non sono ancora disponibili dal sito pubblico: il frontend resta in demo, senza account reali o dispositivi sottoscritti. Il collegamento pubblico attende Auth/redirect, un mittente SMTP gratuito per conferma indirizzo e recupero password, e le prove tra dispositivi. Nessun piano a pagamento attivato.
+Il server è configurato, ma le push non sono ancora disponibili dal sito pubblico: il frontend resta in demo, senza account reali o dispositivi sottoscritti. Site URL e redirect Auth sono configurati sull’indirizzo gratuito Vercel. Il collegamento pubblico attende un mittente SMTP gratuito per conferma indirizzo e recupero password, e le prove tra dispositivi. Nessun piano a pagamento attivato.
 
 ## Configurazione ripetibile e passaggi rimanenti
 
@@ -54,3 +54,5 @@ I test coprono RLS, destinatari, soppressione dei duplicati della nota iniziale,
 - Invocazione HTTP autenticata tramite pg_net: 200, coda vuota (`processed: 0`). Senza autenticazione: 401. Questo verifica il collegamento database → Edge Function → RPC/Vault; non dimostra la consegna a un telefono.
 - Controllo finale: zero profili, annunci, prenotazioni, messaggi, notifiche, sottoscrizioni e job. Scheduler attivo ogni minuto.
 - Advisor sicurezza: soltanto informazioni `rls_enabled_no_policy` sulle quattro tabelle private, intenzionalmente prive di accesso diretto per client; nessun avviso o errore.
+
+La versione 0.6 estende le push anche alle domande prima della prenotazione; la migrazione `20261031103706_marketplace_trust_and_inquiries.sql` e il dispatcher Edge v2 sono attivi. I test verificano che queste notifiche aprano una conversazione e non una prenotazione.

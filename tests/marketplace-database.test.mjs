@@ -24,10 +24,13 @@ test('marketplace trust, inquiry chat and handoff security',async t=>{
  for(const [id,name] of [[A,'Alice'],[B,'Bruno'],[C,'Carla']])await db.query('insert into auth.users values($1,now(),$2)',[id,JSON.stringify({display_name:name})]);
  const as=(uid,fn,role='authenticated')=>db.transaction(async tx=>{await tx.exec('set local role '+role);await tx.query("select set_config('request.jwt.claim.sub',$1,true),set_config('request.jwt.claim.role',$2,true)",[uid,role]);return fn(tx);});
  const listing=(await as(A,tx=>tx.query("insert into public.listings(owner_id,title,category,zone,description,price,accessories,conditions,images,brand,lens_mount,included_tags) values($1,'Camera di prova','Camere','Prati','Una camera per un test di integrazione',20,'Borsa','Ritiro concordato',$2,'Sony','Sony E',array['Batterie']) returning id",[A,['https://example.supabase.co/storage/v1/object/public/listing-photos/'+A+'/'+C+'.jpg']]))).rows[0].id;
+ await db.query("insert into private.push_settings values(true,$1,$2,$3,'https://app.example','https://app.example','https://example.supabase.co/functions/v1/push-dispatch',true)",['B'+'a'.repeat(86),A,B]);
+ await db.query("insert into private.push_subscriptions(user_id,endpoint,p256dh,auth_key) values($1,'https://fcm.googleapis.com/fcm/send/local-fixture',$2,$3)",[A,'B'+'a'.repeat(86),'a'.repeat(22)]);
  let inquiry,booking;
  await t.test('contact opens a private question thread without creating a rental',async()=>{
   inquiry=(await as(B,tx=>tx.query("select public.contact_listing($1,'Quale scheda è compatibile?') id",[listing]))).rows[0].id;
   assert.equal(Number((await db.query('select count(*) n from public.bookings')).rows[0].n),0);
+  const jobs=(await as('',tx=>tx.query('select public.claim_push_jobs() jobs'),'service_role')).rows[0].jobs;assert.equal(jobs[0].threadType,'inquiry');assert.equal(jobs[0].bookingId,inquiry);
   assert.equal((await as(A,tx=>tx.query('select public.notification_counts() c'))).rows[0].c.messages,1);
   assert.equal((await as(C,tx=>tx.query('select * from public.inquiries'))).rows.length,0);
   assert.equal((await as(C,tx=>tx.query('select * from public.inquiry_messages'))).rows.length,0);
