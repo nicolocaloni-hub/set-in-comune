@@ -116,4 +116,30 @@ test('marketplace trust, inquiry chat and handoff security',async t=>{
   assert.equal((await as(A,tx=>tx.query('select public.unused_uploads() u'))).rows[0].u.length,0);
  });
 
+ await db.exec("create schema cron;create function cron.schedule(text,text,text) returns bigint language sql as 'select 1::bigint';");
+ await db.exec(await readFile(new URL('../supabase/migrations/20261031153855_automatic_account_erasure.sql',import.meta.url),'utf8'));
+ await t.test('automatic erasure excludes shared records and cannot be invoked by a browser role',async()=>{
+  await assert.rejects(as(A,tx=>tx.query('select public.prepare_account_erasure($1)',[A])),/permission denied/);
+  const result=(await as('',tx=>tx.query('select public.prepare_account_erasure($1) r',[B]),'service_role')).rows[0].r;
+  assert.equal(result.status,'review');assert.equal((await as(B,tx=>tx.query('select public.my_privacy_requests() r'))).rows[0].r.length,1);
+  assert.equal((await db.query('select count(*) n from private.account_erasure_jobs')).rows[0].n,0);
+ });
+ await t.test('closure blocks stale JWTs and new relationships; physical files must be gone first',async()=>{
+  const E='eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';await db.query("insert into auth.users(id,email_confirmed_at,raw_user_meta_data) values($1,now(),'{\"display_name\":\"Solo account\"}')",[E]);
+  await as(E,tx=>tx.query("insert into storage.objects(bucket_id,name) values('profile-photos',$1)",[E+'/11111111-1111-4111-8111-111111111111.jpg']));
+  assert.equal((await as('',tx=>tx.query('select public.prepare_account_erasure($1) r',[E]),'service_role')).rows[0].r.status,'queued');
+  assert.equal((await as(E,tx=>tx.query('select private.is_confirmed_user() ok'))).rows[0].ok,false);
+  assert.equal((await as('',tx=>tx.query('select * from public.profiles where id=$1',[E]),'anon')).rows.length,0);
+  await assert.rejects(as(E,tx=>tx.query('select public.contact_listing($1,\'Ancora un messaggio\')',[listing])),/confermata/);
+  const jobs=(await as('',tx=>tx.query('select public.claim_account_erasures() j'),'service_role')).rows[0].j;assert.equal(jobs.length,1);
+  assert.equal((await as('',tx=>tx.query('select public.claim_account_erasures() j'),'service_role')).rows[0].j.length,0);
+  await assert.rejects(as('',tx=>tx.query('select public.erase_account_records($1,$2)',[E,jobs[0].lease]),'service_role'),/File ancora presenti/);
+  // PGlite only: emulate successful physical Storage API deletion. Production never deletes objects with SQL.
+  await db.query('delete from storage.objects where name like $1',[E+'/%']);
+  await as('',tx=>tx.query('select public.erase_account_records($1,$2)',[E,jobs[0].lease]),'service_role');
+  assert.equal((await db.query('select count(*) n from public.profiles where id=$1',[E])).rows[0].n,0);
+  await as('',tx=>tx.query('select public.finish_account_erasure($1,$2,true)',[E,jobs[0].lease]),'service_role');
+  assert.equal((await db.query('select status from private.account_erasure_jobs where user_id=$1',[E])).rows[0].status,'done');
+ });
+
 });

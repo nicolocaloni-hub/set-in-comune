@@ -26,3 +26,5 @@ dialog{width:min(650px,calc(100vw - 32px));max-height:90vh;max-height:90dvh;bord
 .cover-photo{font-size:10px;padding:7px 4px;width:100%;background:#e7f6ef;color:var(--green);min-height:32px}
 
 .legal-page{max-width:860px;margin-inline:auto;line-height:1.65}.legal-page h1{font-size:clamp(2.2rem,5vw,3.5rem);line-height:1.1}.legal-page h2{margin-top:1.8rem;font-size:1.25rem}.legal-page li{margin:.5rem 0}.privacy-notice{background:#fff5de;border:1px solid #e9ce91;padding:16px;border-radius:12px}.privacy-links{display:flex;gap:24px;flex-wrap:wrap;margin:24px 0}.legal-page .panel{margin-top:24px}.footer-main a:not(.brand){margin-right:18px}.legal-page .btn{width:fit-content;max-width:100%}.legal-page .review-card{overflow-wrap:anywhere}
+
+.retention-table{overflow:auto}.retention-table table{width:100%;border-collapse:collapse;font-size:.9rem}.retention-table th,.retention-table td{text-align:left;vertical-align:top;border-bottom:1px solid #dde5e4;padding:14px 10px;min-width:150px}

@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
+import {retentionPolicy} from '../src/retention.js';
 import {privacyMarkup,termsMarkup,assertPrivacyReady,privacySettings} from '../src/privacy.js';
 test('real-account builds fail closed until controller and retention are reviewed',()=>{
  assert.throws(()=>assertPrivacyReady(),/titolare/);
  assert.throws(()=>assertPrivacyReady({...privacySettings,reviewed:true,controller:'Un gestore'}),/conservazione/);
- assert.doesNotThrow(()=>assertPrivacyReady({reviewed:true,controller:'Gestore di prova',contact:'privacy@example.org',retention:'Regole approvate'}));
+ retentionPolicy.approved=true;try{assert.doesNotThrow(()=>assertPrivacyReady({reviewed:true,controller:'Gestore di prova',controllerAddress:'Recapito professionale di prova',providersReviewed:true,contact:'privacy@example.org',retention:'Regole approvate'}));}finally{retentionPolicy.approved=false;}
  const result=spawnSync(process.execPath,['scripts/build.mjs'],{env:{...process.env,PUBLIC_SUPABASE_URL:'https://example.supabase.co',PUBLIC_SUPABASE_ANON_KEY:'sb_publishable_'+'a'.repeat(32)},encoding:'utf8'});
  assert.notEqual(result.status,0);assert.match(result.stderr,/informativa privacy/);
 });
