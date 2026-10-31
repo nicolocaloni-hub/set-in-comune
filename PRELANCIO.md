@@ -70,3 +70,10 @@ Verificati i sette punti del nuovo video di 48,85 secondi in `PRIVACY_VIDEO_AUDI
 ## Ambito confermato · 1 novembre 2026
 
 Pilota per soli privati maggiorenni, senza uso nell’ambito di attività professionali o per conto di imprese. Condizioni, avviso di registrazione e dichiarazione nel modulo annunci aggiornati. Nessun badge di status verificato. Per il lancio reale occorrono ancora accettazione documentata delle condizioni definitive e gestione delle segnalazioni di attività professionali.
+
+
+## Revisione delle diciture attuali · 1 novembre 2026
+
+Su richiesta del proprietario, riscritti già ora banner, contatori, condizioni, privacy, notifiche ed esportazione/pulizia/richieste per descrivere lo stato effettivo della demo. Espliciti messaggi locali, nessun noleggio reale, nessun invio delle segnalazioni a un operatore e nessuna cancellazione di account reale. Rimangono etichette demo e dati di esempio. Recapito e verifiche mancanti sono indicati come tali, non inventati o approvati.
+
+La revisione dello stato odierno è completata; la checklist precedente resta obbligatoria quando cambieranno funzioni e trattamento dei dati, soprattutto prima dell’apertura agli account reali.
