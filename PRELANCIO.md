@@ -41,3 +41,7 @@ Consultare `SECURITY_AUDIT.md`: PKCE, sessione per scheda, validazione delle chi
 ## Notifiche 0.4
 
 Funzioni implementate e testate localmente; migrazioni e servizio di invio attivati dopo la conferma del proprietario. Le verifiche sul database reale e sul webhook autenticato sono passate; il frontend resta in demo in attesa di Auth/email e delle prove sui dispositivi. Vedere `PUSH_SETUP.md`. Nessuna push reale è dichiarata operativa prima di un test con account e dispositivi distinti.
+
+## Privacy e diritti · release 0.7
+
+Pagine Privacy, Condizioni e I tuoi dati aggiunte; esportazione JSON, richiesta di cancellazione senza motivazione, coda operatore con termine di riscontro, pulizia dei propri upload inutilizzati. Vecchie foto profilo/annuncio eliminate via Storage API dopo il salvataggio; errore recuperabile da I tuoi dati. Il build collegato al backend è bloccato finché titolare e conservazione non sono definiti e revisionati in `src/privacy.js`. La richiesta di cancellazione non elimina automaticamente un account: il gestore deve applicare e verificare la procedura in `PRIVACY_VIDEO_AUDIT.md`. La migrazione `20261031141946_privacy_rights_and_upload_cleanup.sql` richiede conferma remota; verificare esito prima del collegamento. Nessun abbonamento attivato.

@@ -79,4 +79,41 @@ test('marketplace trust, inquiry chat and handoff security',async t=>{
   await as(A,tx=>tx.query("select public.transition_booking_checked($1,'collected','Segno annotato',array[]::text[],$2)",[other,checks]));
   assert.deepEqual((await as(B,tx=>tx.query("select checklist from public.handoffs where booking_id=$1 and stage='collected'",[other]))).rows[0].checklist,JSON.parse(checks));
  });
+ await db.exec("alter table auth.users add column email text;alter table storage.objects add column created_at timestamptz default now();");
+ await db.exec(await readFile(new URL('../supabase/migrations/20261031141946_privacy_rights_and_upload_cleanup.sql',import.meta.url),'utf8'));
+ await t.test('privacy requests are idempotent, private and require an operator for responses',async()=>{
+  await assert.rejects(as('',tx=>tx.query('select public.request_erasure()'),'anon'),/permission denied/);
+  const request=(await as(A,tx=>tx.query('select public.request_erasure() id'))).rows[0].id;
+  assert.equal((await as(A,tx=>tx.query('select public.request_erasure() id'))).rows[0].id,request);
+  assert.equal((await as(B,tx=>tx.query('select public.my_privacy_requests() r'))).rows[0].r.length,0);
+  await assert.rejects(as(A,tx=>tx.query('select * from private.privacy_requests')),/permission denied/);
+  await assert.rejects(as(A,tx=>tx.query('select public.privacy_queue()')),/Non autorizzato/);
+  await assert.rejects(as(A,tx=>tx.query("select public.respond_privacy_request($1,'completed','Falso riscontro non autorizzato')",[request])),/Non autorizzato/);
+  const q=(await as(C,tx=>tx.query('select public.privacy_queue() q'))).rows[0].q;assert.equal(q[0].id,request);assert.ok(q[0].response_due);
+  await as(C,tx=>tx.query("select public.respond_privacy_request($1,'reviewing','La richiesta viene esaminata dal gestore.')",[request]));
+  assert.equal((await as(A,tx=>tx.query('select public.my_privacy_requests() r'))).rows[0].r[0].status,'reviewing');
+  assert.equal((await db.query('select count(*) n from public.profiles')).rows[0].n,3);
+ });
+ await t.test('data export respects RLS, never exposes push credentials or other reports',async()=>{
+  const exported=(await as(B,tx=>tx.query('select public.export_my_data() d'))).rows[0].d;
+  assert.equal(exported.profile.id,B);assert.ok(exported.bookings.length);
+  assert.ok(exported.bookings.every(b=>[b.owner_id,b.renter_id].includes(B)));
+  const outsider=(await as(C,tx=>tx.query('select public.export_my_data() d'))).rows[0].d;
+  assert.equal(outsider.bookings.length,0);assert.equal(outsider.inquiry_messages.length,0);
+  assert.equal(outsider.safety.reports.length,0);assert.equal(outsider.privacy_requests.length,0);
+  assert.ok(!JSON.stringify(exported).includes('p256dh'));assert.ok(!JSON.stringify(exported).includes('moderator_note'));
+ });
+ await t.test('cleanup lists only own old unused uploads and rejects deleting referenced photos',async()=>{
+  const photo=A+'/11111111-1111-4111-8111-111111111111.jpg',foreign=B+'/22222222-2222-4222-8222-222222222222.jpg';
+  await as(A,tx=>tx.query("insert into storage.objects(bucket_id,name,created_at) values('listing-photos',$1,now()-interval '2 hours'),('listing-photos',$2,now()-interval '2 hours'),('profile-photos',$3,now())",[photo,A+'/'+C+'.jpg',A+'/33333333-3333-4333-8333-333333333333.jpg']));
+  await as(B,tx=>tx.query("insert into storage.objects(bucket_id,name,created_at) values('listing-photos',$1,now()-interval '2 hours')",[foreign]));
+  const rows=(await as(A,tx=>tx.query('select public.unused_uploads() u'))).rows[0].u;
+  assert.deepEqual(rows,[{bucket:'listing-photos',path:photo}]);
+  assert.equal((await as('',tx=>tx.query("select * from storage.objects where bucket_id='listing-photos'"),'anon')).rows.length,0);
+  assert.equal((await as(B,tx=>tx.query("delete from storage.objects where name=$1 returning id",[photo]))).rows.length,0);
+  assert.equal((await as(A,tx=>tx.query("delete from storage.objects where name=$1 returning id",[A+'/'+C+'.jpg']))).rows.length,0);
+  assert.equal((await as(A,tx=>tx.query("delete from storage.objects where name=$1 returning id",[photo]))).rows.length,1);
+  assert.equal((await as(A,tx=>tx.query('select public.unused_uploads() u'))).rows[0].u.length,0);
+ });
+
 });
