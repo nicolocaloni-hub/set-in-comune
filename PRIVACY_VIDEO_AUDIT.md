@@ -21,7 +21,7 @@
 ### Decisioni che il codice non può prendere per il titolare
 
 - Recapito da pubblicare e dati dell’attività, se applicabili; il proprietario ha già scelto di aggiungere il recapito prima del lancio. Nessun indirizzo personale ricavato o inventato.
-- Stabilire se il pilota ammetterà solo privati o anche operatori professionali: influenza informazioni degli inserzionisti, condizioni e diritti del consumatore. Non sono stati attribuiti automaticamente status professionali agli utenti.
+- Scelta risolta il 1 novembre 2026: il proprietario ha confermato soltanto privati. Condizioni e modulo annunci aggiornati; non è una verifica indipendente dello status. Restano condizioni definitive e relativa accettazione documentata prima del lancio.
 - Approvare finalità, basi giuridiche e durate; verificare DPA, trasferimenti, backup e log dei fornitori. Il build con backend resta bloccato.
 - Risolvere il limite di Vercel Hobby per uso commerciale e l’applicabilità del DPA. Nessun upgrade autorizzato o attivato; dominio e demo non equivalgono a lancio commerciale.
 - Completare SMTP/Resend, assegnare account operatore, provare esportazione e cancellazione con account reali di test e verificare la coda e il contatto email. Nessuna nuova email inviata da questa revisione.

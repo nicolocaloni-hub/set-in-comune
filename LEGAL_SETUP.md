@@ -58,3 +58,12 @@ L’endpoint `account-erasure` verifica il token con Auth e chiede nuovamente la
 ## Verifiche tecniche di questa release
 
 90 test locali superati; build demo riuscito e build collegato bloccato fino alle verifiche del titolare. Migrazione remota automatic_account_erasure applicata; funzione account-erasure attiva con autenticazione propria di utente e hook. Verificati 401 senza credenziali, 401 per hook errato, 403 da origine estranea e 401 per sessione invalida. Smoke SQL remoto con rollback: eligibility, privilegi server, JWT precedenti respinti, profilo/annunci nascosti, nuovi contatti respinti, lease non duplicata e rimozione dei soli record fixture. Le prove di password, ordine Storage/record/Auth e retry usano provider simulati: il flusso completo con account e file reali va ancora verificato prima del lancio. Nessuna cancellazione reale dichiarata o effettuata.
+
+
+## Ambito del pilota confermato · 1 novembre 2026
+
+Il proprietario ha scelto **soltanto privati**. Ammesse persone fisiche maggiorenni che agiscono per scopi estranei ad attività imprenditoriali o professionali, senza operare per conto di un’impresa. Esclusi società e noleggiatori professionali. La restrizione compare nelle condizioni, nella registrazione e nel modulo di pubblicazione/modifica, con dichiarazione non preselezionata e verifica nel submit del frontend.
+
+La dichiarazione non è una verifica indipendente dello status e non è ancora una ricevuta di accettazione conservata sul server. Non sono state aggiunte verifiche di documenti o partita IVA, né un badge Privato verificato. Prima degli account reali completare condizioni definitive, prova dell’accettazione e procedura operativa di valutazione e gestione delle segnalazioni di attività professionali. Gli altri blocchi di pre-lancio rimangono aperti.
+
+Fonte primaria consultata per la distinzione basata sull’attività effettiva: Corte di giustizia UE, C-105/17, https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX%3A62017CJ0105 . La limitazione agli utenti privati non elimina automaticamente gli obblighi del gestore.

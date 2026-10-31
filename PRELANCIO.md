@@ -54,3 +54,8 @@ Nicolò Caloni confermato come titolare; contatto rent.to.a.friend@gmail.com. Re
 ## Secondo video · cookie, pagamenti e badge
 
 Verificati i sette punti del nuovo video di 48,85 secondi in `PRIVACY_VIDEO_AUDIT.md`. Pagina Cookie e memoria accessibile da footer e I tuoi dati, inventario della memoria locale e controlli sul tracciamento in build; pulizia PKCE scaduto anche senza callback. Più trasparenza su segnali profilo, recensioni e ordinamento. Nessun tracker facoltativo, consenso pubblicitario, Stripe o sistema di addebito introdotto. Le condizioni definitive, la scelta privati/professionisti e la prova della relativa accettazione restano attività di pre-lancio. I blocchi di privacy e hosting restano aperti.
+
+
+## Ambito confermato · 1 novembre 2026
+
+Pilota per soli privati maggiorenni, senza uso nell’ambito di attività professionali o per conto di imprese. Condizioni, avviso di registrazione e dichiarazione nel modulo annunci aggiornati. Nessun badge di status verificato. Per il lancio reale occorrono ancora accettazione documentata delle condizioni definitive e gestione delle segnalazioni di attività professionali.
