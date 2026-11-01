@@ -1,4 +1,5 @@
 import rawConfig from './config.js';
+import {AUTH_REDIRECT_URL} from './auth-config.js';
 import {validatePublicConfig,validEmail,validPassword,resourceId} from './security.js';
 const config=validatePublicConfig(rawConfig.url,rawConfig.key);
 import {sampleListings,sampleProfiles} from './data.js';
@@ -31,7 +32,7 @@ async function startPkce(purpose){
   localStorage.setItem(PKCE_KEY,JSON.stringify({verifier,purpose,created_at:Date.now()}));
   return {code_challenge:challenge,code_challenge_method:'s256'};
 }
-const redirectPath=path=>path+'?redirect_to='+encodeURIComponent(location.origin+location.pathname);
+const redirectPath=path=>path+'?redirect_to='+encodeURIComponent(AUTH_REDIRECT_URL);
 async function token() {
   if(!session) return config.key;
   if(session.expires_at*1000 < Date.now()+60000) {

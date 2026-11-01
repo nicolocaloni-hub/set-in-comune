@@ -13,7 +13,7 @@ test('connected auth protects redirects, uses PKCE and keeps bearer tokens out o
  await writeFile(join(dir,'src/config.js'),'export default '+JSON.stringify({url:'https://example.supabase.co',key:'sb_publishable_'+'a'.repeat(32)})+';');
  const makeStorage=()=>{const data=new Map();return {getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k),data};};
  globalThis.localStorage=makeStorage();globalThis.sessionStorage=makeStorage();
- globalThis.location={href:'https://app.example/',origin:'https://app.example',pathname:'/',hash:''};
+ globalThis.location={href:'https://rent-to-a-friend.it/',origin:'https://rent-to-a-friend.it',pathname:'/',hash:''};
  const replaced=[];globalThis.history={replaceState:(_a,_b,url)=>replaced.push(url)};
  const user={id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',email:'fixture@example.test',email_confirmed_at:'2026-01-01'};
  const fixture={access_token:'fixture-access',refresh_token:'fixture-refresh',expires_in:3600,user};
@@ -32,9 +32,24 @@ test('connected auth protects redirects, uses PKCE and keeps bearer tokens out o
   assert.equal(body.code_challenge_method,'s256');assert.equal(body.code_challenge,createHash('sha256').update(flow.verifier).digest('base64url'));
   assert.ok(!JSON.stringify([...localStorage.data]).includes('unit-fixture-passphrase'));
  });
+ await t.test('signup and recovery always request the canonical callback, ignoring the browser origin, path and redirect parameters',async()=>{
+  const originalLocation=globalThis.location;
+  try{
+   for(const href of ['https://preview.example/nested/path?redirect_to=https://attacker.example/#login','https://rent-to-a-friend.it/untrusted?next=//attacker.example/#profile']){
+    const page=new URL(href);globalThis.location={href,origin:page.origin,pathname:page.pathname,search:page.search,hash:page.hash};
+    for(const action of ['signup','reset']){
+     if(action==='signup')await api.signup('fixture@example.test','unit-fixture-passphrase','Fixture name');else await api.reset('fixture@example.test');
+     const request=new URL(calls.at(-1).url);
+     assert.equal(request.pathname,'/auth/v1/'+(action==='signup'?'signup':'recover'));
+     assert.deepEqual([...request.searchParams],[['redirect_to','https://rent-to-a-friend.it/']]);
+     assert.equal(request.hash,'');
+    }
+   }
+  }finally{globalThis.location=originalLocation;}
+ });
  await t.test('a valid recovery flow exchanges the code using its local verifier and cleans the URL',async()=>{
   await api.reset('fixture@example.test');const flow=JSON.parse(localStorage.getItem('sic-pkce-v1'));
-  location.href='https://app.example/?code=fixture-code';
+  location.href='https://rent-to-a-friend.it/?code=fixture-code';
   assert.equal(await api.init(),true);
   const exchange=calls.find(c=>c.url.endsWith('token?grant_type=pkce'));
   assert.equal(JSON.parse(exchange.options.body).code_verifier,flow.verifier);
