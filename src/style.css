@@ -31,3 +31,8 @@ dialog{width:min(650px,calc(100vw - 32px));max-height:90vh;max-height:90dvh;bord
 
 /* Public transparency links must remain usable on narrow screens. */
 .footer-main>div{flex-wrap:wrap;row-gap:12px}.catalog-transparency{font-size:11px;color:var(--muted);line-height:1.6;margin:-5px 0 20px}.catalog-transparency a,.legal-page a:not(.btn){text-decoration:underline;text-underline-offset:3px}.legal-page td code{overflow-wrap:anywhere}
+
+/* Draw focus on the rounded filter shell, not the native control inside it.
+   Keep a visible focus indicator for keyboard and touch interaction. */
+.searchbar input:focus-visible,.searchbar select:focus-visible{outline:none}
+.searchbar>label:focus-within{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
