@@ -77,3 +77,10 @@ Pilota per soli privati maggiorenni, senza uso nell’ambito di attività profes
 Su richiesta del proprietario, riscritti già ora banner, contatori, condizioni, privacy, notifiche ed esportazione/pulizia/richieste per descrivere lo stato effettivo della demo. Espliciti messaggi locali, nessun noleggio reale, nessun invio delle segnalazioni a un operatore e nessuna cancellazione di account reale. Rimangono etichette demo e dati di esempio. Recapito e verifiche mancanti sono indicati come tali, non inventati o approvati.
 
 La revisione dello stato odierno è completata; la checklist precedente resta obbligatoria quando cambieranno funzioni e trattamento dei dati, soprattutto prima dell’apertura agli account reali.
+
+
+## Cambio password protetto · 1 novembre 2026
+
+Modulo Profilo → Cambia password predisposto per account collegati: password attuale, nuova password e conferma; nella demo non richiede credenziali. Il client invia `current_password` a Supabase Auth, che deve avere **Require current password when updating** attivo: il solo controllo frontend non è una protezione del backend. Il recupero tramite callback PKCE usa la sessione recovery riconosciuta da Supabase e non richiede la vecchia password. Dopo un aggiornamento riuscito il client richiede il logout e cancella la sessione locale anche se il logout remoto fallisce. Un JWT già emesso può restare valido fino alla scadenza.
+
+Non viene attivato **Secure password change** con nonce via email: è un controllo distinto e richiede un ulteriore flusso di riautenticazione. Nessuna nuova email oltre a conferma indirizzo e recupero password. Test con risposte Auth simulate coprono password attuale mancante/errata, recupero, conferma registrazione, chiusura della sessione e errori del provider. La ricezione email e i flussi completi con account reali restano da collaudare; i blocchi privacy/demo restano invariati.

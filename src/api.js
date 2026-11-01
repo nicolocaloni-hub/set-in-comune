@@ -17,8 +17,9 @@ db.privacyRequests ||= [];db.notifications ||= [];db.inquiries ||= [];db.reviews
 for(const sample of sampleListings){const existing=db.listings.find(l=>l.id===sample.id);if(existing)for(const key of ['brand','model','lens_mount','light_power_w','equipment_condition','included_tags'])if(existing[key]===undefined)existing[key]=sample[key]??(key==='included_tags'?[]:key==='light_power_w'?null:'');}
 let savedDemo = JSON.stringify(db);
 const save=()=>{const json=JSON.stringify(db);try{localStorage.setItem(DEMO_KEY,json);savedDemo=json;}catch{db=JSON.parse(savedDemo);throw new Error('Spazio della demo esaurito su questo browser. Rimuovi alcune foto dai tuoi annunci o ripristina la demo dal Profilo. Nessun piano a pagamento viene attivato.');}};
-const storeSession=value=>{if(value){value={...value,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else sessionStorage.removeItem(SESSION_KEY);session=value;};
+const storeSession=value=>{if(value){value={...value,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}session=value;};
 let refreshPromise;
+let recoverySession=false;
 const safeFetch=(url,options={})=>fetch(url,{...options,mode:'cors',credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',cache:'no-store',signal:AbortSignal.timeout(20000)});
 async function auth(path,body) {
   const res=await safeFetch(config.url+'/auth/v1/'+path,{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -44,7 +45,7 @@ async function token() {
 async function request(path, options={}) {
   const res=await safeFetch(config.url+path,{...options,headers:{apikey:config.key,Authorization:'Bearer '+await token(),'Content-Type':'application/json',...options.headers}});
   const raw=await res.text();let data;try{data=raw?JSON.parse(raw):null;}catch{data=null;}
-  if(!res.ok){if(res.status===401){storeSession(null);throw new Error('La sessione è scaduta. Accedi di nuovo.');}if(res.status===403)throw new Error('Non hai accesso a questa operazione.');if(res.status===429)throw new Error('Troppi tentativi. Attendi e riprova.');if(data?.code==='23505')throw new Error('Questa richiesta è già presente.');throw new Error(data?.code==='P0001'?data.message:'Operazione non riuscita. Controlla i dati e riprova.');}
+  if(!res.ok){if(path==='/auth/v1/user'&&options.method==='PUT'){if(['current_password_required','current_password_mismatch'].includes(data?.code))throw new Error('La password attuale non è corretta. Riprova.');if(data?.code==='same_password')throw new Error('Scegli una password diversa da quella attuale.');if(data?.code==='reauthentication_needed')throw new Error('Accedi di nuovo prima di cambiare la password.');if(data?.code==='weak_password')throw new Error('La nuova password non rispetta i requisiti di sicurezza.');}if(res.status===401){storeSession(null);throw new Error('La sessione è scaduta. Accedi di nuovo.');}if(res.status===403)throw new Error('Non hai accesso a questa operazione.');if(res.status===429)throw new Error('Troppi tentativi. Attendi e riprova.');if(data?.code==='23505')throw new Error('Questa richiesta è già presente.');throw new Error(data?.code==='P0001'?data.message:'Operazione non riuscita. Controlla i dati e riprova.');}
   return data;
 }
 const rest=(table,query='')=>request('/rest/v1/'+table+query);
@@ -56,6 +57,7 @@ export const api={
   user:()=>isDemo?{id:'demo-me',email:'Modalità dimostrativa'}:session?.user || null,
   async init(){
     if(isDemo)return false;
+    recoverySession=false;
     pkceFlow();
     // Drop old persistent bearer tokens; the new session lives only in this tab.
     localStorage.removeItem('sic-session-v1');
@@ -69,13 +71,25 @@ export const api={
       localStorage.removeItem(PKCE_KEY);
       if(!flow||!flow.verifier||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000)throw new Error('Richiedi un nuovo link e aprilo nello stesso browser usato per la richiesta.');
       const result=await auth('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});
-      storeSession(result);recovery=flow.purpose==='recovery';
+      storeSession(result);recovery=flow.purpose==='recovery';recoverySession=recovery;
     }
     if(session){try{await token();const user=await request('/auth/v1/user');storeSession({...session,user});}catch(e){storeSession(null);throw e;}}
     return recovery;
   },
-  async changePassword(password){await request('/auth/v1/user',{method:'PUT',body:JSON.stringify({password:validPassword(password)})});},
-  async login(email,password){storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password)}));},
+  isPasswordRecovery:()=>recoverySession,
+  async changePassword(password,currentPassword){
+    if(isDemo)throw new Error('Il cambio password richiede un account reale. Non inserire password nella demo.');
+    requireUser();
+    const body={password:validPassword(password)};
+    if(!recoverySession){
+      if(typeof currentPassword!=='string'||!currentPassword.length||currentPassword.length>128)throw new Error('Inserisci la password attuale.');
+      body.current_password=currentPassword;
+    }
+    await request('/auth/v1/user',{method:'PUT',body:JSON.stringify(body)});
+    // Close the recovery session as well: a later change must authenticate again.
+    await api.logout().catch(()=>{});
+  },
+  async login(email,password){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password)}));},
   async signup(email,password,display_name){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
   async reset(email){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params});},
   async logout(){if(!isDemo&&session){try{await request('/auth/v1/logout',{method:'POST'});}finally{storeSession(null);localStorage.removeItem(PKCE_KEY);}}},
