@@ -5,7 +5,7 @@ Aggiornato il 31 ottobre 2026. Documento operativo di pre-lancio, non attestazio
 ## Identità e stato
 
 - Titolare: **Nicolò Caloni**, confermato dal proprietario in questa sessione.
-- Contatto privacy e assistenza: **rent.to.a.friend@gmail.com**.
+- Contatto privacy e assistenza: **assistenza@rent-to-a-friend.it**.
 - Recapito postale: il proprietario ha scelto di aggiungerlo prima del lancio. Non è stato ricavato né pubblicato un indirizzo personale.
 - `reviewed=false`, `providersReviewed=false` e `retentionPolicy.approved=false`: gli account reali non vengono inclusi nel build pubblico finché le informazioni non sono complete e approvate.
 - Nessun documento dei fornitori è stato sottoscritto o accettato automaticamente in questa revisione. Nessun acquisto o upgrade.
@@ -67,3 +67,8 @@ Il proprietario ha scelto **soltanto privati**. Ammesse persone fisiche maggiore
 La dichiarazione non è una verifica indipendente dello status e non è ancora una ricevuta di accettazione conservata sul server. Non sono state aggiunte verifiche di documenti o partita IVA, né un badge Privato verificato. Prima degli account reali completare condizioni definitive, prova dell’accettazione e procedura operativa di valutazione e gestione delle segnalazioni di attività professionali. Gli altri blocchi di pre-lancio rimangono aperti.
 
 Fonte primaria consultata per la distinzione basata sull’attività effettiva: Corte di giustizia UE, C-105/17, https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX%3A62017CJ0105 . La limitazione agli utenti privati non elimina automaticamente gli obblighi del gestore.
+
+
+## Contatto aggiornato · 1 novembre 2026
+
+Indirizzo pubblico per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it. Il proprietario ha configurato su IONOS un reindirizzamento verso assistenza.rtaf@gmail.com e ha accettato di rispondere da Gmail. La schermata fornita conferma la configurazione; la consegna effettiva di un messaggio di prova non è stata verificata dall’agente. Non è un servizio SMTP di invio per conferma email o recupero password dell’app.
