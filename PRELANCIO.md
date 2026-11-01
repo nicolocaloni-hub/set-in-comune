@@ -84,3 +84,20 @@ La revisione dello stato odierno è completata; la checklist precedente resta ob
 Modulo Profilo → Cambia password predisposto per account collegati: password attuale, nuova password e conferma; nella demo non richiede credenziali. Il client invia `current_password` a Supabase Auth, che deve avere **Require current password when updating** attivo: il solo controllo frontend non è una protezione del backend. Il recupero tramite callback PKCE usa la sessione recovery riconosciuta da Supabase e non richiede la vecchia password. Dopo un aggiornamento riuscito il client richiede il logout e cancella la sessione locale anche se il logout remoto fallisce. Un JWT già emesso può restare valido fino alla scadenza.
 
 Non viene attivato **Secure password change** con nonce via email: è un controllo distinto e richiede un ulteriore flusso di riautenticazione. Nessuna nuova email oltre a conferma indirizzo e recupero password. Test con risposte Auth simulate coprono password attuale mancante/errata, recupero, conferma registrazione, chiusura della sessione e errori del provider. La ricezione email e i flussi completi con account reali restano da collaudare; i blocchi privacy/demo restano invariati.
+
+
+## CAPTCHA Turnstile · integrazione predisposta, non attivata
+
+Cloudflare Turnstile è predisposto per registrazione, accesso, recupero password e riautenticazione della cancellazione account. Il widget si carica soltanto aprendo questi moduli in modalità collegata; nella demo non viene contattato Cloudflare. Token monouso solo in memoria, invalidazione dopo errore/scadenza e rimozione alla chiusura del modulo. Il rinnovo delle sessioni e il callback PKCE non chiedono un nuovo CAPTCHA.
+
+### Configurazione e ordine di attivazione
+
+1. Accedere all’account Cloudflare del gestore. Creare o riusare un widget Turnstile dedicato, modalità Managed, host `rent-to-a-friend.it` e `www.rent-to-a-friend.it`, senza wildcard e senza pre-clearance. Non servono trasferimento del dominio o modifiche DNS. Nessun piano a pagamento. Non creare duplicati né ruotare chiavi esistenti.
+2. La **site key pubblica** va nella variabile Vercel `PUBLIC_TURNSTILE_SITE_KEY`. La chiave segreta deve essere inserita esclusivamente nel campo CAPTCHA Secret key di Supabase Auth dal gestore; mai nel repository, frontend, log o chat. Le chiavi di test non sono accettate dal build.
+3. Distribuire prima la versione aggiornata del worker `account-erasure` che inoltra il token alla verifica password, poi il frontend. Non attivare CAPTCHA sul backend senza aggiornare anche questo worker. La distribuzione del worker non esegue cancellazioni di prova o altre operazioni sui dati.
+4. In Supabase → Auth → Attack Protection scegliere Turnstile, inserire la chiave segreta e salvare solo dopo avere predisposto entrambi i componenti. Confermare con ricaricamento lo stato salvato e fare una richiesta senza token per verificare il rifiuto del server, senza creare utenti o inviare email.
+5. I collaudi reali del widget e dell’intero flusso Auth vanno eseguiti prima degli utenti reali. Occorrono ancora la revisione privacy e i requisiti di lancio: questo intervento non rimuove i blocchi. Il build collegato richiede una site key configurata e la revisione privacy già prevista.
+
+### Controlli
+
+`npm test`, `npm run build`, `npm run security:scan`. I test usano provider simulati e verificano inoltro token, obbligatorietà quando configurato, monouso, scadenza, callback obsoleti, rinnovo sessione e cancellazione account. Nessuna soluzione automatica di challenge reali, invio email o cancellazione di account. La CSP concede soltanto script e frame da `https://challenges.cloudflare.com`; il meta CSP della demo continua a escluderli. Cloudflare è indicato nelle pagine privacy e memoria; verifica degli accordi e dei trattamenti ancora da completare.

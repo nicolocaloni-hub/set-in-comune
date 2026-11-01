@@ -25,12 +25,12 @@ Deno.serve(async(req:Request)=>{
   // Dedicated 256-bit server hook, compared without logging or returning it.
   if(/^[A-Za-z0-9_-]{43}$/.test(bearer)){const c=await rpc('push_worker_config');if(!c?.hookSecret||!await secureEqual(bearer,c.hookSecret))return reply({error:'Unauthorized'},401);return reply({completed:await runJobs()});}
   if(!allowedOrigin(origin,origins))return reply({error:'Origine non consentita.'},403);
-  if(Number(req.headers.get('content-length')||0)>2048)return reply({error:'Richiesta non valida.'},400);
-  const text=await req.text();if(text.length>2048)return reply({error:'Richiesta non valida.'},400);
+  if(Number(req.headers.get('content-length')||0)>4096)return reply({error:'Richiesta non valida.'},400);
+  const text=await req.text();if(text.length>4096)return reply({error:'Richiesta non valida.'},400);
   let currentUser;try{currentUser=await http('/auth/v1/user','GET',undefined,bearer,anon);}catch{return reply({error:'Accedi di nuovo.'},401);}
   let verified;try{verified=await verifyErasure(JSON.parse(text),bearer,{
    getUser:async()=>currentUser,
-   reauthenticate:(email:string,password:string)=>http('/auth/v1/token?grant_type=password','POST',{email,password},anon,anon)
+   reauthenticate:(email:string,password:string,captchaToken?:string)=>http('/auth/v1/token?grant_type=password','POST',{email,password,...(captchaToken?{gotrue_meta_security:{captcha_token:captchaToken}}:{})},anon,anon)
   });}catch{return reply({code:'P0001',message:'Conferma e password non valide, oppure troppi tentativi. Riprova più tardi.'},400);}
   const result=await rpc('prepare_account_erasure',{p_user:verified.userId});
   await http('/auth/v1/logout?scope='+(result.status==='review'?'local':'global'),'POST',undefined,verified.temporaryToken,anon);

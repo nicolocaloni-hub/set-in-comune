@@ -22,7 +22,9 @@ export function allowedOrigin(value,origins){try{const u=new URL(value);return u
 export async function verifyErasure(data,bearer,io){
  if(data?.confirmation!=='ELIMINA'||typeof data.password!=='string'||data.password.length<10||data.password.length>128)throw new Error('Conferma la cancellazione e inserisci la password.');
  const user=await io.getUser(bearer);if(!user?.id||!user.email||!user.email_confirmed_at)throw new Error('Accedi con email confermata.');
- const fresh=await io.reauthenticate(user.email,data.password);
+ const captchaToken=data?.gotrue_meta_security?.captcha_token;
+ if(captchaToken!==undefined&&(typeof captchaToken!=='string'||!captchaToken.trim()||captchaToken.length>2048))throw new Error('Verifica di sicurezza non valida.');
+ const fresh=await io.reauthenticate(user.email,data.password,captchaToken);
  if(fresh?.user?.id!==user.id)throw new Error('Account non valido.');
  return {userId:user.id,temporaryToken:fresh.access_token};
 }
