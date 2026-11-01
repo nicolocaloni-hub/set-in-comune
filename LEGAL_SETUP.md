@@ -16,7 +16,7 @@ Aggiornato il 31 ottobre 2026. Documento operativo di pre-lancio, non attestazio
 |---|---|---|---|
 | Supabase | Auth, database, foto, funzioni e notifiche | Il DPA versione 1 del 1 agosto 2026 dichiara di integrare i termini e avere efficacia dalla data dell’accordo. Elenca subfornitori e SCC. La regione scelta non esclude altri trattamenti descritti nel DPA. | Progetto dedicato UE verificato; titolarità dell’account, applicabilità dell’accordo e subfornitori da ricondurre a Nicolò prima del lancio. |
 | Vercel | Sito statico, distribuzione e richieste tecniche | Il DPA pubblico, aggiornato 17 marzo 2026, indica applicabilità a Pro/Enterprise. La documentazione Hobby indica uso personale non commerciale. | **Blocco da risolvere per lancio commerciale**: non assumere che il piano gratuito sia coperto dal DPA citato. Ottenere conferma oppure scegliere un hosting con copertura adeguata; nessun piano attivato. La demo di sviluppo resta online. |
-| Resend | Solo conferma indirizzo e recupero password | Il DPA aggiornato 31 dicembre 2025 dichiara incorporazione nei termini/accordo e include SCC e subfornitori. Descrive anche la durata alla cessazione del servizio: non equivale alla durata di ogni singola email. | Account Free; SMTP non collegato. Prima del lancio verificare intestazione, DPA applicabile, log, subfornitori e dominio mittente. Nessuna email marketing prevista. |
+| Resend | Solo conferma indirizzo e recupero password | Il DPA aggiornato 31 dicembre 2025 dichiara incorporazione nei termini/accordo e include SCC e subfornitori. Descrive anche la durata alla cessazione del servizio: non equivale alla durata di ogni singola email. | Account Free; SMTP collegato e consegna reale di conferma e recupero collaudata il 1 novembre 2026. Il flusso nell’interfaccia pubblica resta da provare. Prima del lancio completare verifica di intestazione, DPA applicabile, log e subfornitori. Nessuna email marketing prevista. |
 | Push del browser | Consegna facoltativa delle notifiche | Destinatari dipendono da browser/sistema operativo; il contenuto della chat non è incluso nelle push dell’app. | Documentare servizio effettivo per i dispositivi supportati; revoca disponibile. |
 
 Fonti primarie:
@@ -72,3 +72,19 @@ Fonte primaria consultata per la distinzione basata sull’attività effettiva: 
 ## Contatto aggiornato · 1 novembre 2026
 
 Indirizzo pubblico per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it. Il proprietario ha configurato su IONOS un reindirizzamento verso assistenza.rtaf@gmail.com e ha accettato di rispondere da Gmail. La schermata fornita conferma la configurazione; la consegna effettiva di un messaggio di prova non è stata verificata dall’agente. Non è un servizio SMTP di invio per conferma email o recupero password dell’app.
+
+
+## Chiarimento sul modello e sui piani · 1 novembre 2026
+
+Il proprietario conferma che l’app mette in contatto privati: nessun incasso, commissione, pagamento o cauzione viene gestito dalla piattaforma. Le parti prendono accordi esternamente. I prezzi di noleggio restano negli annunci.
+
+Non è stata ottenuta una classificazione di questo caso da Vercel. La fair-use policy include fra gli esempi commerciali la promozione della vendita di prodotti o servizi: l’assenza di un checkout non basta a concludere che Hobby sia idoneo. Il DPA pubblico si applica ai piani Pro/Enterprise quando Vercel opera da responsabile; nel sito statico i dati applicativi vanno direttamente a Supabase, mentre Vercel riceve richieste e dati tecnici. Occorre chiarire ruolo e copertura effettivi, senza dedurre automaticamente che tutto il traffico tecnico richieda quel DPA o che Hobby copra il trattamento.
+
+Decisione operativa: nessun piano a pagamento, prova Pro, cambio hosting o apertura del servizio reale in questa preparazione. Risolvere il dubbio con conferma specifica di Vercel o con una scelta di hosting gratuito compatibile autorizzata dal proprietario.
+
+Fonti ricontrollate:
+- https://vercel.com/docs/limits/fair-use-guidelines
+- https://vercel.com/legal/dpa
+- https://supabase.com/pricing
+
+Lo smoke test Auth reale ha verificato consegna, autenticazione del mittente, conferma indirizzo, redirect canonico, scambio PKCE, recupero, rifiuto della vecchia password, login con nuova password e logout delle sessioni del solo account di prova. Password e token temporanei sono stati rimossi; nessuna credenziale è salvata nel repository. Questo non sostituisce il test dalla UI collegata con browser/dispositivi reali.

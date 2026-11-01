@@ -1,5 +1,17 @@
 # Prima del lancio
 
+## Stato attuale · preparazione del lancio, 1 novembre 2026
+
+La decisione e le attività correnti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). Le sezioni di release successive sono uno storico e non attestano che tutti i controlli di lancio siano completati.
+
+- Pubblico ancora demo, piani gratuiti invariati. Nessuna apertura ad account reali in questa preparazione.
+- SMTP Resend collegato: consegna reale in Gmail, SPF/DKIM/DMARC superati, conferma e recupero PKCE con callback canonico riusciti nel test backend. La vecchia password viene respinto dopo il reset e le sessioni di prova sono state chiuse. Il percorso completo dalla UI pubblica non è collaudato.
+- Password minima 10 e richiesta password attuale per il cambio ordinario attive su Auth.
+- Testi preparati per distinguere demo e servizio reale, senza mostrare indiscriminatamente avvisi di account chiusi o istruzioni per dati demo nella versione collegata.
+- Vercel Hobby verificato: idoneità al modello gratuito di contatto tra privati da chiarire; assenza di commissioni o pagamenti integrati non basta a dedurla. DPA pubblico limitato a Pro/Enterprise per i trattamenti da responsabile: verificare il ruolo effettivo dell’hosting statico. Nessun upgrade autorizzato.
+- CAPTCHA predisposto nella PR #1, ancora spento; non incluso in questo ramo. Restano recapito del titolare, conservazione, documenti definitivi con ricevuta di accettazione, gestione operatore e collaudi A/B/C e dispositivi.
+
+
 ## Promemoria obbligatorio prima del lancio
 
 Richiesto da Nicolò il 1 novembre 2026: rileggere **tutte le diciture dell’app** e sostituire i testi demo, provvisori e di pre-lancio con descrizioni veritiere dello stato effettivo. Non basta rimuovere la parola demo.
