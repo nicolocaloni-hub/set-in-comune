@@ -6,7 +6,7 @@ Il gestore esegue i tocchi in Chrome sul proprio Android e invia schermate in ch
 
 Riscontri positivi: catalogo e scheda, calendario 12–13 novembre, due giorni a 65 euro (130 euro con cauzione separata di 500), creazione della richiesta, accettazione simulata e badge interno, apertura della chat, campo e invio visibili con tastiera aperta, invio del messaggio e persistenza dopo ricaricamento confermata dal gestore. Due foto selezionate, anteprime e ottimizzazione mostrate; descrizione inferiore a 20 caratteri respinta; annuncio di prova salvato, copertina cambiata, prezzo aggiornato da 50 a 55 euro e stato In pausa mostrato. Ritiro simulato presente nel registro del noleggio.
 
-Restano da riscontrare sul telefono: restituzione, chiusura e recensione; nuove conferme introdotte sotto; layout dopo le correzioni; pulizia finale. Il gestore ha ancora una prenotazione, messaggi e un annuncio con due immagini nella demo del suo browser. Non dichiarare eliminati questi dati prima del ripristino verificato. La pausa è mostrata; la sua persistenza dopo ricaricamento non è stata confermata separatamente.
+Collaudo completato per i percorsi provati su Android: le schermate successive mostrano il nuovo avviso di restituzione, il pulsante finale e il passaggio a Restituito; seguono conferma della chiusura e recensione pubblicata nella demo. Il gestore conferma infine il ripristino, zero noleggi e tutti i dati di prova resettati. La pulizia del telefono è attestata dalla sua conferma in chat, senza controllo remoto né un export finale acquisito dall’assistente. Non restano attività aperte per questo percorso demo. La persistenza della pausa dopo ricaricamento, le foto nel registro di restituzione e i dettagli del layout chat/ordinamento dopo le modifiche non sono stati riscontrati separatamente sul telefono.
 
 Non attestati: iOS/Safari, orientamento orizzontale, installazione Home, notifiche push, autenticazione e interfaccia con backend collegato. I risultati precedenti del backend via API restano separati. Cloudflare in standby; backup e Turnstile rinviati; nessuna apertura agli utenti reali.
 
@@ -21,4 +21,10 @@ Non attestati: iOS/Safari, orientamento orizzontale, installazione Home, notific
 
 136 test superati. Quattro nuove prove coprono indicazioni per ruolo, nessun upload/transizione prima della conferma finale, ritorno alla bozza senza perdita di dati, protezione contro doppio tocco e conservazione della bozza in caso di errore. Build demo Vercel e Cloudflare riuscite, controllo delle differenze e scansione dei pattern di credenziali senza rilievi. Nessuna nuova dipendenza installata; usate quelle già disponibili.
 
-Il riscontro browser della versione pubblicata e quello sul telefono vengono registrati separatamente dopo la pubblicazione; questi test locali non li sostituiscono.
+## Pubblicazione e controllo browser
+
+Modifica integrata con PR #10, commit main `48bfe4dcb64ac769d27f39125214e2468696d350`. Vercel ha pubblicato il deployment di produzione `dpl_3zi8T5EU853gecst3nBzrumdnKq9` in stato READY. Sul dominio, app.js, marketplace.js, style.css e config.js coincidono byte per byte con il build demo verificato.
+
+Prova diretta nella demo desktop pubblicata: annullare Simula consegna lascia il noleggio Confermato; confermare porta In corso. Nella restituzione, Verifica e continua apre la conferma aggiuntiva senza registrare il passaggio; Torna ai controlli conserva nota e tre spunte. Il pulsante finale porta a Restituito e la simulazione di chiusura a Concluso. Ripristino della sessione dell’assistente eseguito, con zero prenotazioni mostrate e nessun annuncio personale. La distinta pulizia della demo Android è confermata dal gestore nel paragrafo sopra.
+
+Questa registrazione aggiorna soltanto il rapporto: non introduce nuove modifiche al codice o nuovi test e non dichiara collaudati account reali o iOS.
