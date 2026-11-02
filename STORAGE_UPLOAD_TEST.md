@@ -1,43 +1,57 @@
 # Prova reale di upload · 2 novembre 2026
 
-Richiesta del gestore: caricare contenuti sintetici, verificarli ed eliminarli. Il backup è stato successivamente rinviato dal gestore; non costituisce più un'attività richiesta per il primo avvio. Nessun backup viene dichiarato esistente.
+## Esito effettivo
 
-## Ambiente e preparazione
+Correzione applicata al progetto Supabase dedicato `srjdysdhxnafjrutufmk` con migrazione **20261102115131**, `storage_upload_actor_quota`, dopo l'autorizzazione esplicita del gestore. Diciotto controlli HTTP reali tramite il codice dell'app superati; pulizia finale verificata. Rapporto senza credenziali in `supabase/launch/storage-http-result-2026-11-02.json`.
 
-Supabase dedicato `srjdysdhxnafjrutufmk`, progetto sano e bucket app verificati: JPEG, 512.000 byte massimi; avatar/annunci pubblici, riscontri privati. Nessun documento legale definitivo attivo. La demo pubblica e i relativi blocchi non sono stati modificati.
+Il sito pubblico resta demo, nessun documento legale definitivo è stato attivato. Cloudflare resta in standby; Turnstile e backup restano rinviati per scelta del gestore. Questo collaudo riguarda il backend tramite API, non l'apertura del servizio o la prova su telefoni reali.
 
-Sono stati creati tre account tecnici temporanei con indirizzi sintetici non recapitabili, un annuncio inattivo e un rapporto di noleggio esclusivamente fittizio. Il rapporto è stato predisposto direttamente dal contesto operatore come fixture preesistente, senza alterare policy o definizioni di trigger; il normale flusso di prenotazione e l'accettazione dei documenti non sono attestati da questa preparazione. Nessuna email o push a persone reali.
+## Problema trovato e correzione
 
-Il client di prova ha importato una copia isolata di `src/api.js` con il solo URL e la chiave pubblica del progetto. Ha usato login Auth reale e un JPEG sintetico, senza service key. Password e token non sono inclusi in questo rapporto o nel repository.
+Il primo caricamento fisico falliva con HTTP 500/P0001: il controllo quote richiedeva `auth.uid()` anche nella scrittura finale dei metadati effettuata dalla connessione interna `supabase_storage_admin`, senza JWT utente. I precedenti test SQL con JWT simulato riuscivano e non coprivano questo passaggio del servizio Storage.
 
-## Esito: upload bloccato, non collaudo superato
+La sola funzione applicativa `private.limit_uploads()` ora ricava l'autore da `owner_id` quando manca il JWT e la connessione è esattamente `supabase_storage_admin`. Richiede account confermato/aperto e corrispondenza fra proprietario e cartella del file; un client ordinario non può selezionare il percorso interno modificando una claim o `owner_id`.
 
-- Login dell'account tecnico riuscito.
-- Nuova foto pubblica respinta prima della pubblicazione dei documenti: comportamento atteso.
-- Upload di riscontro privato respinto con HTTP 500, `DatabaseError`, SQLSTATE `P0001`.
-- Log PostgreSQL riferiti al tentativo: `private.limit_uploads()` chiama `private.enforce_rate_limit(...)`, che solleva “Accedi con una email confermata per continuare.” La scrittura finale dei metadati è eseguita dalla connessione `supabase_storage_admin` del servizio Storage, priva dell'identità JWT dell'utente.
-- La stessa inserzione simulata in una transazione SQL con JWT dell'utente confermato e accesso al noleggio riesce ed è stata annullata con rollback. Questa differenza spiega perché i precedenti test SQL non rilevavano il problema dell'upload HTTP fisico.
+Restano quote fisse di 30 upload/ora, 200 file per utente e 1.500 globali, lock sulle quote, RLS e blocchi legali delle nuove attività. Nessun EXECUTE diretto concesso ad anon/authenticated. Nessuna modifica a chiavi, bucket, impostazioni pubblico/privato, policy o controlli Auth. L'impronta del corpo remoto coincide con quella del file revisionato: `52e0c35cd1fc78612cf7b54aa20d8efc` (MD5 per confronto di integrità, non protezione crittografica).
 
-Non sono dichiarati superati lettura/scaricamento del file, accesso delle controparti, cancellazione via Storage API, flusso completo UI o telefoni. Il caricamento non ha completato la registrazione di un oggetto; la verifica finale non rileva oggetti Storage appartenenti alle fixture. Non è un controllo del contenuto interno del provider S3.
+Il primo tentativo di migrazione era stato respinto dal controllo automatico per mancanza di autorizzazione specifica; nessun aggiramento. Dopo il consenso esplicito del gestore, lo stesso intervento revisionato è stato applicato tramite `apply_migration` e verificato.
 
-## Correzione pronta per revisione, non applicata
+## Preparazione della prova
 
-`supabase/launch/storage_upload_actor.sql` modifica solo la funzione applicativa delle quote, con controllo dell'impronta del corpo precedente per non sovrascrivere cambiamenti concorrenti. Quando manca `auth.uid()`, ricava l'autore da `owner_id` soltanto se la connessione è esattamente `supabase_storage_admin`; il proprietario deve essere un account confermato e aperto e deve coincidere con la cartella del file. Un client ordinario non può selezionare questo percorso cambiando una claim o `owner_id`.
+Tre account tecnici con indirizzi sintetici non recapitabili, un annuncio inattivo e un rapporto di noleggio fittizio sono stati predisposti dal contesto operatore. Il rapporto rappresenta un noleggio preesistente: questa preparazione non collauda registrazione email, accettazione documenti o normale creazione della prenotazione. Nessun documento fittizio pubblicato e nessuna definizione di policy/trigger disattivata per il test HTTP.
 
-Restano limiti di 30 upload/ora, 200 file per utente e 1.500 globali, lock per le quote, RLS e blocco legale delle nuove attività. Nessun EXECUTE diretto della funzione è concesso ad anon/authenticated. Non vengono modificati chiavi, bucket, pubblico/privato, policy o controlli Auth.
+Il client ha importato una copia isolata di `src/api.js`, configurata con URL e chiave pubblica del progetto. Ha usato login Auth reale e un JPEG sintetico di **1.610 byte**, senza service key. Password, token e URL firmati non sono nel repository o nel rapporto. Nessuna installazione o piano a pagamento.
 
-Sette nuove verifiche locali coprono scrittura interna senza JWT, proprietà contraffatta, percorso privilegiato non selezionabile dal client, account non confermati/in chiusura e limiti orari/per utente/globali. Suite completa: **132 test superati**; scansione dei pattern noti di credenziali senza rilievi; diff check superato.
+## Prove riuscite sul backend reale
 
-Il tentativo `apply_migration` è stato **respinto dal controllo automatico**, perché modifica persistentemente una funzione di sicurezza/quota in produzione e l'autorizzazione ai test non è stata considerata sufficiente per tale correzione. Nessun tentativo alternativo tramite SQL o altro canale. Serve approvazione esplicita della correzione prima di richiederne di nuovo l'applicazione. La funzione remota mantiene l'impronta precedente `c7d0646f3c419d05f4841404317d9961` (MD5 usato come confronto di integrità, non come protezione crittografica).
+| Prova | Esito osservato |
+|---|---|
+| Accesso dei tre account tecnici | Login Auth riusciti |
+| Nuova foto pubblica senza documenti definitivi | Respinta come previsto: il blocco di pre-lancio resta attivo |
+| Upload JPEG privato del noleggio fittizio | Riuscito tramite Storage API |
+| Download del proprietario e della controparte | HTTP 200, byte e SHA-256 uguali all'originale |
+| Accesso pubblico al file privato | Negato |
+| Terzo account: firma del file, lettura/scrittura chat | Negate; nessun messaggio privato visibile |
+| Terzo account: tentativo di eliminazione | Nessun file rimosso; successivo download del proprietario ancora integro |
+| Chat fra le parti | Messaggio sintetico salvato e letto dalla controparte |
+| Esportazione dati del proprietario | Profilo del solo account di prova presente |
+| Cancellazione autorizzata del JPEG temporaneo | Eseguita tramite Storage API; nessuna nuova firma ottenibile dopo la rimozione |
+| Contatore quote | Un solo upload fisico conteggiato una volta, senza doppio conteggio della pre-verifica Storage |
+
+La foto era temporanea e non agganciata a un verbale di ritiro/restituzione; non si attesta l'eliminabilità di prove ancora necessarie a un rapporto reale.
 
 ## Pulizia verificata
 
-La pulizia ha controllato UUID e indirizzi sintetici, proprietà e stato inattivo dell'annuncio e corrispondenza del rapporto fittizio prima delle eliminazioni. Nessuna riga Storage è stata eliminata via SQL. Dopo la pulizia risultano **zero** account Auth, profili, identità, sessioni, annunci, prenotazioni e oggetti Storage riferiti alle fixture. Nessun documento legale è stato attivato e la funzione delle quote è invariata. I normali log tecnici del provider non vengono cancellati né presentati come dati di utenti reali.
+Dopo l'eliminazione via Storage API sono stati rimossi solo i dati fittizi, con controlli su UUID, indirizzi sintetici, proprietà e annuncio inattivo. Risultano **zero** account Auth, profili, identità, sessioni, annunci, prenotazioni, messaggi, notifiche e oggetti Storage delle fixture. Nessuna riga Storage è stata eliminata via SQL.
 
-La prima richiesta di pulizia è scaduta senza esecuzione; la richiesta successiva, più circoscritta e con controlli degli identificativi, è riuscita ed è stata verificata. Questa pulizia autorizzata dei dati sintetici è distinta dalla migrazione respinta.
+Nessuna email o push a persone reali. Credenziali e harness temporanei sono rimossi dal contesto locale dopo la verifica. I normali log tecnici del provider non sono cancellati e non sono presentati come dati di utenti reali. La conferma di pulizia scaduta senza esecuzione è stata riproposta in forma idempotente, circoscritta agli stessi identificativi, e la rimozione è stata verificata.
 
-## Ripresa dopo l'approvazione
+## Controlli locali e limiti
 
-Ricontrollare funzione e progetto, applicare la sola correzione revisionata, verificare advisors e migrazione, creare fixture nuove e ripetere upload reale, download con confronto dei byte, isolamento del terzo account, rifiuto di eliminazione altrui ed eliminazione autorizzata via Storage API. Verificare infine l'assenza dei residui prima di considerare il collaudo superato. Non pubblicare documenti fittizi né aprire gli account reali per far passare le prove.
+**132 test locali superati**, incluse sette regressioni su scrittura interna senza JWT, proprietà contraffatta, account non confermati/in chiusura, client senza accesso al percorso privilegiato e quote orarie/per utente/globali. Scansione dei pattern noti di credenziali e controllo delle differenze senza rilievi.
 
-Fonte primaria sulla proprietà Storage: https://supabase.com/docs/guides/storage/security/ownership . Il comportamento specifico della scrittura finale qui descritto è riscontrato nei log del progetto, non dedotto dalla sola documentazione.
+Gli advisors successivi alla migrazione mantengono gli undici INFO delle tabelle private prive di policy dirette e il precedente WARN sulla protezione da password compromesse disattivata. Nessun piano o protezione è stato cambiato per eliminare quell'avviso. Riferimenti: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy e https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection .
+
+Restano da collaudare UI collegata, foto pubbliche dopo la pubblicazione dei documenti effettivi, registrazione/recovery nel nuovo flusso, registri di consegna, cancellazione account tramite interfaccia, ricezione push e Android/iPhone reali. Nessun backup o ripristino è stato eseguito. I risultati HTTP non sono presentati come prova completa del lancio.
+
+Fonte primaria sulla proprietà Storage: https://supabase.com/docs/guides/storage/security/ownership . Il comportamento della scrittura interna è stato riscontrato nei log del progetto e riprodotto dal test HTTP.

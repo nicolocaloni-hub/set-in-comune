@@ -2,7 +2,9 @@
 
 ## Ultima prova fisica di upload
 
-Il gestore ha rinviato il backup e autorizzato upload/eliminazione di soli contenuti tecnici di prova. Login Auth riuscito, ma il caricamento privato è respinto dal controllo delle quote durante la scrittura interna Storage senza JWT. Correzione e sette regressioni pronte, 132 test locali superati; la migrazione è stata respinta dal controllo automatico perché serve autorizzazione specifica alla correzione della funzione di sicurezza in produzione. Non applicata né aggirata. Tutti gli account e i record tecnici temporanei sono stati rimossi e verificati; zero oggetti Storage delle fixture. Dettagli in `STORAGE_UPLOAD_TEST.md`. Il flusso fisico non è dichiarato superato.
+Dopo l'autorizzazione specifica del gestore, correzione quote Storage applicata con migrazione `20261102115131`, `storage_upload_actor_quota`. Diciotto controlli HTTP reali superati: upload JPEG privato, download identico per le parti, isolamento del terzo account, chat/esportazione, rifiuto di eliminazione altrui e rimozione autorizzata via Storage API. Un upload conteggiato una sola volta. Tutte le fixture rimosse: zero account, sessioni, file e record di prova residui verificati. Funzione non eseguibile direttamente dai client, quote e blocchi legali preservati; advisors senza nuovi tipi di avviso. 132 test locali superati. Dettagli e limiti in `STORAGE_UPLOAD_TEST.md`.
+
+Il sito resta demo: nessuna apertura agli utenti reali o pubblicazione di documenti fittizi. UI collegata e telefoni restano da verificare. Backup rinviato dal gestore, Cloudflare in standby e Turnstile rinviato.
 
 ## Completato sul progetto dedicato
 

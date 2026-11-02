@@ -4,7 +4,7 @@ Decisione successiva del gestore: backup rinviato ed escluso dalle attività ric
 
 ## Aggiornamento successivo · backup richiesto dal gestore
 
-Preflight aggiornato con le sole API di metadati: progetto `srjdysdhxnafjrutufmk` ACTIVE_HEALTHY, PostgreSQL 17.11.0.011, organizzazione Free e sette migrazioni elencate. Nessuna esportazione o ripristino è stato effettuato. Mancano ancora Supabase CLI, pg_dump, psql e Docker; non è stata effettuata alcuna installazione. Il collegamento Supabase non dispone di un export completo recuperabile del database e dei file. `BACKUP_TEST_STATUS.md` distingue le prove eseguite dal backup e dai collaudi ancora non effettuati.
+Preflight aggiornato con le sole API di metadati: progetto `srjdysdhxnafjrutufmk` ACTIVE_HEALTHY, PostgreSQL 17.11.0.011, organizzazione Free e sette migrazioni elencate in quel controllo. Successivamente applicata anche `20261102115131`, correzione quote Storage, con 18 controlli HTTP superati e fixture ripulite (`STORAGE_UPLOAD_TEST.md`). Nessuna esportazione o ripristino è stato effettuato. Mancano ancora Supabase CLI, pg_dump, psql e Docker; non è stata effettuata alcuna installazione. Il collegamento Supabase non dispone di un export completo recuperabile del database e dei file. `BACKUP_TEST_STATUS.md` distingue le prove eseguite dal backup e dai collaudi ancora non effettuati.
 
 ## Rapporto aggregato precedente (non rieseguito)
 

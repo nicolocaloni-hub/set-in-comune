@@ -26,7 +26,7 @@ Il gestore ha chiesto di considerare risolta la privacy. Approvazione e scelte s
 | Conservazione | Provare la gestione dei criteri descritti, inclusa la posta di assistenza e le eccezioni | Approvazione del gestore acquisita; nessuna cancellazione periodica generale attiva |
 | Backup e ripristino | Rinviato dal gestore per il primo avvio | Nessuna copia o prova di ripristino esistente; non richiedere nuovamente una configurazione già esclusa |
 | CAPTCHA | Rinviato dal gestore; nessuna attivazione richiesta per questa versione | Opt-in esplicito nel build; una Site Key residua non carica il provider |
-| Collaudo collegato | Correggere il blocco reale delle quote Storage e ripetere upload/download/eliminazione; completare poi le prove UI | Correzione pronta, migrazione respinta in attesa di autorizzazione specifica; fixture pulite. Vedere STORAGE_UPLOAD_TEST.md |
+| Collaudo collegato | Completare le prove UI dopo i prerequisiti effettivi di rilascio | Correzione Storage applicata e 18 controlli HTTP superati; fixture rimosse. UI e telefoni ancora da collaudare: STORAGE_UPLOAD_TEST.md |
 | Telefono | Verificare impaginazione, tastiera, touch, foto e notifiche su Android/iPhone effettivi | Codice adattato; test fisici mancanti |
 
 ## Ordine di completamento
