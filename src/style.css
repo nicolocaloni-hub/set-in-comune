@@ -184,3 +184,14 @@ dialog>h2{clear:both;padding-right:0}
 .password-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;border-radius:9px;color:var(--muted)}
 .password-toggle:hover{background:#eff6f3;color:var(--green)}
 .password-toggle:focus-visible{outline:2px solid var(--green);outline-offset:0}
+
+/* Distinct email actions and a clear visitor boundary. */
+.auth-tabs{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:14px;margin:12px 0 24px}
+.auth-tabs button{flex:1;min-height:44px;padding:10px;border-radius:10px;font-weight:700;color:var(--muted)}
+.auth-tabs button.selected{background:#e4f4ee;color:var(--green)}
+.auth-choices{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.guest-access{padding:20px;border:1px solid #d7e8e2;border-radius:16px;background:#f7fbf9;margin:12px 0 24px}
+.guest-access h3{margin:0 0 8px}.guest-access p{font-size:14px;margin-bottom:0;color:var(--muted)}
+.google-auth{width:100%;gap:12px;margin-bottom:10px}
+.auth-divider{text-align:center;color:var(--muted);font-size:13px;margin:18px 0}
+@media(max-width:480px){.auth-choices .btn{flex:1;min-width:100px}.guest-access{padding:17px}}
