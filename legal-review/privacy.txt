@@ -12,13 +12,17 @@ Quali dati usa questa versione
 
 Gli account usano email e credenziali tramite Supabase Auth, nome visibile, quartiere, foto e bio facoltative, annunci, richieste, messaggi, recensioni, riscontri e segnalazioni. Sono trattati anche date delle operazioni e dati tecnici di sicurezza.
 
+Da dove arrivano i dati
+
+I dati arrivano da ciò che inserisci, dalle controparti nelle richieste e nelle chat, dagli autori di recensioni e segnalazioni e dalle operazioni tecniche del servizio. Una recensione o segnalazione è una dichiarazione del suo autore, non un fatto verificato automaticamente.
+
 Scopi e visibilità
 
 Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La gestione degli abusi richiede una valutazione del legittimo interesse; possono applicarsi obblighi legali. Non usiamo pubblicità personalizzata o email marketing.
 
 Basi del trattamento e dati necessari
 
-Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. La prevenzione degli abusi e la tutela di diritti possono basarsi sul legittimo interesse, da bilanciare e documentare, e su obblighi applicabili. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
+Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. Per sicurezza e gestione degli abusi gli interessi perseguiti sono impedire accessi automatizzati, frodi, molestie e uso illecito della piattaforma e tutelare i diritti delle persone coinvolte. La base proposta è il legittimo interesse, con accessi limitati, verifica umana delle segnalazioni e valutazione documentata prima dell’apertura; gli obblighi legali si applicano alle operazioni che effettivamente li richiedono. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
 
 Fornitori: cosa è attivo
 
@@ -28,9 +32,9 @@ Fornitori: cosa è attivo
 
 • Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth. Non invia email per messaggi, noleggi o marketing.
 
-• Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. I messaggi inviati all’assistenza sono trattati anche tramite questi fornitori, separatamente dalla chat dell’app; non inviare documenti o dati sensibili non necessari.
+• Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Questo vale anche se il sito è in demo: scrivere un’email invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Questo aspetto resta da risolvere prima degli utenti reali. Non inviare documenti o dati sensibili non necessari.
 
-• Cloudflare Turnstile: verifica antiabuso nei moduli di registrazione, accesso, recupero password e conferma cancellazione. Il browser contatta Cloudflare e trasmette dati tecnici; il token è validato da Supabase e non conservato dall’app.
+• Cloudflare Turnstile: verifica antiabuso nei moduli di registrazione, accesso, recupero password e conferma cancellazione. Il browser comunica a Cloudflare segnali tecnici come IP, caratteristiche della connessione e del browser, Site Key e origine. Cloudflare dichiara di agire da responsabile per proteggere il sito e da titolare autonomo per migliorare il rilevamento dei bot. Il token è verificato da Supabase e non conservato dall’app.
 
 • Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
 
@@ -39,6 +43,10 @@ La verifica degli accordi, dei subfornitori, dei trasferimenti e dei cicli di ba
 Destinatari e trasferimenti
 
 Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di consegna sono riservate alle controparti. Il gestore e gli eventuali incaricati autorizzati accedono solo per le finalità necessarie. I fornitori tecnici e i loro subfornitori possono trattare i dati nei limiti dei rispettivi ruoli e accordi. Eventuali richieste legittime delle autorità sono valutate nei limiti applicabili. Prima dell’apertura vanno completati il registro dei fornitori, le garanzie per i trasferimenti fuori SEE e i tempi di log e copie: questa bozza non li considera già verificati.
+
+Documenti dei fornitori e garanzie
+
+Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Questi collegamenti non attestano da soli la copertura dell’account o l’approvazione del servizio; le verifiche ancora aperte restano indicate in questa informativa.
 
 Intelligenza artificiale
 
@@ -82,6 +90,8 @@ Ricevute di accettazione delle condizioni | Durante l’account; eliminate con l
 
 Notifiche lette e log operativi dell’app | Proposta: 90 giorni; i log dei fornitori seguono condizioni separate | Nessun contenuto dei messaggi nei log. Cancellazione periodica da predisporre e verificare; non è ancora attiva. |
 
+Assistenza ricevuta via email | Proposta: 12 mesi dalla chiusura della pratica, salvo un motivo specifico documentato | Revisione manuale di posta ricevuta, inviata e allegati; eliminare le copie non necessarie anche dalla casella di assistenza. Le copie dei fornitori seguono scadenze proprie. Nessuna pulizia automatica della posta è attiva. |
+
 Email e log Resend | Secondo il fornitore: 30 giorni; backup 7 giorni; dati residui entro 90 giorni dalla cessazione | Riscontro pubblico del 1 novembre 2026. La scelta della regione di invio non sposta la conservazione negli USA. |
 
 Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | Prima dell’apertura registrare le scadenze verificate. Nessuna promessa di cancellazione istantanea da copie o log; Supabase Free non include backup automatici gestiti. |
@@ -92,7 +102,7 @@ L’accettazione delle condizioni e la dichiarazione di essere un privato maggio
 
 I tuoi diritti e i controlli disponibili
 
-Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali. Il termine di riscontro è un mese, salvo le proroghe ammesse.
+Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali (https://www.garanteprivacy.it/). Il termine di riscontro è un mese, salvo le proroghe ammesse.
 
 Da I tuoi dati puoi esportare i record disponibili e richiedere la cancellazione. La procedura automatica verifica la password e gestisce gli account senza noleggi, conversazioni, segnalazioni o ruoli operatore. Gli altri casi passano al gestore con motivo visibile. La richiesta non equivale a una cancellazione conclusa; eventuali dati conservati per obblighi o controversie devono essere spiegati.
 

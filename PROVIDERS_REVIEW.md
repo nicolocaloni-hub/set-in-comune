@@ -1,35 +1,49 @@
-# Fornitori e trasferimenti · riscontro pubblico al 1 novembre 2026
+# Fornitori e trasferimenti · revisione del 2 novembre 2026
 
-Scelta del proprietario: Vercel Hobby e Supabase Free; nessun upgrade o cambio hosting. Questa scelta non viene confusa con un accordo contrattuale non verificato. Nessuna sottoscrizione, accettazione di nuovi contratti o modifica di impostazioni è stata eseguita in questa preparazione.
+Ambito effettivo: sito statico Vercel; progetto Supabase dedicato `srjdysdhxnafjrutufmk` a Francoforte; Resend per sole conferma email e recupero; assistenza IONOS inoltrata a `assistenza.rtaf@gmail.com`; Turnstile predisposto ma non richiesto da Auth; push facoltative da provare. La demo non usa il backend per i contenuti locali. Gli accordi esistenti possono incorporare un DPA: non si richiede automaticamente una nuova firma o un acquisto.
 
-| Fornitore | Uso effettivo o previsto | Riscontro | Cosa chiudere prima dell’apertura |
-|---|---|---|---|
-| Supabase | Auth, database, foto e funzioni server nel progetto dedicato di Francoforte | Il DPA si incorpora nell’accordo del cliente; è stata letta la lista subfornitori del 12 ottobre 2026. La regione del database non esclude attività e subfornitori fuori SEE. | Ricondurre account/accordo al titolare; registrare servizi utilizzati, garanzie dei trasferimenti e procedure di cancellazione; verificare i tempi di log del piano effettivo. |
-| Vercel | Distribuzione statica del frontend e dati tecnici delle richieste; il browser accede direttamente a Supabase per i dati applicativi | Hobby è il piano verificato e scelto. Il DPA pubblico copre Pro/Enterprise per i trattamenti da responsabile; ammissibilità specifica e ruolo sul traffico tecnico non sono stati confermati da Vercel. | Qualificare e documentare copertura/ruoli reali e idoneità del modello su Hobby. Non segnare providersReviewed=true solo perché il proprietario ha scelto il piano. Nessun ordine di upgrade. |
-| Resend | SMTP delle sole email di conferma e recupero | DPA incorporato all’iscrizione per tutti i piani secondo la pagina GDPR. I dati email sono conservati negli USA anche con invio da regione UE; sono indicate SCC e DPF. Per Free sono indicati 30 giorni per email/log, backup 7 giorni e dati residui entro 90 giorni dalla cessazione. | Conservare il riscontro dell’accordo dell’account effettivo e riesaminare lista subfornitori e funzioni utilizzate. Non inviare chat o esportazioni utenti per assistenza AI. La regione SMTP non viene presentata come residenza UE dei dati. |
-| IONOS | Dominio e inoltro del contatto assistenza | Configurazione dell’inoltro fornita dal proprietario; non è il servizio SMTP per l’Auth dell’app. | Verificare contratto esatto per dominio/inoltro, ruolo, subfornitori e tempi tecnici. Non dedurre la copertura dalla sola privacy policy generale. |
-| Google/Gmail | Casella che riceve l’inoltro e risposte manuali del gestore | Configurazione dichiarata dal proprietario; la privacy policy Google descrive anche il trattamento dei contenuti email. | Verificare tipo di account e termini applicabili: non attribuire automaticamente a Gmail personale gli accordi di Google Workspace. Definire accessi e cancellazione delle pratiche; nessun abbonamento Workspace attivato. |
-| Servizi push dei browser | Consegna facoltativa senza testo della chat | Destinatario tecnico dipende da browser/sistema; non esiste un unico provider da inventare. | Provare i dispositivi, elencare servizi effettivi e revoca; nessuna consegna reale dichiarata da test simulati. |
-| Cloudflare Turnstile | Widget creato dal proprietario; Site Key pubblica configurata per produzione, client e worker integrati | La demo non carica il provider; Supabase Auth non richiede ancora il token. L’informativa descrive il funzionamento predisposto per gli account reali. | Secret Key soltanto nel pannello Supabase, poi prova di widget/Auth e verifica dei trattamenti/accordi prima dell’apertura. Nessuna chiave privata nel repository o in Vercel. |
+## Esito per fornitore
 
-## Evidenze e limiti
+| Fornitore | Verifica documentale completata | Stato e riscontro ancora necessario |
+|---|---|---|
+| Supabase | DPA v1 del 1 agosto 2026 incorporato nei termini; SCC per i trasferimenti pertinenti. Lista subfornitori aggiornata al 12 ottobre 2026 ricontrollata. Non tutti i trattamenti sono limitati alla regione del database. | Progetto e organizzazione del gestore verificati nei controlli tecnici, piano Free. Collegare al fascicolo del gestore gli estremi non segreti dell'account/accordo esistente; non presumere che la creazione del progetto richieda un nuovo DPA da firmare. I log e il recupero del piano effettivo restano separati. |
+| Resend | DPA standard eseguito all'iscrizione su ogni piano; copia dell'account scaricabile da Documents. Conservazione dichiarata: email/log 30 giorni, backup 7 giorni, residui entro 90 giorni dalla cessazione. Conservazione negli USA anche se l'invio usa una regione UE; SCC e meccanismo DPF distinti. | SMTP e prove conferma/reset già verificati. Archiviare il riscontro non segreto dell'account e l'accordo già esistente; non richiedere firme aggiuntive dedotte. Non usare AI Editor/Support con contenuti degli utenti. |
+| Cloudflare Turnstile | DPA v6.4 del 3 aprile 2026 nell'accordo principale; garanzie SCC per i trasferimenti pertinenti. La privacy Turnstile distingue il servizio svolto per il sito dal miglioramento del rilevamento dei bot, per cui Cloudflare indica un ruolo autonomo. | Widget creato dal proprietario e Site Key configurata. La demo non lo carica. Collegare gli estremi dell'account al gestore; completare Secret Key esclusivamente in Supabase e prova reale nell'ordine previsto. Nessuna durata fissa dei segnali è stata inventata. |
+| IONOS | Centro assistenza: dal 19 luglio 2022 le disposizioni privacy sono incluse nei nuovi contratti; condizioni generali art. 11.1 e DPA specifico consultati. Quando agisce da responsabile si applicano le disposizioni collegate. | Non serve chiedere automaticamente una nuova firma. Verificare data/prodotto del contratto che comprende dominio e inoltro: il DPA elenca anche Mail Basic/Business, ma l'inoltro isolato non viene equiparato senza riscontro a una casella. Nessuna prova di consegna dell'assistenza eseguita. |
+| Google/Gmail consumer | Google dichiara espressamente che per Gmail consumer non offre un DPA e non opera come responsabile; valgono termini e privacy consumer. Workspace è un prodotto con termini distinti. Un indirizzo @gmail.com da solo non dimostra una sottoscrizione Workspace. | **Questione concreta ancora aperta**, non un documento soltanto da scaricare. Non presentare la casella gratuita come responsabile contrattualizzato. Valutare il ruolo e la comunicazione dei dati oppure usare una casella coperta da accordo adeguato. Prima di spendere, verificare se una vera casella è già inclusa nel contratto IONOS. Nessun inoltro, messaggio o account è stato modificato. |
+| Vercel Hobby | Fair Use: uso personale non commerciale; fra gli esempi commerciali compare la promozione di prodotti/servizi a pagamento. DPA: ruolo da responsabile previsto per Pro/Enterprise; dati di contatto e dati generati dal servizio hanno disciplina da titolare nei casi indicati. | **Idoneità del lancio ancora da chiarire.** Dato che gli annunci presentano noleggi a pagamento, l'assenza di incasso/commissione non dimostra la compatibilità con Hobby. Questa è una valutazione prudente sul caso, non una risposta ricevuta da Vercel. Non dedurre che tutti i dati tecnici richiedano il DPA Pro, né che Hobby copra tutti i trattamenti. Serve riscontro specifico oppure una scelta gratuita compatibile autorizzata; nessun upgrade o cambio hosting. |
+| Servizi push dei browser | L'app prevede payload generici senza testo della chat e revoca. Il fornitore dipende dal dispositivo; non si assegna un nome unico per tutti. | Test reali, flusso di revoca e destinatari tecnici ancora da documentare. Nessuna consegna dichiarata da test simulati. |
 
-Le fonti pubbliche non dimostrano da sole l’intestazione o la configurazione di un account specifico. Non servono password, service key o altri segreti per compilare questo registro. Non è stata scaricata posta estranea al test Auth già autorizzato.
+## I tre nodi da risolvere
 
-Le funzioni AI e i controlli di sicurezza dei fornitori vanno distinti dalle funzioni dell’app; non promettere l’assenza generale di strumenti automatizzati dei fornitori. La chat dell’app non è un chatbot e non viene inviata dall’app a un modello per generare risposte.
+1. **Assistenza:** verificare il prodotto IONOS già acquistato e se include una casella effettiva, senza ordinare servizi. Se si sceglie di cambiare destinazione, provarla prima, aggiornare i testi e valutare le copie di posta già esistenti; non cancellare posta per prova.
+2. **Hosting:** richiedere un riscontro sul modello preciso a Vercel o decidere una soluzione gratuita compatibile. Il proprietario ha già scelto di non pagare: questa revisione non riapre quella decisione né avvia migrazioni.
+3. **Dati del gestore e criteri operativi:** completare il recapito pertinente e la valutazione della conservazione. Non ricavare l'indirizzo di casa dalla posta, dai contratti o da altre fonti per pubblicarlo senza istruzione specifica.
 
-Per l’assistenza distinguere messaggi email da chat applicativa. Eliminare copie non necessarie delle pratiche anche dalla casella del gestore, secondo la procedura approvata, senza assumere che cancellare l’account Supabase elimini automaticamente la posta Gmail.
+## Come controllare IONOS senza acquisti
 
-## Fonti ufficiali consultate
+Dal proprio account: Menu → Il mio account → Contratti & abbonamenti → contratto di `rent-to-a-friend.it`. Nelle schede Dettagli e Servizi del contratto verificare data, prodotto e caselle incluse. Basta comunicare il nome del prodotto e se è disponibile una casella già inclusa: non servono password, numeri cliente, indirizzi privati o dati di pagamento. Non selezionare Ordina, upgrade o nuovi abbonamenti.
 
-- https://supabase.com/legal/customer-resources/data-processing-addendum
-- https://supabase.com/legal/subprocessor-list/October-12-2026.pdf
-- https://supabase.com/pricing
-- https://vercel.com/legal/dpa
-- https://vercel.com/docs/limits/fair-use-guidelines
-- https://resend.com/legal/dpa
-- https://resend.com/security/gdpr
-- https://resend.com/legal/subprocessors
-- https://policies.google.com/privacy?hl=it
+## Limiti ed evidenze
 
-Il percorso IONOS ipotizzato per l’informativa non è risultato accessibile in questa verifica; contratto e condizioni dell’inoltro restano da reperire dalla documentazione dell’account. Non viene inventato un esito positivo.
+Una ricerca mirata nella casella Gmail collegata al dominio e ai mittenti IONOS non ha trovato riscontri contrattuali. Non sono state lette email estranee, inviate richieste ai fornitori, sottoscritte condizioni o acquistati servizi. Le configurazioni dichiarate dal proprietario restano distinte dagli account verificabili tramite collegamenti tecnici.
+
+La lista subfornitori non dimostra che ogni soggetto riceva ogni dato. L'app non invia chat o foto a modelli generativi; i controlli automatizzati di sicurezza dei fornitori sono distinti da questa dichiarazione. La registrazione in un piano gratuito non elimina obblighi o vincoli contrattuali, ma non implica automaticamente che sia obbligatorio pagare.
+
+`providersReviewed=false` resta motivato dai nodi sopra. Supabase/Resend/Cloudflare hanno documentazione standard individuata: non sono tre nuovi contratti da far acquistare al gestore. Nessuna falsa attestazione di conformità o apertura al pubblico.
+
+## Fonti ufficiali ricontrollate
+
+- Supabase DPA: https://supabase.com/legal/customer-resources/data-processing-addendum
+- Supabase subfornitori: https://supabase.com/legal/customer-resources/subprocessor-list
+- Resend GDPR, durata, accordo e ruoli: https://resend.com/security/gdpr
+- Resend DPA: https://resend.com/legal/dpa
+- Resend subfornitori: https://resend.com/legal/subprocessors
+- Cloudflare DPA: https://www.cloudflare.com/cloudflare-customer-dpa/
+- Cloudflare privacy Turnstile: https://www.cloudflare.com/turnstile-privacy-policy/
+- IONOS accordi: https://www.ionos.it/aiuto/protezione-dei-dati/informazioni-generali-sullordinanza-di-base-sulla-protezione-dei-dati-oderr/contratto-per-il-trattamento-dei-dati/
+- IONOS condizioni generali: https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/
+- IONOS informazioni contratto: https://www.ionos.it/aiuto/mein-konto/rund-um-meinen-vertrag/informazioni-contrattuali-e-condizioni-generali-per-i-contratti-ionos/
+- Google Gmail consumer: https://support.google.com/policies/answer/9581826?hl=it
+- Vercel DPA: https://vercel.com/legal/dpa
+- Vercel Fair Use: https://vercel.com/docs/limits/fair-use-guidelines
