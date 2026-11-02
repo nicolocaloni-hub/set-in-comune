@@ -1,5 +1,7 @@
 import rawConfig from './config.js';
 import {AUTH_REDIRECT_URL} from './auth-config.js';
+import captchaConfig from './captcha-config.js';
+import {captchaPayload} from './captcha.js';
 import {validatePublicConfig,validEmail,validPassword,resourceId} from './security.js';
 const config=validatePublicConfig(rawConfig.url,rawConfig.key);
 import {sampleListings,sampleProfiles} from './data.js';
@@ -89,9 +91,9 @@ export const api={
     // Close the recovery session as well: a later change must authenticate again.
     await api.logout().catch(()=>{});
   },
-  async login(email,password){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password)}));},
-  async signup(email,password,display_name){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
-  async reset(email){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params});},
+  async login(email,password,captchaToken){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password),...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))}));},
+  async signup(email,password,display_name,captchaToken){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
+  async reset(email,captchaToken){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});},
   async logout(){if(!isDemo&&session){try{await request('/auth/v1/logout',{method:'POST'});}finally{storeSession(null);localStorage.removeItem(PKCE_KEY);}}},
   async legalStatus(){requireUser();return isDemo?{available:false,accepted:false}:rpc('my_legal_status',{});},
   async legalReceipts(){requireUser();return isDemo?[]:rpc('my_legal_receipts',{});},
@@ -144,7 +146,7 @@ export const api={
   async upload(file,privateBooking=null,avatar=false){requireUser();if(file.type!=='image/jpeg'||file.size>PHOTO_MAX_BYTES)throw new Error('Prepara le foto prima del caricamento (JPG, massimo 500 KB).');if(isDemo){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Impossibile leggere la foto.'));r.readAsDataURL(file);});}const bucket=avatar?'profile-photos':privateBooking?'handoff-photos':'listing-photos';const path=api.user().id+'/'+(privateBooking?privateBooking+'/':'')+uuid()+'.jpg';await request('/storage/v1/object/'+bucket+'/'+path,{method:'POST',headers:{'Content-Type':file.type,'Cache-Control':'max-age=3600'},body:file});return privateBooking?path:config.url+'/storage/v1/object/public/'+bucket+'/'+path;},
   async removeUploads(refs,privateBooking=null,avatar=false){if(isDemo||!refs.length)return;requireUser();const bucket=avatar?'profile-photos':privateBooking?'handoff-photos':'listing-photos';const prefix=config.url+'/storage/v1/object/public/'+bucket+'/';const paths=refs.map(ref=>privateBooking?ref:ref.startsWith(prefix)?ref.slice(prefix.length):'');if(paths.some(path=>!path.startsWith(api.user().id+'/')||path.includes('..')))throw new Error('Foto non appartenente al tuo account.');await request('/storage/v1/object/'+bucket,{method:'DELETE',body:JSON.stringify({prefixes:paths})});},
   async photoUrl(path){if(isDemo)return path;if(typeof path!=='string'||!/^([a-f0-9-]{36}\/){2}[a-f0-9-]{36}\.jpg$/.test(path))throw new Error('Foto non disponibile.');const r=await request('/storage/v1/object/sign/handoff-photos/'+path,{method:'POST',body:JSON.stringify({expiresIn:300})});if(typeof r.signedURL!=='string'||!r.signedURL.startsWith('/object/sign/handoff-photos/'))throw new Error('Foto non disponibile.');return config.url+'/storage/v1'+r.signedURL;},
-  async eraseAccount(password){requireUser();if(isDemo){await api.requestErasure();return {status:'review',demo:true};}const result=await request('/functions/v1/account-erasure',{method:'POST',body:JSON.stringify({password:validPassword(password),confirmation:'ELIMINA'})});if(result.status==='queued'){storeSession(null);localStorage.removeItem(PKCE_KEY);localStorage.removeItem('sic-favorites');}return result;},
+  async eraseAccount(password,captchaToken){requireUser();if(isDemo){await api.requestErasure();return {status:'review',demo:true};}const result=await request('/functions/v1/account-erasure',{method:'POST',body:JSON.stringify({password:validPassword(password),confirmation:'ELIMINA',...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))})});if(result.status==='queued'){storeSession(null);localStorage.removeItem(PKCE_KEY);localStorage.removeItem('sic-favorites');}return result;},
   async privacyRequests(){requireUser();return isDemo?structuredClone(db.privacyRequests):rpc('my_privacy_requests',{});},
   async requestErasure(){requireUser();if(!isDemo)return rpc('request_erasure',{});let r=db.privacyRequests.find(r=>['open','reviewing'].includes(r.status));if(!r){r={id:uuid(),status:'open',created_at:new Date().toISOString(),response:''};db.privacyRequests.push(r);save();}return r.id;},
   async erasureQueue(){requireUser();if(isDemo)return [];return rpc('account_erasure_queue',{});},

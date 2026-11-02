@@ -1,4 +1,4 @@
-TRASPARENZA · AGGIORNATA IL 1 NOVEMBRE 2026
+TRASPARENZA · AGGIORNATA IL 2 NOVEMBRE 2026
 
 I tuoi dati, spiegati.
 
@@ -29,6 +29,8 @@ Fornitori: cosa è attivo
 • Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth. Non invia email per messaggi, noleggi o marketing.
 
 • Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. I messaggi inviati all’assistenza sono trattati anche tramite questi fornitori, separatamente dalla chat dell’app; non inviare documenti o dati sensibili non necessari.
+
+• Cloudflare Turnstile: verifica antiabuso nei moduli di registrazione, accesso, recupero password e conferma cancellazione. Il browser contatta Cloudflare e trasmette dati tecnici; il token è validato da Supabase e non conservato dall’app.
 
 • Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
 
