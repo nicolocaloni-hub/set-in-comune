@@ -1,3 +1,17 @@
+# Attivazione dei documenti e delle ricevute
+
+## Rilascio autorizzato · 2 novembre 2026
+
+Il gestore ha richiesto esplicitamente e definitivamente: (1) attivazione dei documenti nel database con ricevute di accettazione, (2) collegamento del dominio pubblico al database reale. La versione autorizzata è `2026-11-02-7`. Nessuna ricevuta viene inserita per conto degli utenti: ogni persona deve leggere e scegliere le tre caselle nel proprio account confermato.
+
+Il controllo di build ora verifica l’approvazione esplicita della pubblicazione, l’identità e il contatto del titolare, i criteri manuali di conservazione e l’eventuale recapito richiesto. L’autorizzazione al rilascio resta distinta dai vecchi flag che mescolavano l’approvazione editoriale con tutte le evidenze di audit. Le voci non verificate dei fornitori e la qualificazione del recapito non sono convertite in attestazioni positive; nessun indirizzo viene inventato. I criteri pubblici non promettono una pulizia automatica generale.
+
+Le istruzioni storiche sotto documentano la preparazione precedente. Questa autorizzazione supera il precedente blocco generico sulla pubblicazione; restano attivi conferma email, RLS, controlli server sulle nuove attività, isolamento delle chat, limiti di frequenza e accettazione personale della versione corrente. Google e Turnstile restano rimandati per scelta del gestore. Nessun piano viene acquistato.
+
+Il collaudo completo fra due controparti reali rimane un passaggio successivo, distinto dall’attivazione di documenti e configurazione. Login, modifica profilo ed esportazione Android già provati non equivalgono a quel collaudo.
+
+## Storico della preparazione
+
 # Attivazione dei documenti e delle ricevute RC2
 
 ## Aggiornamento operativo · 2 novembre 2026

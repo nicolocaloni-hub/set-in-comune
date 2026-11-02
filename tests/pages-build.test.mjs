@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,cp,readFile,readdir,rm} from 'node:fs/promises';
+import {mkdtemp,cp,readFile,readdir,rm,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -39,9 +39,12 @@ test('Pages demo preserves response security, canonical auth and the public-only
  for(const [f,bytes] of before)if(f!=='hosting-config.js')assert.deepEqual(await readFile(join(dir,'dist',f)),bytes,f);
  assert.match(await readFile(join(dir,'dist/hosting-config.js'),'utf8'),/'Vercel'/);
 });
-test('Pages preparation cannot bypass the real-account privacy gate',async t=>{
+test('Pages preparation cannot publish a copy without owner approval',async t=>{
  const dir=await fixture(t);
- const result=spawnSync(process.execPath,[script],{cwd:dir,env:{...process.env,PUBLIC_SUPABASE_URL:'https://example.supabase.co',PUBLIC_SUPABASE_ANON_KEY:'sb_publishable_'+'a'.repeat(32),PUBLIC_TURNSTILE_SITE_KEY:'0x4AAAAAAFwUSi7qKbh91gvX'},encoding:'utf8'});
+ await cp(new URL('../scripts',import.meta.url),join(dir,'scripts'),{recursive:true});
+ await writeFile(join(dir,'package.json'),'{"type":"module"}');
+ const privacy=join(dir,'src/privacy.js');await writeFile(privacy,(await readFile(privacy,'utf8'))+'\nprivacySettings.publicationApproved=false;\n');
+ const result=spawnSync(process.execPath,[join(dir,'scripts/build-pages.mjs')],{cwd:dir,env:{...process.env,PUBLIC_SUPABASE_URL:'https://example.supabase.co',PUBLIC_SUPABASE_ANON_KEY:'sb_publishable_'+'a'.repeat(32),PUBLIC_TURNSTILE_SITE_KEY:'0x4AAAAAAFwUSi7qKbh91gvX'},encoding:'utf8'});
  assert.notEqual(result.status,0);
  assert.match(result.stderr,/Prima di collegare utenti reali/);
  await assert.rejects(readdir(join(dir,'dist')),{code:'ENOENT'});

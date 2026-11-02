@@ -1,0 +1,14 @@
+{
+  "version": "2026-11-02-7",
+  "project_ref": "srjdysdhxnafjrutufmk",
+  "active": true,
+  "published_at": "2026-11-02T22:52:27.901663Z",
+  "terms_hash": "62126a2f6e7d9692bd624b32908b63ea42311f988fb8e16dbe43b76b640ef301",
+  "privacy_hash": "f397038e92d6ebb2aa98de92624dd57081b5886b0921eac4821a3ae195d06e55",
+  "receipts_at_activation": 0,
+  "owner_authorized_steps": [
+    1,
+    2
+  ],
+  "individual_acceptance_required": true
+}

@@ -14,7 +14,7 @@ const publishing=process.argv.includes('--publish-sql');
 if(publishing){assertPrivacyReady();if(!legalRelease.approved)throw new Error('I documenti sono una proposta: pubblicazione non abilitata.');}
 const terms_text=documentText(termsMarkup(false)),privacy_text=documentText(privacyMarkup(false));
 const hash=text=>createHash('sha256').update(text,'utf8').digest('hex');
-const release={version:legalRelease.version,status:publishing?'reviewed-candidate':'proposal-not-published',terms_hash:hash(terms_text),privacy_hash:hash(privacy_text),terms_text,privacy_text};
+const release={version:legalRelease.version,status:publishing?'approved-for-publication':legalRelease.approved?'approved-snapshot':'proposal-not-published',terms_hash:hash(terms_text),privacy_hash:hash(privacy_text),terms_text,privacy_text};
 await mkdir('legal-review',{recursive:true});
 await writeFile('legal-review/release-candidate.json',JSON.stringify(release,null,2)+'\n');
 await writeFile('legal-review/condizioni.txt',terms_text);await writeFile('legal-review/privacy.txt',privacy_text);

@@ -1,3 +1,15 @@
+# Produzione collegata · rilascio 2 novembre 2026
+
+Attivazione definitiva dei punti 1 e 2 richiesta dal gestore. La versione `2026-11-02-7` è pubblicata e attiva nel database dedicato dal 2 novembre 2026 alle 22:52:27 UTC. Le impronte dei testi ricalcolate dal database corrispondono agli snapshot locali; zero ricevute al momento dell’attivazione. Riferimento verificabile: `legal-review/activation.json`.
+
+Configurazione Vercel di produzione collegata al progetto `srjdysdhxnafjrutufmk` tramite URL e sola chiave publishable. Nessuna service key nel frontend. La protezione delle preview rimane invariata; il dominio personalizzato resta pubblico. Email/password disponibili con conferma email obbligatoria, nessun accesso anonimo autenticato e Google disattivato. Turnstile rimandato; la vecchia chiave pubblica da sola non lo abilita.
+
+Verifica locale: 143 test superati, build connected riuscito, scansione credenziali senza rilievi. La scelta personale delle condizioni resta richiesta dal server prima delle nuove attività; nessuna accettazione viene creata per conto del proprietario. Nessun account, annuncio o noleggio fittizio è creato da questo rilascio.
+
+Il passaggio 3 (registrazione/conferma/recupero email, noleggio completo tra due account reali e cancellazione del solo account di prova) resta distinto e non viene dichiarato superato. Le scelte privacy e di pubblicazione sono documentate in `PRIVACY_CLOSEOUT.md` e `LEGAL_RELEASE.md`; le evidenze non attestate non sono convertite in verifiche positive.
+
+## Storico prima dell’attivazione
+
 # Attivazione · stato effettivo al 2 novembre 2026
 
 ## Ultima prova fisica di upload

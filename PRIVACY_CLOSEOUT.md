@@ -63,3 +63,8 @@ Su richiesta del gestore, privacy e condizioni pubbliche descrivono il servizio 
 Accesso Google rimandato dal gestore: nessuna attivazione OAuth e nessuna descrizione di Google Sign-In come funzione disponibile. IONOS/Gmail resta il canale di assistenza già scelto; non viene cambiato o dichiarato coperto da un DPA consumer. I criteri di conservazione pubblici distinguono le revisioni manuali dalla pulizia automatica generale, che non è attiva.
 
 L’aggiornamento dei testi pubblici non crea ricevute di accettazione né pubblica una versione attiva nel database. Verifica di rilascio: il dominio pubblico restituisce ancora una configurazione backend vuota; il database ha zero versioni legali attive. Login, profilo ed esportazione Android del proprietario sono acquisiti; registrazione, recupero email e scambio tra due account reali non sono attestati dalla sola demo. I guard del rilascio restano invariati.
+
+
+## Autorizzazione definitiva ai punti 1 e 2 · 2 novembre 2026
+
+Il gestore ha autorizzato la pubblicazione della versione `2026-11-02-7` e il collegamento della produzione al backend dedicato. L’approvazione di pubblicazione viene registrata come tale, separata dalle evidenze tecniche e contrattuali non attestate. I flag storici di verifica fornitori e qualificazione del recapito non vengono impostati a vero per sbloccare un build. Il gate di pubblicazione verifica l’approvazione esplicita e i dati effettivamente pubblicati; nessuna ricevuta è creata senza la scelta autenticata del titolare dell’account. Nessuna cancellazione, nuova identità, prova di email o spesa è autorizzata implicitamente da questo aggiornamento.

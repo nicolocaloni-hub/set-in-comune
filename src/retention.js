@@ -1,5 +1,6 @@
-// Proposed operating periods, not statutory limits. No deletion job is activated here.
-export const retentionPolicy={version:'proposal-2026-11-02-3',approved:false,rules:[
+// Owner-approved manual retention criteria, not statutory limits. No deletion job is activated here.
+// The internal proposal/evidence fields remain recorded; public overrides describe actual manual limits.
+export const retentionPolicy={version:'manual-2026-11-02',approved:true,rules:[
  {category:'Account e profilo',period:'Finché l’account resta aperto; alla chiusura si eliminano i dati non più necessari',handling:'La richiesta di cancellazione avvia la verifica dei rapporti condivisi. Nessuna conservazione indefinita del profilo pubblico dopo la chiusura.',state:'proposal'},
  {category:'Foto sostituite o rimosse',period:'Dopo il salvataggio della modifica',handling:'Eliminazione del file non più utilizzato tramite Storage; ripresa manuale in caso di errore.',state:'implemented'},
  {category:'Upload interrotti o mai utilizzati',period:'Proposta: 24 ore, verificando che il file non sia associato a contenuti',handling:'Pulizia periodica da attivare prima di dichiarare questo termine operativo. La pulizia manuale attuale esclude file più recenti di un’ora.',publicPeriod:'Riesame dei file non associati a contenuti e rimozione quando non più necessari',publicHandling:'Pulizia manuale da I tuoi dati; i file più recenti di un’ora sono esclusi per evitare di interrompere un caricamento. Non è garantita una rimozione automatica entro 24 ore.',state:'proposal'},

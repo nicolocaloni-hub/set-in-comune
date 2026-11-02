@@ -4,12 +4,13 @@ import {spawnSync} from 'node:child_process';
 import {cookiesMarkup} from '../src/browser-storage.js';
 import {retentionPolicy} from '../src/retention.js';
 import {privacyMarkup,termsMarkup,assertPrivacyReady,privacySettings} from '../src/privacy.js';
-test('real-account builds fail closed until controller and retention are reviewed',()=>{
- assert.throws(()=>assertPrivacyReady(),/titolare/);
- assert.throws(()=>assertPrivacyReady({...privacySettings,reviewed:true,controller:'Un gestore'}),/conservazione/);
- retentionPolicy.approved=true;try{assert.doesNotThrow(()=>assertPrivacyReady({reviewed:true,controller:'Gestore di prova',controllerAddress:'Recapito professionale di prova',contactReviewComplete:true,postalAddressRequired:true,providersReviewed:true,contact:'privacy@example.org',retention:'Regole approvate'}));}finally{retentionPolicy.approved=false;}
- const result=spawnSync(process.execPath,['scripts/build.mjs'],{env:{...process.env,PUBLIC_SUPABASE_URL:'https://example.supabase.co',PUBLIC_SUPABASE_ANON_KEY:'sb_publishable_'+'a'.repeat(32)},encoding:'utf8'});
- assert.notEqual(result.status,0);assert.match(result.stderr,/informativa privacy/);
+test('production publication requires owner approval, controller, contact and retention criteria',()=>{
+ assert.doesNotThrow(()=>assertPrivacyReady());
+ for(const incomplete of [{publicationApproved:false},{controller:''},{contact:'invalid'},{retention:''},{postalAddressRequired:true,controllerAddress:''}])assert.throws(()=>assertPrivacyReady({...privacySettings,...incomplete}),/informativa privacy/);
+ const approved=retentionPolicy.approved;try{retentionPolicy.approved=false;assert.throws(()=>assertPrivacyReady(),/conservazione/);}finally{retentionPolicy.approved=approved;}
+ assert.doesNotThrow(()=>assertPrivacyReady({...privacySettings,postalAddressRequired:null}));
+ // Owner authorization is distinct from an invented provider review or postal-address ruling.
+ assert.equal(privacySettings.providersReviewed,false);assert.equal(privacySettings.postalAddressRequired,null);
 });
 test('privacy explains demo hosting, real providers, public photos, AI and erasure limits honestly',()=>{
  const html=privacyMarkup(true);for(const text of ['Vercel','Supabase','Resend','EXIF','non è un chatbot AI','non equivale','ambiente dimostrativo','indirizzo IP'])assert.ok(html.includes(text),text);
@@ -50,15 +51,12 @@ test('connected browser-storage disclosure omits local demo data and keeps PKCE 
  for(const text of ['sic-pkce-v1','stesso browser','sic-session-v2','ripristino delle schede','non cancella un account sui server'])assert.ok(connected.includes(text),text);
 });
 
-test('contact review is explicit and does not force publication of a private home address',()=>{
- const approved=retentionPolicy.approved;retentionPolicy.approved=true;
- const complete={...privacySettings,reviewed:true,providersReviewed:true,controller:'Fixture',contactReviewComplete:true,postalAddressRequired:false,controllerAddress:'',retention:'Criteri della fixture'};
- try{
-  assert.doesNotThrow(()=>assertPrivacyReady(complete));
-  assert.throws(()=>assertPrivacyReady({...complete,contactReviewComplete:false}));
-  assert.throws(()=>assertPrivacyReady({...complete,postalAddressRequired:null}));
-  assert.throws(()=>assertPrivacyReady({...complete,postalAddressRequired:true}));
- }finally{retentionPolicy.approved=approved;}
+test('publication approval does not require publishing a private home address or fabricate an assessment',()=>{
+ const complete={...privacySettings,controller:'Fixture',controllerAddress:'',retention:'Criteri della fixture'};
+ assert.doesNotThrow(()=>assertPrivacyReady({...complete,postalAddressRequired:null}));
+ assert.doesNotThrow(()=>assertPrivacyReady({...complete,postalAddressRequired:false}));
+ assert.throws(()=>assertPrivacyReady({...complete,postalAddressRequired:true}));
+ assert.doesNotThrow(()=>assertPrivacyReady({...complete,postalAddressRequired:true,controllerAddress:'Recapito autorizzato della fixture'}));
 });
 
 // Public documents describe the service even while a dedicated test build remains isolated.
@@ -73,5 +71,5 @@ test('public service documents separate browsing, login and signup without claim
  const {readFile}=await import('node:fs/promises');
  const app=await readFile(new URL('../src/app.js',import.meta.url),'utf8');
  assert.ok(app.includes('privacyMarkup(false)'));assert.ok(app.includes('termsMarkup(false)'));
- assert.equal(privacySettings.reviewed,false);assert.equal(retentionPolicy.approved,false);
+ assert.equal(privacySettings.publicationApproved,true);assert.equal(retentionPolicy.approved,true);
 });
