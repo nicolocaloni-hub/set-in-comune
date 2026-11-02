@@ -4,6 +4,27 @@ export const accessoryTags=['Batterie','Caricatore','Custodia','Stativo','Softbo
 export const conditions=['Ottime','Buone','Segni di utilizzo'];
 export const reportReasons=['Comportamento inappropriato','Annuncio sospetto','Informazioni non corrette','Spam','Problema durante il noleggio','Altro'];
 export const handoffItems={equipment:'Ho controllato il funzionamento dell’attrezzatura.',accessories:'Ho verificato tutti gli accessori inclusi.',condition:'Ho annotato condizioni, differenze o danni nelle note.'};
+export function handoffGuidance(stage,owner){
+ if(!['collected','returned','completed'].includes(stage))throw new Error('Passaggio del noleggio non valido.');
+ if(stage==='collected')return owner?{
+  title:'Prima di consegnare l’attrezzatura',
+  message:'Assicurati che attrezzatura e accessori corrispondano all’annuncio e agli accordi. Provate insieme il funzionamento e annotate nelle note eventuali segni, difetti o differenze, aggiungendo foto quando utile, prima che chi noleggia porti via l’attrezzatura.',
+  confirmLabel:'Conferma consegna'
+ }:{
+  title:'Prima di portare via l’attrezzatura',
+  message:'Controlla insieme al proprietario funzionamento, accessori e condizioni rispetto all’annuncio e agli accordi. Segnala al proprietario eventuali problemi prima di portarla via e annotali nelle note, aggiungendo foto quando utile.',
+  confirmLabel:'Conferma ritiro'
+ };
+ return owner?{
+  title:'Prima di confermare il rientro',
+  message:'Controlla insieme a chi ha noleggiato che attrezzatura e accessori siano nelle condizioni registrate al ritiro. Verificate funzionamento, segni e parti mancanti; segnalate e annotate eventuali differenze nelle note, aggiungendo foto quando utile, prima di separarvi.',
+  confirmLabel:stage==='completed'?'Conferma chiusura':'Conferma rientro'
+ }:{
+  title:'Prima di restituire l’attrezzatura',
+  message:'Confronta attrezzatura e accessori con il registro del ritiro e controllateli insieme al proprietario. Segnala eventuali problemi, danni o parti mancanti e annotali nelle note, aggiungendo foto quando utile, prima di separarvi.',
+  confirmLabel:'Conferma restituzione'
+ };
+}
 export function profileCompleteness(profile={}){const items=[['Nome',Boolean(profile.display_name?.trim())],['Quartiere',Boolean(profile.zone)],['Foto profilo',Boolean(profile.avatar_url)],['Bio',Boolean(profile.bio?.trim())]];return {percent:Math.round(items.filter(x=>x[1]).length/items.length*100),missing:items.filter(x=>!x[1]).map(x=>x[0])};}
 export function validateTechnical(data={}){
  const out={};for(const [key,max] of [['brand',40],['model',60]]){out[key]=String(data[key]||'').trim();if(out[key].length>max)throw new Error('Marca o modello troppo lunghi.');}
