@@ -4,6 +4,7 @@ import captchaConfig from './captcha-config.js';
 import {captchaPayload} from './captcha.js';
 import {validatePublicConfig,validEmail,validPassword,resourceId} from './security.js';
 const config=validatePublicConfig(rawConfig.url,rawConfig.key);
+const accountCheck=rawConfig.accountCheck===true;
 import {sampleListings,sampleProfiles} from './data.js';
 import {available,validateRental,nextActions,validateListing} from './domain.js';
 import {validateTechnical,validateReview,validateChecklist,reportReasons} from './marketplace.js';
@@ -19,7 +20,7 @@ db.privacyRequests ||= [];db.notifications ||= [];db.inquiries ||= [];db.reviews
 for(const sample of sampleListings){const existing=db.listings.find(l=>l.id===sample.id);if(existing)for(const key of ['brand','model','lens_mount','light_power_w','equipment_condition','included_tags'])if(existing[key]===undefined)existing[key]=sample[key]??(key==='included_tags'?[]:key==='light_power_w'?null:'');}
 let savedDemo = JSON.stringify(db);
 const save=()=>{const json=JSON.stringify(db);try{localStorage.setItem(DEMO_KEY,json);savedDemo=json;}catch{db=JSON.parse(savedDemo);throw new Error('Spazio della demo esaurito su questo browser. Rimuovi alcune foto dai tuoi annunci o ripristina la demo dal Profilo. Nessun piano a pagamento viene attivato.');}};
-const storeSession=value=>{if(value){value={...value,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}session=value;};
+const storeSession=value=>{if(value){const {provider_token,provider_refresh_token,...appSession}=value;value={...appSession,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}session=value;};
 let refreshPromise;
 let recoverySession=false;
 const safeFetch=(url,options={})=>fetch(url,{...options,mode:'cors',credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',cache:'no-store',signal:AbortSignal.timeout(20000)});
@@ -90,6 +91,20 @@ export const api={
     await request('/auth/v1/user',{method:'PUT',body:JSON.stringify(body)});
     // Close the recovery session as well: a later change must authenticate again.
     await api.logout().catch(()=>{});
+  },
+  async authOptions(){
+    if(isDemo||accountCheck||globalThis.location?.origin!==new URL(AUTH_REDIRECT_URL).origin)return {google:false};
+    const response=await safeFetch(config.url+'/auth/v1/settings',{headers:{apikey:config.key}});
+    if(!response.ok)throw new Error('Metodi di accesso non disponibili.');
+    const settings=await response.json();return {google:settings.external?.google===true};
+  },
+  async googleSignInUrl(){
+    if(!(await api.authOptions()).google)throw new Error('L’accesso Google non è ancora disponibile qui. Usa email e password.');
+    const params=await startPkce('oauth'),url=new URL(config.url+'/auth/v1/authorize');
+    url.searchParams.set('provider','google');url.searchParams.set('redirect_to',AUTH_REDIRECT_URL);
+    url.searchParams.set('code_challenge',params.code_challenge);url.searchParams.set('code_challenge_method',params.code_challenge_method);
+    url.searchParams.set('scopes','openid email profile');url.searchParams.set('prompt','select_account');
+    return url.href;
   },
   async login(email,password,captchaToken){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password),...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))}));},
   async signup(email,password,display_name,captchaToken){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
