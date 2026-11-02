@@ -4,7 +4,7 @@ export const publicAssets=['index.html','app.js','api.js','auth-config.js','host
 // embeds must not silently enter the build. This is a bounded source check,
 // not a general-purpose runtime tracker detector or legal certification.
 export function assertTrackingFree(sources){
- const tracker=/(?:googletagmanager\.com|google-analytics\.com|connect\.facebook\.net|static\.hotjar\.com|clarity\.ms|@vercel\/(?:analytics|speed-insights)|\/_vercel\/(?:insights|speed-insights)\/)|\b(?:gtag|fbq|hj|clarity)\s*\(/i;
+ const tracker=/(?:googletagmanager\.com|google-analytics\.com|googlesyndication\.com|doubleclick\.net|googleadservices\.com|fundingchoicesmessages\.google\.com|connect\.facebook\.net|static\.hotjar\.com|clarity\.ms|@vercel\/(?:analytics|speed-insights)|\/_vercel\/(?:insights|speed-insights)\/)|\b(?:gtag|fbq|hj|clarity)\s*\(|\b(?:adsbygoogle|googletag)\s*(?:\.|\[)/i;
  for(const {name,text} of sources){
   const externalEmbed=/<(?:script|iframe)\b[^>]*\bsrc\s*=\s*["']\s*(?:https?:)?\/\//i;
   const externalImport=/\b(?:import|export)\s+(?:[^;\n]*?\sfrom\s*)?["'](?:https?:)?\/\//i;
