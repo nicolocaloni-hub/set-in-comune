@@ -2,10 +2,10 @@
 
 ## Aggiornamento operativo · 2 novembre 2026
 
-Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute installate sul progetto Supabase dedicato con migrazione `20261102000639`; account gestore configurato; smoke test remoti ricevute e A/B/C superati con rollback delle fixture. I riferimenti sotto a SQL soltanto locale o non applicato sono lo storico della preparazione. Non sono stati pubblicati documenti definitivi né attivato il frontend per utenti reali. Restano blocchi di accesso Cloudflare/anteprima e verifiche documentali effettive.
+Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute installate sul progetto Supabase dedicato con migrazione `20261102000639`; account gestore configurato; smoke test remoti ricevute e A/B/C superati con rollback delle fixture. I riferimenti sotto a SQL soltanto locale o non applicato sono lo storico della preparazione. Non sono stati pubblicati documenti definitivi né attivato il frontend per utenti reali. Il codice Turnstile e la Site Key sono ora configurati; restano attivazione server/prova reale, accesso all’anteprima, verifiche documentali e recupero dati. Vedere LAUNCH_PLAN.md per lo stato corrente.
 
 
-## Stato effettivo
+## Stato storico RC2 (precedente all’applicazione remota)
 
 Preparazione locale e ramo GitHub di lancio; nessuna applicazione al progetto remoto, nessun documento attivato, nessuna cancellazione periodica e nessun utente abilitato da questo pacchetto. Il sito pubblico resta demo. Le durate di conservazione proposte sono distinguibili dalle funzioni già operative.
 

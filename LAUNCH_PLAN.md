@@ -1,99 +1,32 @@
-# RENT TO A FRIEND · Preparazione del lancio
+# RENT TO A FRIEND · Piano prima del lancio
 
-## Aggiornamento operativo · 2 novembre 2026
+Stato effettivo al 2 novembre 2026. Questo elenco sostituisce il precedente riepilogo con riferimenti superati. La fonte dettagliata è ACTIVATION_STATUS.md; PRELANCIO.md conserva lo storico.
 
-Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute installate sul progetto Supabase dedicato con migrazione `20261102000639`; account gestore configurato; smoke test remoti ricevute e A/B/C superati con rollback delle fixture. I riferimenti sotto a SQL soltanto locale o non applicato sono lo storico della preparazione. Non sono stati pubblicati documenti definitivi né attivato il frontend per utenti reali. Restano blocchi di accesso Cloudflare/anteprima e verifiche documentali effettive.
+## Completato
 
+- Callback canonico, password e conferma/recupero email verificati con consegna e scambio PKCE di prova.
+- Ricevute e controllo server dei documenti installati con migrazione `20261102000639`; gestore configurato; test SQL A/B/C superati con fixture annullate. Nessun documento definitivo attivo.
+- Integrazione Turnstile pubblicata, Site Key in Vercel produzione e worker account-erasure v3 compatibile; enforcement Supabase ancora spento.
+- Adattamenti per telefono e flussi desktop della demo pubblicati con PR #3, commit main `d521a1253031c82a52b0c216f32f2412200de46a`. 119 test, build e scansione superati; nessuna prova su telefono reale dichiarata.
+- Progetto dedicato sano, organizzazione Supabase Free, spazio e code verificati in sola lettura. Query operativa ripetibile aggiunta; RECOVERY_PLAN.md distingue controlli, procedura e backup non ancora eseguito.
 
-Stato al 1 novembre 2026. Preparazione, non dichiarazione di servizio aperto.
+## Punti ancora aperti
 
-## Aggiornamento privacy e condizioni · RC2
-
-Il proprietario ha confermato Vercel Hobby e ha incaricato di preparare integralmente privacy e condizioni. La scelta del piano resta confermata, senza upgrade; la documentazione dei ruoli/accordi del fornitore non viene dichiarata risolta dalla sola scelta.
-
-Pacchetto predisposto:
-- `src/service-policy.js`, `src/retention.js` e pagine Privacy/Condizioni: regole di cancellazioni, danni, segnalazioni, riesame, versioni e criteri di conservazione proposti.
-- `PRIVACY_OPERATIONS.md`, `MODERATION_OPERATIONS.md`, `PROVIDERS_REVIEW.md`: procedure e riscontri effettivi, inclusi IONOS/Gmail per l’assistenza.
-- `supabase/launch/legal_acceptance.sql`: schema/RPC di ricevute, snapshot immutabili e controlli server per nuove attività. Testato localmente; non applicato al progetto Supabase remoto. Script preparatorio perché la CLI non è disponibile; nessuna installazione eseguita.
-- Interfaccia e API: caselle separate non preselezionate, testi esatti della versione server, ricevuta consultabile e inclusa nell’esportazione. Accesso ai dati e gestione dei rapporti in corso non richiedono una nuova accettazione.
-- `npm run legal:prepare`: genera copie leggibili e impronte in `legal-review/`; rifiuta di generare SQL di pubblicazione finché i dati non sono revisionati.
-- Verifica dei recapiti esplicita: non si forza automaticamente la pubblicazione di un indirizzo privato. Restano da determinare gli obblighi effettivi del gestore del sito.
-
-Verifiche RC2: 114 test superati; build demo, controllo sintassi e scansione credenziali senza rilievi. La generazione SQL per documenti non revisionati è bloccata. Il nuovo flusso non è ancora applicato al backend né collaudato dalla UI collegata.
-
-Le durate 12/24 mesi e 24 ore/90 giorni sono **proposte organizzative**, non termini obbligatori di legge né job di cancellazione già attivi. La pubblicazione dei documenti è distinta dalla preparazione del codice. Dettagli di attivazione e limiti in `LEGAL_RELEASE.md`.
-
-## Scelte confermate
-
-- Solo privati maggiorenni, inizialmente Roma; escluso l’uso per aziende o attività professionali.
-- La piattaforma mette in contatto le persone. Nessun pagamento, cauzione, commissione, rimborso o polizza viene gestito dall’app; gli accordi economici sono fra le parti.
-- Conferma indirizzo e recupero password sono le sole email applicative. Le notifiche di chat/noleggi sono nell’app o push facoltative, ancora da collaudare sui dispositivi.
-- Restare sui piani gratuiti Supabase e Vercel; nessuna prova a pagamento o spesa autorizzata. Il dominio già esistente resta invariato.
-
-## Piani gratuiti e decisione prima dell’apertura
-
-**Supabase:** non è richiesto un upgrade per abilitare Auth, database e Storage nelle quote Free. Le quote pubblicate sono 500 MB database, 1 GB file, 5 GB egress e 5 GB cached egress, 50.000 utenti attivi mensili; il progetto può essere sospeso dopo una settimana di inattività. Il piano gratuito non include backup automatici e SLA. Quote globali, spazio residuo e procedura di recupero devono essere monitorati, senza acquisti automatici.
-
-**Vercel:** il team corrente risulta Hobby. La policy limita Hobby all’uso personale non commerciale e include fra gli esempi commerciali la promozione di prodotti o servizi a pagamento. Il modello senza commissioni e senza checkout è confermato dal proprietario, ma non è stata ottenuta una risposta di Vercel sulla sua idoneità a Hobby. Non considerare né certa la necessità di pagare né certa l’ammissibilità: serve un chiarimento specifico. Il DPA pubblico copre Pro/Enterprise per i trattamenti da responsabile; va verificato il ruolo effettivo dell’hosting statico e la copertura applicabile.
-
-Rimanere gratuiti è un vincolo del proprietario. Se Vercel richiede Pro per questo uso, l’apertura su Vercel resta sospesa; un hosting gratuito alternativo richiede una scelta del proprietario e verifica di condizioni, privacy, dominio e header. Non è stata iniziata alcuna migrazione.
-
-Fonti ufficiali ricontrollate:
-- https://vercel.com/docs/limits/fair-use-guidelines
-- https://vercel.com/legal/dpa
-- https://supabase.com/pricing
-
-## Preparato in questo ramo
-
-- Banner e footer della modalità collegata descrivono il noleggio tra privati a Roma.
-- La registrazione collegata non dice più che gli account reali sono chiusi. La demo mantiene il proprio avviso.
-- Privacy: Resend è descritto per conferma e recupero; nessuna email chat/marketing promessa. Restano visibili le verifiche incompiute, senza marcarle come approvate.
-- Condizioni: il recapito viene letto dalle impostazioni del titolare e protetto da escape HTML; nessun indirizzo personale inventato.
-- Cookie e memoria: la modalità collegata non presenta dati della demo come dati dell’account; restano spiegati sessione per scheda e PKCE.
-- Conferma e recupero email spiegano browser, dispositivo e monouso del link. Il callback canonico resta invariato.
-- Revisione della privacy, dei fornitori e della conservazione ancora false. La build collegata continua a fallire finché questi prerequisiti non sono completati.
-
-Queste modifiche non includono la PR #1 CAPTCHA, non modificano il backend o le policy di accesso, non svuotano dati e non aprono account al pubblico.
-
-## Evidenze già disponibili
-
-| Ambito | Risultato | Limite della verifica |
+| Punto | Passo concreto necessario | Stato |
 |---|---|---|
-| Callback | `https://rent-to-a-friend.it/` per conferma e recupero; redirect reale verificato | Flusso richiesto dall’ambiente di test, non dalla UI pubblica |
-| Email | Conferma e recupero consegnati in Gmail, SPF/DKIM/DMARC superati | Serve il collaudo finale partendo dalla UI collegata |
-| Password | Reset riuscito, vecchia password rifiutata, nuova accettata; sessioni di prova chiuse | La sessione del browser e l’interfaccia recovery richiedono prova completa |
-| Configurazione Auth | Minimo 10 caratteri; password attuale richiesta nel cambio ordinario; conferma email attiva | CAPTCHA ancora spento |
-| Dati condivisi | Verificati 1 profilo, 0 annunci, 0 prenotazioni nel progetto dedicato | Il profilo è l’account di prova Auth; non è un catalogo di utenti reali |
-| Pubblico | Demo, configurazione backend pubblica vuota | Nessun lancio avvenuto |
+| Documenti e fornitori | Chiudere i riscontri degli account reali, i recapiti del gestore, l'uso di Vercel Hobby e i termini operativi; pubblicare una versione definitiva coerente | Blocco reale; nessuna approvazione inventata |
+| Conservazione | Approvare i criteri per finalità e provarne la gestione, inclusa la posta di assistenza | Matrice ancora proposta; nessuna cancellazione periodica generale attiva |
+| Backup e ripristino | Creare una copia esterna completa di database e file e provarne il recupero isolato | Mancano strumenti di export/restore e contesto sicuro; nessuna installazione o spesa |
+| CAPTCHA | Inserire la Secret Key direttamente in Supabase e coordinare l'attivazione dopo il collaudo client/Auth | Site Key e codice pronti; non attivare parzialmente |
+| Collaudo collegato | Dalla UI provare accettazione, accesso/recovery, upload, prenotazioni/chat, diritti, cancellazione e push | SQL e mail già provati; la UI con backend rimane bloccata dai prerequisiti reali |
+| Telefono | Verificare impaginazione, tastiera, touch, foto e notifiche su Android/iPhone effettivi | Codice adattato; test fisici mancanti |
 
-## Attività che impediscono di dichiarare pronto il lancio
+## Ordine di completamento
 
-| Attività | Cosa manca |
-|---|---|
-| Hosting gratuito | Chiarimento di ammissibilità su Vercel Hobby e copertura privacy, oppure scelta di un’alternativa gratuita verificata |
-| Titolare e documenti | Recapito da rendere pubblico, revisione definitiva dell’informativa e delle condizioni, verifica effettiva degli accordi dei fornitori |
-| Conservazione | Decisione per finalità su chat, noleggi, riscontri, segnalazioni, log e backup; procedure coerenti. La matrice è ancora bozza; nessuna cancellazione periodica generale è stata attivata |
-| Accettazione condizioni | Codice e test locali completati in RC2; installazione remota, pubblicazione dei testi revisionati e collaudo dalla UI collegata restano da eseguire |
-| Protezione abusi | Completare la configurazione e le prove CAPTCHA della PR #1; nessuna attivazione parziale che blocchi registrazione, login o cancellazione |
-| Operatore | Account del gestore, accesso alle code, procedura per assistenza, segnalazioni, cancellazioni non automatiche ed errori del worker |
-| Collaudo con utenti distinti | A/B/C: accesso ai dati, chat/foto private, autorizzazioni, prenotazioni contemporanee, upload falliti, logout e cancellazione con sole fixture di prova |
-| Dispositivi | Registrazione e recupero dalla UI, desktop e telefono, link monouso/scaduti/browser differente, permessi e consegna push, tastiera e accessibilità |
+1. Chiudere i riscontri documentali e di hosting, senza nuovi abbonamenti. Le conferme già date dal proprietario non vanno richieste nuovamente.
+2. Predisporre e collaudare il recupero dati in un contesto adatto; attuare i criteri di conservazione approvati senza toccare dati reali per prova.
+3. Pubblicare i testi definitivi e preparare il frontend collegato nel contesto autorizzato. Per l'anteprima protetta resta un limite di accesso documentato; non disabilitare le protezioni per superarlo.
+4. Coordinare widget e Supabase CAPTCHA con Secret Key solo nel pannello appropriato; provare i flussi completi con account e attrezzature di test.
+5. Verificare i dispositivi, quote e ripristino; pubblicare il commit verificato soltanto quando i blocchi effettivi sono risolti. Il sito rimane demo fino ad allora.
 
-## Sequenza di apertura, dopo i prerequisiti
-
-1. Chiudere la decisione sull’hosting senza attivare spese; completare i dati e documenti del titolare.
-2. Installare la ricevuta predisposta e pubblicare i testi revisionati secondo LEGAL_RELEASE.md; attuare la conservazione approvata e collaudare senza cancellare dati reali.
-3. Completare CAPTCHA nell’ordine della PR #1, incluse le funzioni di cancellazione. Configurare l’operatore.
-4. Generare un build collegato di prova con sole chiavi pubbliche e raggiungibile nel contesto approvato; provare tutti i flussi con account distinti e sole attrezzature di test chiaramente riconoscibili. Non copiare gli annunci della demo nel database.
-5. Controllare quote, recupero dati, dominio, TLS e header; completare i test sui dispositivi.
-6. Pubblicare il commit verificato quando i blocchi sono risolti; ricontrollare il dominio e sorvegliare errori, code e consumi. I cambi di piano restano esclusi senza nuova istruzione del proprietario.
-
-## Verifiche della preparazione
-
-- 102 test locali superati; build demo riuscito; scansione di credenziali senza rilievi.
-- Build collegato verificato in errore sul blocco privacy, con configurazione pubblica di prova: nessun aggiramento.
-- Sintassi dei tre moduli modificati e differenze Git controllate.
-- Il browser cloud non raggiunge il server locale: `net::ERR_CONNECTION_REFUSED` su `127.0.0.1:4173`. Nessuna verifica visuale locale dichiarata riuscita. Il rendering dei testi nelle due modalità è coperto dai test, con dati fittizi solo in memoria.
-- Il codice base corrisponde al tree remoto di `main` a `5b815a67da73fba9b33ad71786fa20ef0c37ef58`; le modifiche precedenti nel checkout CAPTCHA e nel checkout originale sono preservate.
-
-Nessun esito locale sostituisce i collaudi remoti ancora elencati sopra.
+Le sole email applicative restano conferma e recupero. Nessun incasso o pagamento passa dall'app. Nessun piano, DNS, chiave, autorizzazione del pubblico o requisito privacy viene cambiato da questo piano.

@@ -51,7 +51,7 @@ Registrare il riferimento della pratica, i dati indispensabili, la finalità, il
 - Termine: riscontro entro un mese; se sono applicabili proroghe, comunicarne motivo e durata entro il primo mese.
 - Accesso: il JSON dell’app è un aiuto e include le ricevute; il gestore deve verificare altri dati pertinenti, destinatari e limiti dei diritti altrui.
 - Cancellazione semplice: worker per account senza rapporti condivisi; chiusura accessi e verifica effettiva di file/Auth. Con noleggi, chat o segnalazioni serve valutazione, non rifiuto automatico del diritto.
-- Rettifica: il pacchetto SQL separa validazione avatar e quota delle modifiche, evitando di esporre la funzione parametrica dei limiti. Testato localmente; non applicato al backend.
+- Rettifica: il pacchetto SQL separa validazione avatar e quota delle modifiche, evitando di esporre la funzione parametrica dei limiti. Applicato al backend con migrazione `20261102000639`; smoke test remoto superato con rollback delle fixture. Il collaudo dalla UI collegata resta da completare.
 
 ## Incidenti e presidio
 
