@@ -1,5 +1,9 @@
 # Google e confine visitatore · 2 novembre 2026
 
+## Decisione del gestore · aggiornamento 2 novembre 2026
+
+Accesso Google rimandato esplicitamente a una fase successiva. Non completare né attivare il provider durante questo lancio; usare email e password. La configurazione Google Cloud avviata dal gestore non dimostra che esista un client collegato al servizio Auth. I passaggi sotto restano documentazione per una futura ripresa, non attività necessarie al lancio attuale.
+
 ## Stato
 
 Collegamento client OAuth Google predisposto, non attivato e non collaudato con un account Google reale. L'endpoint pubblico Auth settings del progetto dedicato risponde `external.google=false`; email/password è abilitato e la conferma email è richiesta. Nessun nuovo accesso Google Cloud, segreto, piano o consenso è stato creato.

@@ -1,5 +1,5 @@
 // Release candidate. Publication is blocked until the factual and provider review is complete.
-export const legalRelease={version:'2026-11-02-rc6',approved:false};
+export const legalRelease={version:'2026-11-02-7',approved:false};
 export const serviceRules={
  cancellations:'Prima di confermare, concordate date, prezzo complessivo, cauzione, accessori, luogo, orari e condizioni di annullamento. Una domanda in chat non prenota. L’accettazione blocca le date nell’app e registra quanto mostrato nella richiesta; nessuna regola automatica di rimborso o penale viene imposta dalla piattaforma. In caso di annullamento avvisate subito la controparte e aggiornate la richiesta. Gli accordi devono rispettare i diritti inderogabili applicabili.',
  damage:'Prima del ritiro controllate insieme funzionamento, accessori e difetti, usando note e foto pertinenti nel registro. Per danni, ritardi o mancata restituzione documentate i fatti e contattate tempestivamente la controparte. L’app non addebita penali, non trattiene cauzioni e non decide chi debba pagare. La segnalazione al gestore riguarda l’uso della piattaforma e non sostituisce assistenza legale, autorità o iniziative delle parti.',
