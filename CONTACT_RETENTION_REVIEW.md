@@ -1,5 +1,7 @@
 # Recapito e conservazione · verifica del 2 novembre 2026
 
+Aggiornamento successivo: il gestore ha chiesto espressamente di considerare risolta la privacy e mantiene Gmail. La decisione è acquisita in [PRIVACY_CLOSEOUT.md](PRIVACY_CLOSEOUT.md); non si chiede nuovamente un'approvazione generica. La verifica qui sotto resta il riscontro dei fatti e delle fonti, distinto dalla scelta del gestore e dalle prove tecniche del rilascio.
+
 ## Istruzione ricevuta
 
 Nicolò Caloni ha chiesto di evitare un indirizzo pubblico se non necessario e ha accettato le durate proposte a condizione della loro conformità, non come autorizzazione incondizionata. Non ha fornito né autorizzato la pubblicazione di un indirizzo. Nessuna ricerca nei dati personali dell'account viene usata per colmare questo campo.

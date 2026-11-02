@@ -10,12 +10,16 @@ Stato effettivo al 2 novembre 2026. Questo elenco sostituisce il precedente riep
 - Adattamenti per telefono e flussi desktop della demo pubblicati con PR #3, commit main `d521a1253031c82a52b0c216f32f2412200de46a`. 119 test, build e scansione superati; nessuna prova su telefono reale dichiarata.
 - Progetto dedicato sano, organizzazione Supabase Free, spazio e code verificati in sola lettura. Query operativa ripetibile aggiunta; RECOVERY_PLAN.md distingue controlli, procedura e backup non ancora eseguito.
 
-## Punti ancora aperti
+## Decisione privacy acquisita
+
+Il gestore ha chiesto di considerare risolta la privacy. Approvazione e scelte sono registrate in `PRIVACY_CLOSEOUT.md`; la revisione RC5 aggiorna i testi e la procedura operativa. Non si richiede nuovamente consenso su Gmail o piani gratuiti. I controlli di rilascio sotto distinguono questa decisione dai riscontri tecnici non ancora eseguiti: nessuna nuova attestazione di conformità, prova di cancellazione o apertura al pubblico.
+
+## Controlli di rilascio ancora aperti
 
 | Punto | Passo concreto necessario | Stato |
 |---|---|---|
-| Documenti e fornitori | Chiudere i riscontri degli account reali, i recapiti del gestore, l'uso di Vercel Hobby e i termini operativi; pubblicare una versione definitiva coerente | Blocco reale; nessuna approvazione inventata |
-| Conservazione | Approvare i criteri per finalità e provarne la gestione, inclusa la posta di assistenza | Matrice ancora proposta; nessuna cancellazione periodica generale attiva |
+| Documenti e fornitori | Conservare l’approvazione privacy del gestore; completare i riscontri fattuali degli account e pubblicare la versione coerente con l’hosting effettivo | Decisione del gestore acquisita; prove e accordi non inventati |
+| Conservazione | Provare la gestione dei criteri descritti, inclusa la posta di assistenza e le eccezioni | Approvazione del gestore acquisita; nessuna cancellazione periodica generale attiva |
 | Backup e ripristino | Creare una copia esterna completa di database e file e provarne il recupero isolato | Mancano strumenti di export/restore e contesto sicuro; nessuna installazione o spesa |
 | CAPTCHA | Inserire la Secret Key direttamente in Supabase e coordinare l'attivazione dopo il collaudo client/Auth | Site Key e codice pronti; non attivare parzialmente |
 | Collaudo collegato | Dalla UI provare accettazione, accesso/recovery, upload, prenotazioni/chat, diritti, cancellazione e push | SQL e mail già provati; la UI con backend rimane bloccata dai prerequisiti reali |
@@ -26,7 +30,7 @@ Stato effettivo al 2 novembre 2026. Questo elenco sostituisce il precedente riep
 ### Decisioni aggiornate e attività rinviate
 
 - Assistenza: resta l'inoltro IONOS verso Gmail già scelto; nessun account Proton da creare. Ricezione dichiarata dal gestore distinta dai controlli della casella ancora da verificare.
-- Hosting: preparazione Cloudflare Pages Free nella PR #6, build e header pronti; l'accesso Cloudflare mostra ancora un errore e nessuna migrazione è avvenuta. Nessun cambio DNS/nameserver o piano.
+- Hosting: demo Cloudflare Pages Free creata dal gestore e verificata nel browser; dominio ancora Vercel. Zona DNS preparata e passaggio in standby su istruzione del gestore dopo errori IONOS. Nessun salvataggio di delega effettuato dall’agente e nessun piano a pagamento.
 - Pubblicità: possibile in futuro per sostenere i costi; **rinviata su istruzione del gestore**. Non è un prerequisito del lancio e non va attivata adesso. Niente script AdSense, banner, account pubblicitari, CMP o modifica delle dichiarazioni pubbliche come se gli annunci fossero presenti.
 - Prima di una futura monetizzazione: verificare idoneità del sito e condizioni di Google, destinatari/trasferimenti, informativa e consenso appropriato; per annunci personalizzati in SEE/Regno Unito/Svizzera Google richiede una CMP certificata integrata TCF. Gli annunci non personalizzati non eliminano automaticamente il tema dei cookie/consensi. Verificare anche gli obblighi economici e fiscali del gestore, senza dedurre esenzioni dal solo obiettivo di coprire i costi. Nessuna pratica fiscale viene aperta da questo piano.
 - Recapito: il possibile finanziamento pubblicitario futuro è registrato nella valutazione; non si dichiara l'app sempre estranea ad attività economica. Nessun domicilio viene ricavato dall'account o pubblicato senza scelta specifica.

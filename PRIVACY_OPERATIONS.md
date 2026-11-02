@@ -1,4 +1,6 @@
-# Privacy e conservazione · proposta operativa RC4
+# Privacy e conservazione · revisione operativa RC5
+
+Approvazione del gestore ricevuta il 2 novembre 2026: privacy considerata risolta, Gmail mantenuto. La decisione e i limiti fattuali sono registrati in [PRIVACY_CLOSEOUT.md](PRIVACY_CLOSEOUT.md). Questa approvazione non dichiara eseguite le procedure o le prove di rilascio elencate sotto; nessun job o controllo di build viene attivato da questo documento.
 
 Titolare: Nicolò Caloni. Contatto pubblico: assistenza@rent-to-a-friend.it.
 Il recapito postale e gli obblighi informativi del gestore del sito restano da qualificare: il solo art. 13 GDPR non impone la pubblicazione della casa privata, ma non esaurisce gli altri obblighi applicabili al servizio. Nessun indirizzo è stato inventato o pubblicato.
@@ -71,6 +73,22 @@ Verifiche ancora da riscontrare nella **casella di assistenza**, non nell'accoun
 ## Incidenti e presidio
 
 Limitare accessi e contenuti esposti, preservare solo le prove necessarie, annotare cronologia, dati coinvolti e rimedi. Valutare con tempestività gli obblighi di notifica: non ogni errore è automaticamente una violazione notificabile, e non si attende la conclusione dell’indagine quando decorrono termini applicabili. Nessun invio automatico ad autorità o utenti è implementato.
+
+## Procedura pratica del gestore
+
+Questa è la procedura predisposta, applicabile anche alle email reali ricevute mentre il sito è demo. Non attesta che la casella sia già stata controllata o che siano state eliminate email. Non crea promemoria automatici.
+
+1. A ogni giornata di gestione controllare la casella di assistenza e, quando collegata, la coda privacy dell'app. Le richieste via email sono valide anche senza account e non devono essere perse perché assenti dalla coda dell'app.
+2. Registrare in un archivio riservato il riferimento, il tipo di richiesta, la data di ricezione, la scadenza di riscontro, lo stato e il referente. Non copiare il testo completo dei messaggi in un secondo registro. Calcolare un mese di calendario dalla ricezione; non usare automaticamente 30 giorni o far ripartire il termine dalla lettura. Gestire eventuali chiarimenti/proroghe secondo il caso e comunicarli tempestivamente.
+3. Verificare l'identità attraverso l'account o elementi proporzionati al rischio della richiesta. Non richiedere password, codici di accesso o documenti di identità come prassi ordinaria. Non inviare dati a un indirizzo diverso senza verificarlo.
+4. Per l'accesso distinguere esportazione dell'app, file pertinenti, corrispondenza e altri dati effettivamente trattati; proteggere i dati delle controparti. Per la cancellazione distinguere account semplice, rapporti condivisi e singole esigenze di conservazione. Registrare operazione ed esito verificato, non soltanto lo stato "chiusa".
+5. Alla chiusura annotare data, esito essenziale e scadenza di riesame/eliminazione. Ogni mese riesaminare le pratiche chiuse e le scadenze, secondo i criteri motivati nella matrice. I dodici mesi candidati non richiedono di tenere allegati o dettagli superflui per tutto il periodo.
+6. Per Gmail considerare ricevuti, inviati, allegati e copie eventualmente scaricate. "Archivia" non elimina un messaggio; l'eliminazione dall'app non elimina la posta. Valutare prima le pratiche aperte o le eccezioni, senza svuotare intere cartelle per prova e senza promettere la cancellazione immediata dei backup del fornitore.
+7. Prima di intervenire sul backend usare una prova isolata e una copia recuperabile adeguata. Preparare un elenco minimo di identificativi/percorsi, verificare riferimenti e diritti delle controparti, eliminare file tramite Storage API e controllare il risultato. Nessuna cancellazione reale è autorizzata implicitamente dal calendario.
+
+Per il registro bastano i campi: riferimento, categoria, ricevuta_il, riscontro_entro, stato, chiusa_il, prossimo_riesame, motivo_eccezione ed esito_verificato. L'eventuale collegamento al messaggio resta nell'archivio riservato. Non creare registri con dati reali nel repository, negli screenshot pubblici o nei report di build.
+
+La prova di applicazione rimane parte del collaudo di lancio: richiesta email senza account, richiesta autenticata, esportazione con dati di altre persone oscurati quando necessario, account senza rapporti, account con rapporti condivisi, eliminazione di un file e riesame di una pratica chiusa. Usare esclusivamente dati sintetici e segnare chiaramente le verifiche non eseguite.
 
 ## Riferimenti primari
 
