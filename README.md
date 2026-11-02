@@ -107,3 +107,13 @@ Il nome pubblico dell’app è **RENT TO A FRIEND**. Repository, dominio tecnico
 Migrazione remota `20261031103706_marketplace_trust_and_inquiries.sql` applicata. Verifica locale con `npm test`; verifica remota con `supabase/tests/marketplace_smoke.sql` (fixture annullate). Le funzioni di moderazione sono implementate ma nessun moderatore reale è assegnato finché non esiste l’account del gestore.
 
 Il frontend resta in demo mentre si completa un mittente SMTP gratuito per conferma/reset. L’accesso al pannello è riuscito e Site URL/redirect Auth sono configurati sull’indirizzo gratuito Vercel. Non disattivare la conferma email per aggirare questo passaggio. Le prove tra due telefoni reali rimangono necessarie.
+
+
+## Preparazione del lancio
+
+Lo stato corrente, i controlli mancanti e le decisioni sui piani gratuiti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). I testi di demo e servizio collegato sono distinti; cambiare i testi non abilita gli account reali. La build collegata conserva il blocco privacy. Il dominio di callback Auth rimane `https://rent-to-a-friend.it/`.
+
+
+### Privacy e condizioni RC2
+
+`npm run legal:prepare` produce copie leggibili e impronte in `legal-review/`. Il generatore non si collega al database e non pubblica documenti. Le ricevute e i controlli server sono preparati in `supabase/launch/legal_acceptance.sql`, con API/interfaccia e test locali. Leggere [LEGAL_RELEASE.md](LEGAL_RELEASE.md) prima di qualsiasi attivazione. Conservazione e interventi di moderazione proposti non vengono attivati implicitamente dal testo delle condizioni.

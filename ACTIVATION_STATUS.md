@@ -1,0 +1,23 @@
+# Attivazione · stato effettivo al 2 novembre 2026
+
+## Completato sul progetto dedicato
+
+- Destinazione verificata: Supabase `srjdysdhxnafjrutufmk`, progetto `set-in-comune`, Francoforte, stato ACTIVE_HEALTHY, organizzazione collegata al team del proprietario. Piano dell’organizzazione verificato Free.
+- Migrazione `20261102000639`, `legal_acceptance_and_profile_rectification`, applicata tramite il collegamento Supabase, senza installazioni. Ricevute e controllo server delle nuove attività presenti; nessun documento definitivo attivato.
+- Account indicato dal proprietario configurato in `private.app_moderators`. Accesso autenticato a sicurezza, coda segnalazioni e coda privacy verificato. Nessuna delega a terze persone.
+- Test SQL remoto delle ricevute: scelta esplicita, hash errati respinti, isolamento fra account, data server/idempotenza, immutabilità dei documenti, blocco delle nuove attività e rettifica del profilo. Tutte le fixture annullate con rollback; zero utenti fixture residui.
+- Test SQL remoto A/B/C: richieste, chat, conversazioni preliminari, notifiche, letture riservate, recensioni, segnalazioni e blocchi. Fixture e documenti di prova annullati; nessuna impostazione operativa modificata e nessun invio di email/push. pg_net esegue le richieste soltanto al commit, che il test non effettua.
+- Controllo successivo: 1 profilo reale di prova preesistente, 0 annunci, 0 noleggi, 0 ricevute e 0 documenti attivi. Nessuna cancellazione periodica attivata.
+
+## Controlli e limiti
+
+114 test locali erano passati sul codice RC2, con build demo e scansione credenziali senza rilievi. Gli advisors dopo la migrazione riportano le tabelle private RLS senza policy (intenzionalmente prive di accesso diretto) e il precedente avviso di protezione da password compromesse disattivata. Nessun piano è stato cambiato per eliminare l’avviso.
+
+## Blocchi effettivi alla versione per utenti reali
+
+1. Cloudflare: la sessione del browser mostra ancora «Unable to sign in. Try again or use your email and password.» Non sono stati ripetuti tentativi automatici. Nessun widget o segreto CAPTCHA è stato creato e il controllo Supabase non è stato acceso parzialmente.
+2. Accesso all’anteprima Vercel: deployment RC2 READY, ma protetto da login. Il collegamento Vercel per ottenere l’accesso temporaneo restituisce «The deployment could not be found, or your Vercel connection may not have access to it.» Nessuna CLI autenticata disponibile; non è stata modificata la protezione.
+3. Documenti definitivi: Vercel Hobby è la scelta del proprietario. Resta da riscontrare la copertura effettiva dei trattamenti/accordi degli account, inclusi IONOS/Gmail per l’assistenza, e qualificare gli ulteriori recapiti del gestore. Le revisioni non sono state dichiarate concluse per superare il blocco del build.
+4. Prove dal telefono e dal browser con account reali: il nuovo flusso e le push non sono stati collaudati nell’interfaccia collegata. I test SQL reali non sono presentati come prove di upload fisici, ricezione push o uso da telefono.
+
+Il sito può ricevere le migliorie della demo e i testi veritieri, ma non viene dichiarato aperto a utenti reali finché questi punti non sono risolti. Nessun abbonamento, chiave, DNS o impostazione Auth di redirect modificati.

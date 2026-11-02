@@ -1,5 +1,24 @@
 # Prima del lancio
 
+## Aggiornamento operativo · 2 novembre 2026
+
+Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute installate sul progetto Supabase dedicato con migrazione `20261102000639`; account gestore configurato; smoke test remoti ricevute e A/B/C superati con rollback delle fixture. I riferimenti sotto a SQL soltanto locale o non applicato sono lo storico della preparazione. Non sono stati pubblicati documenti definitivi né attivato il frontend per utenti reali. Restano blocchi di accesso Cloudflare/anteprima e verifiche documentali effettive.
+
+
+## Stato attuale · preparazione del lancio, 1 novembre 2026
+
+Aggiornamento RC2: privacy/condizioni e conservazione predisposte, ricevute lato server e interfaccia implementate e testate localmente; nessuna applicazione remota o cancellazione periodica. Vedere `LEGAL_RELEASE.md` per pubblicazione e verifiche ancora da chiudere. Gli stati storici che indicano la ricevuta come non implementata sono superati dal codice RC2.
+
+La decisione e le attività correnti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). Le sezioni di release successive sono uno storico e non attestano che tutti i controlli di lancio siano completati.
+
+- Pubblico ancora demo, piani gratuiti invariati. Nessuna apertura ad account reali in questa preparazione.
+- SMTP Resend collegato: consegna reale in Gmail, SPF/DKIM/DMARC superati, conferma e recupero PKCE con callback canonico riusciti nel test backend. La vecchia password viene respinto dopo il reset e le sessioni di prova sono state chiuse. Il percorso completo dalla UI pubblica non è collaudato.
+- Password minima 10 e richiesta password attuale per il cambio ordinario attive su Auth.
+- Testi preparati per distinguere demo e servizio reale, senza mostrare indiscriminatamente avvisi di account chiusi o istruzioni per dati demo nella versione collegata.
+- Vercel Hobby verificato: idoneità al modello gratuito di contatto tra privati da chiarire; assenza di commissioni o pagamenti integrati non basta a dedurla. DPA pubblico limitato a Pro/Enterprise per i trattamenti da responsabile: verificare il ruolo effettivo dell’hosting statico. Nessun upgrade autorizzato.
+- CAPTCHA predisposto nella PR #1, ancora spento; non incluso in questo ramo. Restano recapito del titolare, conservazione, documenti definitivi con ricevuta di accettazione, gestione operatore e collaudi A/B/C e dispositivi.
+
+
 ## Promemoria obbligatorio prima del lancio
 
 Richiesto da Nicolò il 1 novembre 2026: rileggere **tutte le diciture dell’app** e sostituire i testi demo, provvisori e di pre-lancio con descrizioni veritiere dello stato effettivo. Non basta rimuovere la parola demo.

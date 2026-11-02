@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,cp,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {pathToFileURL} from 'node:url';
+
+test('legal UI API requires explicit choices, submits no identity/time claims and exports own receipts',async t=>{
+ const dir=await mkdtemp(join(tmpdir(),'rtaf-legal-'));t.after(()=>rm(dir,{recursive:true,force:true}));
+ await cp(new URL('../src',import.meta.url),join(dir,'src'),{recursive:true});await writeFile(join(dir,'package.json'),'{"type":"module"}');
+ await writeFile(join(dir,'src/config.js'),'export default '+JSON.stringify({url:'https://example.supabase.co',key:'sb_publishable_'+'a'.repeat(32)})+';');
+ const storage=()=>{const m=new Map();return{getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};};
+ globalThis.localStorage=storage();globalThis.sessionStorage=storage();globalThis.location={search:''};
+ const calls=[],uid='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+ const doc={available:true,accepted:false,version:'fixture-v1',terms_hash:'a'.repeat(64),privacy_hash:'b'.repeat(64),terms_text:'Condizioni di prova',privacy_text:'Privacy di prova'};
+ let stale=false;
+ globalThis.fetch=async(url,options)=>{const body=JSON.parse(options.body||'{}');calls.push({url,body});
+  if(url.includes('/auth/v1/token'))return Response.json({access_token:'fixture-token',refresh_token:'fixture-refresh',expires_in:3600,user:{id:uid,email:'fixture@example.test'}});
+  if(url.endsWith('/rpc/my_legal_status'))return Response.json(doc);
+  if(url.endsWith('/rpc/accept_legal_documents'))return stale?Response.json({code:'P0001',message:'I documenti sono cambiati. Riaprili prima di accettare.'},{status:400}):Response.json({...doc,accepted:true,receipt_id:'fixture-receipt',accepted_at:'2026-11-01T12:00:00Z'});
+  if(url.endsWith('/rpc/my_legal_receipts'))return Response.json([{id:'fixture-receipt',version:doc.version,terms_text:doc.terms_text}]);
+  if(url.endsWith('/rpc/export_my_data'))return Response.json({profile:{id:uid}});
+  throw new Error('Unexpected fixture request');
+ };
+ const {api}=await import(pathToFileURL(join(dir,'src/api.js')));
+ await assert.rejects(api.legalStatus(),/Accedi/);
+ await api.login('fixture@example.test','fixture-passphrase');assert.deepEqual(await api.legalStatus(),doc);
+ const before=calls.length;
+ for(const choices of [{terms:true,privacySeen:true},{terms:'true',privacySeen:true,privateAdult:true},{terms:true,privacySeen:false,privateAdult:true}])await assert.rejects(api.acceptLegalDocuments(doc,choices),/dichiarazioni/);
+ await assert.rejects(api.acceptLegalDocuments({...doc,terms_hash:'tampered'},{terms:true,privacySeen:true,privateAdult:true}),/Riapri/);
+ assert.equal(calls.length,before);
+ const choices={terms:true,privacySeen:true,privateAdult:true};assert.equal((await api.acceptLegalDocuments(doc,choices)).accepted,true);
+ assert.deepEqual(calls.at(-1).body,{p_version:doc.version,p_terms_hash:doc.terms_hash,p_privacy_hash:doc.privacy_hash,p_terms_accepted:true,p_privacy_seen:true,p_private_adult:true});
+ stale=true;await assert.rejects(api.acceptLegalDocuments(doc,choices),/documenti sono cambiati/);
+ const exported=await api.exportData();assert.equal(exported.legal_receipts.length,1);assert.equal(exported.legal_receipts[0].version,doc.version);assert.equal(exported.account_email,'fixture@example.test');
+ assert.ok(!JSON.stringify(exported).includes('fixture-token'));
+});
