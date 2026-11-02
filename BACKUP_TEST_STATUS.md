@@ -1,5 +1,7 @@
 # Backup e prove · riscontri del 2 novembre 2026
 
+Aggiornamenti successivi: `STORAGE_UPLOAD_TEST.md` registra la correzione autorizzata del controllo quote e 18 prove HTTP reali riuscite, con rimozione delle fixture. `UI_TEST_STATUS.md` registra il successivo collaudo nel browser della demo pubblicata, foto sintetiche, intero ciclo del noleggio e ripristino verificato. Le indicazioni sotto di upload/UI non ancora eseguiti descrivono la fase precedente. UI collegata e Android/iPhone effettivi restano non attestati; backup rinviato per scelta successiva del gestore.
+
 Il gestore ha scelto di rinviare Turnstile e proseguire con backup e prove. Nessuna installazione, piano a pagamento, apertura a utenti reali, modifica DNS o ripristino sulla produzione è autorizzato implicitamente dai test.
 
 ## Destinazione e preflight remoto
