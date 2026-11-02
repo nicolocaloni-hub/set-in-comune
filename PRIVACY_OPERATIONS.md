@@ -1,4 +1,4 @@
-# Privacy e conservazione · proposta operativa RC2
+# Privacy e conservazione · proposta operativa RC4
 
 Titolare: Nicolò Caloni. Contatto pubblico: assistenza@rent-to-a-friend.it.
 Il recapito postale e gli obblighi informativi del gestore del sito restano da qualificare: il solo art. 13 GDPR non impone la pubblicazione della casa privata, ma non esaurisce gli altri obblighi applicabili al servizio. Nessun indirizzo è stato inventato o pubblicato.
@@ -18,6 +18,12 @@ Il recapito postale e gli obblighi informativi del gestore del sito restano da q
 
 Queste basi vanno valutate per le operazioni effettive. Non si chiede un unico consenso obbligatorio a tutti i trattamenti. Non si usa il consenso per sostituire un contratto con i fornitori. Il bilanciamento dell’interesse per abusi e contenziosi è documentato prima dell’apertura.
 
+## Valutazione preliminare dell’interesse per la sicurezza
+
+Finalità proposta: prevenire accessi automatizzati e abusi, tutelare utenti e funzionamento, gestire segnalazioni e singole contestazioni. Necessità: conferma email, limiti delle azioni, controllo dei soli fatti pertinenti e widget nei moduli protetti; nessun controllo generalizzato dei contenuti a fini pubblicitari. Alternative meno invasive: dati facoltativi, quartiere invece dell’indirizzo, notifiche senza testo chat, niente documenti d’identità nella procedura ordinaria.
+
+Bilanciamento e garanzie da validare nel pilota: il visitatore può attendersi sicurezza, ma IP, segnali tecnici e interventi sugli account incidono sulla persona. Limitare accessi, spiegare i ruoli dei fornitori, motivare gli interventi e consentire contestazioni. Le segnalazioni hanno valutazione umana; non usare una semplice dichiarazione dell’utente come prova. Registrare necessità, dati e durata del singolo caso. Questo testo è la preparazione dell’analisi, non una certificazione che legittimi ogni trattamento del fornitore o una revisione già approvata.
+
 ## Calendario proposto e motivazioni
 
 La matrice completa è `src/retention.js`. Le durate sono scelte organizzative proposte, non prescrizioni universali di legge. Nessun job di cancellazione periodica è attivato da questi numeri.
@@ -28,6 +34,7 @@ La matrice completa è `src/retention.js`. Le durate sono scelte organizzative p
 - Noleggi conclusi, chat collegate e riscontri: proposta 24 mesi dalla conclusione, per assistenza e contestazioni pratiche. Non è un termine di prescrizione e non copre automaticamente ogni controversia.
 - Segnalazioni e richieste privacy chiuse: proposta 12 mesi per riscontro, riesame e controllo degli abusi; ridurre il contenuto all’esito necessario.
 - Notifiche lette e log dell’app: proposta 90 giorni per diagnosi e contatori; mai password, token o contenuti completi delle chat nei log.
+- Assistenza via email: proposta 12 mesi dalla chiusura della pratica, per riscontri e riesami; riesame manuale delle copie ricevute/inviate e degli allegati, distinguendo eventuali contenziosi. La cancellazione Supabase non elimina la posta Gmail. Nessun job della casella è attivo.
 - Ricevute: durante l’account, con cancellazione quando Auth elimina l’utente. Se una controversia impone una prova ulteriore, valutare e documentare separatamente i soli dati necessari prima della cancellazione; non introdurre una conservazione indefinita di tutti i profili.
 - Annunci e recensioni: mantenere solo durante la pubblicazione e verificare rimozione/anonimizzazione alla chiusura. La visibilità pubblica non è una giustificazione per conservarli per sempre.
 

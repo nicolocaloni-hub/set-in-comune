@@ -7,6 +7,12 @@ Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute i
 
 Aggiornato il 31 ottobre 2026. Documento operativo di pre-lancio, non attestazione di conformità.
 
+## Revisione attuale · RC4, 2 novembre 2026
+
+Lo stato dei fornitori è stato riesaminato su fonti ufficiali in PROVIDERS_REVIEW.md: per Supabase, Resend e Cloudflare è individuata l’incorporazione degli accordi standard; IONOS include le disposizioni privacy nei nuovi contratti dal 19 luglio 2022, da riscontrare sul prodotto effettivo. Gmail consumer non ha il DPA di Workspace; Hobby mantiene limiti d’uso e copertura da qualificare. Non serve chiedere al gestore di firmare automaticamente ogni documento.
+
+Privacy e condizioni ora indicano origine dei dati, interessi di sicurezza, ruoli Turnstile, corrispondenza di assistenza reale anche nella demo, riferimenti primari e contatto umano. La conservazione della posta di assistenza ha un criterio proposto, ancora non operativo. RC4 resta una proposta; nessun documento definitivo attivato. Le sezioni precedenti e successive con test RC2 o fornitori ancora da reperire sono storico: prevalgono LAUNCH_PLAN.md, PROVIDERS_REVIEW.md e questa revisione.
+
 ## Identità e stato
 
 - Titolare: **Nicolò Caloni**, confermato dal proprietario in questa sessione.

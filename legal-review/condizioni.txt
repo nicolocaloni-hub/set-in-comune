@@ -1,4 +1,4 @@
-CONDIZIONI DEL SERVIZIO · 2026-11-02-rc3
+CONDIZIONI DEL SERVIZIO · 2026-11-02-rc4
 
 Condividere con chiarezza.
 
@@ -7,6 +7,10 @@ RENT TO A FRIEND mette in contatto persone per il noleggio di attrezzature. I da
 Gestore e contatto
 
 Il servizio è gestito da Nicolò Caloni. Contatto: assistenza@rent-to-a-friend.it (mailto:assistenza@rent-to-a-friend.it). Verifica degli ulteriori recapiti del gestore in corso. Il servizio è riservato agli scambi tra privati maggiorenni.
+
+Contattare il gestore
+
+Per assistenza, diritti sui dati e segnalazioni puoi scrivere al contatto indicato sopra, anche senza un account, in italiano o inglese. Le richieste sono gestite da una persona; non è promessa assistenza continuativa o in tempo reale. Per una segnalazione indica il riferimento o il collegamento al contenuto e spiega i fatti, evitando allegati non necessari.
 
 Solo privati maggiorenni
 
@@ -26,7 +30,7 @@ Usa soltanto attrezzature e immagini che sei autorizzato a descrivere o caricare
 
 Richieste, chat e disponibilità
 
-Una domanda in chat non riserva attrezzature. La richiesta mostra date, prezzo, cauzione e condizioni; l’accettazione blocca le date nell’app. Le parti devono verificare identità, accessori, condizioni, luogo e copertura prima del ritiro. L’app non gestisce pagamenti, cauzioni, rimborsi o polizze e non fornisce copertura assicurativa.
+Una domanda in chat non riserva attrezzature. Le presenti condizioni regolano l’utilizzo della piattaforma; gli accordi sul singolo noleggio riguardano le persone indicate nella richiesta. La richiesta mostra date, prezzo, cauzione e condizioni; l’accettazione blocca le date nell’app. Le parti devono verificare identità, accessori, condizioni, luogo e copertura prima del ritiro. L’app non gestisce pagamenti, cauzioni, rimborsi o polizze e non fornisce copertura assicurativa.
 
 Ordine degli annunci
 
