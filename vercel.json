@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:account-check",
   "outputDirectory": "dist",
   "framework": null,
   "headers": [
