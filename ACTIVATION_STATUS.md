@@ -11,11 +11,11 @@
 
 ## Controlli e limiti
 
-114 test locali erano passati sul codice RC2, con build demo e scansione credenziali senza rilievi. Gli advisors dopo la migrazione riportano le tabelle private RLS senza policy (intenzionalmente prive di accesso diretto) e il precedente avviso di protezione da password compromesse disattivata. Nessun piano è stato cambiato per eliminare l’avviso.
+114 test locali erano passati sul codice RC2; con l’integrazione CAPTCHA RC3 i controlli sono aggiornati in TURNSTILE_SETUP.md. Build demo e scansione credenziali restano senza rilievi. Gli advisors dopo la migrazione riportano le tabelle private RLS senza policy (intenzionalmente prive di accesso diretto) e il precedente avviso di protezione da password compromesse disattivata. Nessun piano è stato cambiato per eliminare l’avviso.
 
 ## Blocchi effettivi alla versione per utenti reali
 
-1. Cloudflare: la sessione del browser mostra ancora «Unable to sign in. Try again or use your email and password.» Non sono stati ripetuti tentativi automatici. Nessun widget o segreto CAPTCHA è stato creato e il controllo Supabase non è stato acceso parzialmente.
+1. CAPTCHA: il proprietario ha creato il widget Cloudflare nel proprio browser e fornito la Site Key pubblica. È configurata in Vercel, solo produzione. Client integrato con le modifiche legali correnti e worker account-erasure versione 3 attivo. Il worker inoltra il token e ammette le origini canoniche. Manca l’inserimento privato della Secret Key in Supabase e la prova completa widget/Auth; il controllo Auth resta spento. Nessun segreto è stato chiesto in chat.
 2. Accesso all’anteprima Vercel: deployment RC2 READY, ma protetto da login. Il collegamento Vercel per ottenere l’accesso temporaneo restituisce «The deployment could not be found, or your Vercel connection may not have access to it.» Nessuna CLI autenticata disponibile; non è stata modificata la protezione.
 3. Documenti definitivi: Vercel Hobby è la scelta del proprietario. Resta da riscontrare la copertura effettiva dei trattamenti/accordi degli account, inclusi IONOS/Gmail per l’assistenza, e qualificare gli ulteriori recapiti del gestore. Le revisioni non sono state dichiarate concluse per superare il blocco del build.
 4. Prove dal telefono e dal browser con account reali: il nuovo flusso e le push non sono stati collaudati nell’interfaccia collegata. I test SQL reali non sono presentati come prove di upload fisici, ricezione push o uso da telefono.

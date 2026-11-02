@@ -1,6 +1,6 @@
-import {eraseJob,allowedOrigin,verifyErasure,secureEqual} from './core.mjs';
+import {eraseJob,allowedOrigin,verifyErasure,secureEqual,defaultOrigins} from './core.mjs';
 const base=Deno.env.get('SUPABASE_URL')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,anon=Deno.env.get('SUPABASE_ANON_KEY')!;
-const origins=['https://set-in-comune-app.vercel.app',...(Deno.env.get('APP_ORIGINS')||'').split(',').filter(Boolean)];
+const origins=[...defaultOrigins,...(Deno.env.get('APP_ORIGINS')||'').split(',').filter(Boolean)];
 async function http(path:string,method='GET',body?:unknown,bearer=service,key=service){const r=await fetch(base+path,{method,headers:{apikey:key,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(15000)});if(!r.ok){if(['DELETE','PUT'].includes(method)&&path.startsWith('/auth/v1/admin/users/')&&r.status===404)return null;throw new Error('Provider operation failed');}const s=await r.text();return s?JSON.parse(s):null;}
 const rpc=(name:string,body:unknown={})=>http('/rest/v1/rpc/'+name,'POST',body);
 async function listFiles(bucket:string,prefix:string):Promise<string[]>{
@@ -25,12 +25,12 @@ Deno.serve(async(req:Request)=>{
   // Dedicated 256-bit server hook, compared without logging or returning it.
   if(/^[A-Za-z0-9_-]{43}$/.test(bearer)){const c=await rpc('push_worker_config');if(!c?.hookSecret||!await secureEqual(bearer,c.hookSecret))return reply({error:'Unauthorized'},401);return reply({completed:await runJobs()});}
   if(!allowedOrigin(origin,origins))return reply({error:'Origine non consentita.'},403);
-  if(Number(req.headers.get('content-length')||0)>2048)return reply({error:'Richiesta non valida.'},400);
-  const text=await req.text();if(text.length>2048)return reply({error:'Richiesta non valida.'},400);
+  if(Number(req.headers.get('content-length')||0)>4096)return reply({error:'Richiesta non valida.'},400);
+  const text=await req.text();if(text.length>4096)return reply({error:'Richiesta non valida.'},400);
   let currentUser;try{currentUser=await http('/auth/v1/user','GET',undefined,bearer,anon);}catch{return reply({error:'Accedi di nuovo.'},401);}
   let verified;try{verified=await verifyErasure(JSON.parse(text),bearer,{
    getUser:async()=>currentUser,
-   reauthenticate:(email:string,password:string)=>http('/auth/v1/token?grant_type=password','POST',{email,password},anon,anon)
+   reauthenticate:(email:string,password:string,captchaToken?:string)=>http('/auth/v1/token?grant_type=password','POST',{email,password,...(captchaToken?{gotrue_meta_security:{captcha_token:captchaToken}}:{})},anon,anon)
   });}catch{return reply({code:'P0001',message:'Conferma e password non valide, oppure troppi tentativi. Riprova più tardi.'},400);}
   const result=await rpc('prepare_account_erasure',{p_user:verified.userId});
   await http('/auth/v1/logout?scope='+(result.status==='review'?'local':'global'),'POST',undefined,verified.temporaryToken,anon);

@@ -117,3 +117,8 @@ Lo stato corrente, i controlli mancanti e le decisioni sui piani gratuiti sono i
 ### Privacy e condizioni RC2
 
 `npm run legal:prepare` produce copie leggibili e impronte in `legal-review/`. Il generatore non si collega al database e non pubblica documenti. Le ricevute e i controlli server sono preparati in `supabase/launch/legal_acceptance.sql`, con API/interfaccia e test locali. Leggere [LEGAL_RELEASE.md](LEGAL_RELEASE.md) prima di qualsiasi attivazione. Conservazione e interventi di moderazione proposti non vengono attivati implicitamente dal testo delle condizioni.
+
+
+### CAPTCHA RC3
+
+Integrazione Turnstile con token in memoria monouso su registrazione, accesso, recupero e conferma cancellazione. Il build usa solo `PUBLIC_TURNSTILE_SITE_KEY`; il segreto resta esclusivamente in Supabase. La demo non carica il provider e il build collegato conserva tutti i blocchi privacy/documenti. Configurazione, verifiche effettive e ordine di attivazione in [TURNSTILE_SETUP.md](TURNSTILE_SETUP.md).

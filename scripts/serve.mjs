@@ -5,7 +5,8 @@ import {pathToFileURL} from 'node:url';
 import {publicAssets,securityHeaders} from './assets.mjs';
 const allowed=new Set([...publicAssets,'config.js']);
 const config=(await import(pathToFileURL(resolve('dist/config.js')).href)).default;
-const headers=securityHeaders(config.url);
+const captchaConfig=(await import(pathToFileURL(resolve('dist/captcha-config.js')).href)).default;
+const headers=securityHeaders(config.url,Boolean(config.url&&captchaConfig.siteKey));
 const server=createServer(async(req,res)=>{
   for(const [k,v] of Object.entries(headers))res.setHeader(k,v);
   res.setHeader('Cache-Control','no-store');
