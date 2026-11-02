@@ -2,6 +2,22 @@
 
 Stato al 1 novembre 2026. Preparazione, non dichiarazione di servizio aperto.
 
+## Aggiornamento privacy e condizioni · RC2
+
+Il proprietario ha confermato Vercel Hobby e ha incaricato di preparare integralmente privacy e condizioni. La scelta del piano resta confermata, senza upgrade; la documentazione dei ruoli/accordi del fornitore non viene dichiarata risolta dalla sola scelta.
+
+Pacchetto predisposto:
+- `src/service-policy.js`, `src/retention.js` e pagine Privacy/Condizioni: regole di cancellazioni, danni, segnalazioni, riesame, versioni e criteri di conservazione proposti.
+- `PRIVACY_OPERATIONS.md`, `MODERATION_OPERATIONS.md`, `PROVIDERS_REVIEW.md`: procedure e riscontri effettivi, inclusi IONOS/Gmail per l’assistenza.
+- `supabase/launch/legal_acceptance.sql`: schema/RPC di ricevute, snapshot immutabili e controlli server per nuove attività. Testato localmente; non applicato al progetto Supabase remoto. Script preparatorio perché la CLI non è disponibile; nessuna installazione eseguita.
+- Interfaccia e API: caselle separate non preselezionate, testi esatti della versione server, ricevuta consultabile e inclusa nell’esportazione. Accesso ai dati e gestione dei rapporti in corso non richiedono una nuova accettazione.
+- `npm run legal:prepare`: genera copie leggibili e impronte in `legal-review/`; rifiuta di generare SQL di pubblicazione finché i dati non sono revisionati.
+- Verifica dei recapiti esplicita: non si forza automaticamente la pubblicazione di un indirizzo privato. Restano da determinare gli obblighi effettivi del gestore del sito.
+
+Verifiche RC2: 114 test superati; build demo, controllo sintassi e scansione credenziali senza rilievi. La generazione SQL per documenti non revisionati è bloccata. Il nuovo flusso non è ancora applicato al backend né collaudato dalla UI collegata.
+
+Le durate 12/24 mesi e 24 ore/90 giorni sono **proposte organizzative**, non termini obbligatori di legge né job di cancellazione già attivi. La pubblicazione dei documenti è distinta dalla preparazione del codice. Dettagli di attivazione e limiti in `LEGAL_RELEASE.md`.
+
 ## Scelte confermate
 
 - Solo privati maggiorenni, inizialmente Roma; escluso l’uso per aziende o attività professionali.
@@ -52,7 +68,7 @@ Queste modifiche non includono la PR #1 CAPTCHA, non modificano il backend o le 
 | Hosting gratuito | Chiarimento di ammissibilità su Vercel Hobby e copertura privacy, oppure scelta di un’alternativa gratuita verificata |
 | Titolare e documenti | Recapito da rendere pubblico, revisione definitiva dell’informativa e delle condizioni, verifica effettiva degli accordi dei fornitori |
 | Conservazione | Decisione per finalità su chat, noleggi, riscontri, segnalazioni, log e backup; procedure coerenti. La matrice è ancora bozza; nessuna cancellazione periodica generale è stata attivata |
-| Accettazione condizioni | Condizioni definitive versionate, accettazione esplicita e ricevuta lato server da implementare e verificare; una casella frontend non è una ricevuta |
+| Accettazione condizioni | Codice e test locali completati in RC2; installazione remota, pubblicazione dei testi revisionati e collaudo dalla UI collegata restano da eseguire |
 | Protezione abusi | Completare la configurazione e le prove CAPTCHA della PR #1; nessuna attivazione parziale che blocchi registrazione, login o cancellazione |
 | Operatore | Account del gestore, accesso alle code, procedura per assistenza, segnalazioni, cancellazioni non automatiche ed errori del worker |
 | Collaudo con utenti distinti | A/B/C: accesso ai dati, chat/foto private, autorizzazioni, prenotazioni contemporanee, upload falliti, logout e cancellazione con sole fixture di prova |
@@ -61,7 +77,7 @@ Queste modifiche non includono la PR #1 CAPTCHA, non modificano il backend o le 
 ## Sequenza di apertura, dopo i prerequisiti
 
 1. Chiudere la decisione sull’hosting senza attivare spese; completare i dati e documenti del titolare.
-2. Implementare ricevuta delle condizioni e procedure di conservazione approvate; collaudarle senza cancellare dati reali.
+2. Installare la ricevuta predisposta e pubblicare i testi revisionati secondo LEGAL_RELEASE.md; attuare la conservazione approvata e collaudare senza cancellare dati reali.
 3. Completare CAPTCHA nell’ordine della PR #1, incluse le funzioni di cancellazione. Configurare l’operatore.
 4. Generare un build collegato di prova con sole chiavi pubbliche e raggiungibile nel contesto approvato; provare tutti i flussi con account distinti e sole attrezzature di test chiaramente riconoscibili. Non copiare gli annunci della demo nel database.
 5. Controllare quote, recupero dati, dominio, TLS e header; completare i test sui dispositivi.

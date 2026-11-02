@@ -1,0 +1,97 @@
+TRASPARENZA · AGGIORNATA IL 1 NOVEMBRE 2026
+
+I tuoi dati, spiegati.
+
+Documento in preparazione per il servizio con account reali. La verifica di pre-lancio di recapiti, conservazione e accordi con i fornitori è ancora incompleta.
+
+Chi gestisce il sito
+
+Titolare: Nicolò Caloni. Verifica degli ulteriori recapiti del gestore in corso. Per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it (mailto:assistenza@rent-to-a-friend.it).
+
+Quali dati usa questa versione
+
+Gli account usano email e credenziali tramite Supabase Auth, nome visibile, quartiere, foto e bio facoltative, annunci, richieste, messaggi, recensioni, riscontri e segnalazioni. Sono trattati anche date delle operazioni e dati tecnici di sicurezza.
+
+Scopi e visibilità
+
+Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La gestione degli abusi richiede una valutazione del legittimo interesse; possono applicarsi obblighi legali. Non usiamo pubblicità personalizzata o email marketing.
+
+Basi del trattamento e dati necessari
+
+Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. La prevenzione degli abusi e la tutela di diritti possono basarsi sul legittimo interesse, da bilanciare e documentare, e su obblighi applicabili. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
+
+Fornitori: cosa è attivo
+
+• Vercel distribuisce il sito e tratta dati tecnici delle richieste.
+
+• Supabase: gestisce autenticazione, database, foto e funzioni server; progetto dedicato a Francoforte.
+
+• Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth. Non invia email per messaggi, noleggi o marketing.
+
+• Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. I messaggi inviati all’assistenza sono trattati anche tramite questi fornitori, separatamente dalla chat dell’app; non inviare documenti o dati sensibili non necessari.
+
+• Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
+
+La verifica degli accordi, dei subfornitori, dei trasferimenti e dei cicli di backup e log per il servizio con account reali non è conclusa. Un database in UE non significa che tutti i trattamenti dei fornitori avvengano esclusivamente in UE.
+
+Destinatari e trasferimenti
+
+Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di consegna sono riservate alle controparti. Il gestore e gli eventuali incaricati autorizzati accedono solo per le finalità necessarie. I fornitori tecnici e i loro subfornitori possono trattare i dati nei limiti dei rispettivi ruoli e accordi. Eventuali richieste legittime delle autorità sono valutate nei limiti applicabili. Prima dell’apertura vanno completati il registro dei fornitori, le garanzie per i trasferimenti fuori SEE e i tempi di log e copie: questa bozza non li considera già verificati.
+
+Intelligenza artificiale
+
+La chat non è un chatbot AI. L’app non invia messaggi, bio o foto a modelli AI per generare risposte o addestrarli. La chat mette in comunicazione gli utenti.
+
+Foto e conservazione
+
+Le foto selezionate vengono ridimensionate e ricodificate nel browser, rimuovendo i metadati EXIF dell’originale. Le foto profilo e annunci sono pubbliche; i riscontri usano un archivio privato e link a scadenza breve. I file sostituiti vengono rimossi dopo il salvataggio; gli errori sono riprovabili da I tuoi dati.
+
+Il calendario di conservazione degli account reali non è approvato. Eventuali copie già scaricate da altre persone non possono essere ritirate dal sito.
+
+Memoria del browser e notifiche
+
+I preferiti sono salvati nel browser; la sessione di accesso è conservata nella memoria della scheda. Il service worker conserva la pagina offline, stile e icona. Le funzioni per sessione, link email e push degli account reali sono descritte separatamente nella pagina Cookie e memoria (https://rent-to-a-friend.it/#cookies). Non installiamo strumenti di analisi del pubblico o cookie pubblicitari.
+
+Conservazione del servizio con account reali
+
+Il piano seguente è una bozza da approvare: non descrive cancellazioni periodiche attive e non sostituisce i tempi dei fornitori.
+
+Consulta la bozza dei criteri di conservazione
+
+Dati | Durata o criterio | Gestione prevista o predisposta |
+
+Account e profilo | Finché l’account resta aperto; alla chiusura si eliminano i dati non più necessari | La richiesta di cancellazione avvia la verifica dei rapporti condivisi. Nessuna conservazione indefinita del profilo pubblico dopo la chiusura. |
+
+Foto sostituite o rimosse | Dopo il salvataggio della modifica | Eliminazione del file non più utilizzato tramite Storage; ripresa manuale in caso di errore. |
+
+Upload interrotti o mai utilizzati | Proposta: 24 ore, verificando che il file non sia associato a contenuti | Pulizia periodica da attivare prima di dichiarare questo termine operativo. La pulizia manuale attuale esclude file più recenti di un’ora. |
+
+Account senza noleggi, chat o segnalazioni | Alla conferma di cancellazione | Procedura automatica predisposta per file, record e account; ripresa in caso di errore. Da collaudare dalla UI collegata. |
+
+Domande e chat senza noleggio | Proposta: 12 mesi dall’ultimo messaggio | Verifica e rimozione dei dati non necessari. Escludere le parti interessate da una controversia concreta, con motivazione e riesame. |
+
+Noleggi conclusi, messaggi collegati e foto di consegna | Proposta: 24 mesi dalla chiusura del noleggio | Minimizzare prima della cancellazione: mantenere solo quanto serve per assistenza e contestazioni. I casi ancora aperti sono riesaminati ogni 6 mesi, con durata motivata per il singolo caso. |
+
+Recensioni e annunci | Durante la pubblicazione; alla rimozione o chiusura account si verifica cosa eliminare o anonimizzare | Nascondere i contenuti rimossi; conservare eventuali prove di abusi separatamente e per il tempo strettamente necessario. |
+
+Segnalazioni e richieste sui dati | Proposta: 12 mesi dalla chiusura della pratica | Conservare esito e motivazione minimizzando il contenuto. Estensioni per obblighi o controversie vanno documentate e riesaminate ogni 6 mesi. |
+
+Ricevute di accettazione delle condizioni | Durante l’account; eliminate con la cancellazione Auth salvo un’esigenza specifica documentata | Solo account, versione, impronte dei documenti, dichiarazioni e data server; nessun IP o user agent aggiuntivo. Le copie dei documenti restano prive di dati degli utenti. |
+
+Notifiche lette e log operativi dell’app | Proposta: 90 giorni; i log dei fornitori seguono condizioni separate | Nessun contenuto dei messaggi nei log. Cancellazione periodica da predisporre e verificare; non è ancora attiva. |
+
+Email e log Resend | Secondo il fornitore: 30 giorni; backup 7 giorni; dati residui entro 90 giorni dalla cessazione | Riscontro pubblico del 1 novembre 2026. La scelta della regione di invio non sposta la conservazione negli USA. |
+
+Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | Prima dell’apertura registrare le scadenze verificate. Nessuna promessa di cancellazione istantanea da copie o log; Supabase Free non include backup automatici gestiti. |
+
+Ricevuta delle condizioni e scelte facoltative
+
+L’accettazione delle condizioni e la dichiarazione di essere un privato maggiorenne sono espresse mediante caselle non preselezionate dopo la conferma email. La presa visione della privacy è registrata separatamente e non è un consenso generico al trattamento. Una ricevuta associa l’account alla versione e all’impronta dei testi mostrati, con data del server. Puoi consultarla da I tuoi dati. Non vengono raccolti IP o user agent aggiuntivi per questa ricevuta. Non usiamo la presa visione dell’informativa come consenso a tutte le finalità. L’eventuale consenso per funzioni facoltative può essere revocato senza invalidare i trattamenti già effettuati legittimamente.
+
+I tuoi diritti e i controlli disponibili
+
+Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali. Il termine di riscontro è un mese, salvo le proroghe ammesse.
+
+Da I tuoi dati puoi esportare i record disponibili e richiedere la cancellazione. La procedura automatica verifica la password e gestisce gli account senza noleggi, conversazioni, segnalazioni o ruoli operatore. Gli altri casi passano al gestore con motivo visibile. La richiesta non equivale a una cancellazione conclusa; eventuali dati conservati per obblighi o controversie devono essere spiegati.
+
+Apri I tuoi dati (https://rent-to-a-friend.it/#data-rights)

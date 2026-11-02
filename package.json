@@ -7,7 +7,8 @@
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",
     "dev": "node scripts/serve.mjs",
-    "security:scan": "node scripts/security-audit.mjs"
+    "security:scan": "node scripts/security-audit.mjs",
+    "legal:prepare": "node scripts/prepare-legal-release.mjs"
   },
   "engines": {
     "node": ">=22"

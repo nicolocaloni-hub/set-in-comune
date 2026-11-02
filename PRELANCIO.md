@@ -2,6 +2,8 @@
 
 ## Stato attuale · preparazione del lancio, 1 novembre 2026
 
+Aggiornamento RC2: privacy/condizioni e conservazione predisposte, ricevute lato server e interfaccia implementate e testate localmente; nessuna applicazione remota o cancellazione periodica. Vedere `LEGAL_RELEASE.md` per pubblicazione e verifiche ancora da chiudere. Gli stati storici che indicano la ricevuta come non implementata sono superati dal codice RC2.
+
 La decisione e le attività correnti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). Le sezioni di release successive sono uno storico e non attestano che tutti i controlli di lancio siano completati.
 
 - Pubblico ancora demo, piani gratuiti invariati. Nessuna apertura ad account reali in questa preparazione.

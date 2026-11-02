@@ -88,3 +88,12 @@ Fonti ricontrollate:
 - https://supabase.com/pricing
 
 Lo smoke test Auth reale ha verificato consegna, autenticazione del mittente, conferma indirizzo, redirect canonico, scambio PKCE, recupero, rifiuto della vecchia password, login con nuova password e logout delle sessioni del solo account di prova. Password e token temporanei sono stati rimossi; nessuna credenziale è salvata nel repository. Questo non sostituisce il test dalla UI collegata con browser/dispositivi reali.
+
+
+## RC2 · privacy e condizioni preparate su incarico del proprietario
+
+Questa sezione aggiorna lo stato storico sopra. Vercel Hobby rimane la scelta esplicita, senza upgrade. Pacchetto completo di proposte e procedure in PRIVACY_OPERATIONS.md, MODERATION_OPERATIONS.md e PROVIDERS_REVIEW.md. Ricevute delle condizioni implementate e provate localmente, con SQL preparatorio non applicato: vedere LEGAL_RELEASE.md.
+
+Il recapito postale non è trattato come requisito automatico del solo GDPR. `contactReviewComplete=false` e `postalAddressRequired=null` impediscono che una decisione non presa sia presentata come completata; un eventuale indirizzo deve essere pertinente e autorizzato alla pubblicazione. Anche reviewed, providersReviewed, retentionPolicy.approved e legalRelease.approved restano falsi perché mancano verifiche fattuali, non perché sia richiesta una nuova conferma generica al lavoro già autorizzato.
+
+La matrice ora propone criteri anche per chat e noleggi, con eccezioni motivate e riesame. Non sono state attivate cancellazioni periodiche o chiusure di account. IONOS e Gmail per l’assistenza sono stati aggiunti alla mappa dei fornitori; termini e ruoli degli account effettivi restano da verificare.

@@ -93,6 +93,14 @@ export const api={
   async signup(email,password,display_name){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
   async reset(email){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params});},
   async logout(){if(!isDemo&&session){try{await request('/auth/v1/logout',{method:'POST'});}finally{storeSession(null);localStorage.removeItem(PKCE_KEY);}}},
+  async legalStatus(){requireUser();return isDemo?{available:false,accepted:false}:rpc('my_legal_status',{});},
+  async legalReceipts(){requireUser();return isDemo?[]:rpc('my_legal_receipts',{});},
+  async acceptLegalDocuments(doc,choices){
+    requireUser();if(isDemo)throw new Error('La demo non registra accettazioni per account reali.');
+    if(!doc?.available||typeof doc.version!=='string'||doc.version.length>80||![/^[a-f0-9]{64}$/.test(doc.terms_hash),/^[a-f0-9]{64}$/.test(doc.privacy_hash)].every(Boolean))throw new Error('Riapri i documenti aggiornati prima di accettare.');
+    if(choices?.terms!==true||choices?.privacySeen!==true||choices?.privateAdult!==true)throw new Error('Seleziona le dichiarazioni richieste senza confondere la privacy con un consenso generico.');
+    return rpc('accept_legal_documents',{p_version:doc.version,p_terms_hash:doc.terms_hash,p_privacy_hash:doc.privacy_hash,p_terms_accepted:true,p_privacy_seen:true,p_private_adult:true});
+  },
   async listings(){
     if(isDemo)return structuredClone(db.listings.filter(x=>x.active).map(l=>({...l,blocked:[...l.blocked,...db.bookings.filter(b=>b.listing_id===l.id&&['accepted','collected','returned'].includes(b.status)).map(b=>({start_date:b.start_date,end_date:b.end_date}))]})));
     const [items,periods]=await Promise.all([rest('listings','?active=eq.true&order=created_at.desc'),rest('listing_availability')]);
@@ -142,7 +150,7 @@ export const api={
   async erasureQueue(){requireUser();if(isDemo)return [];return rpc('account_erasure_queue',{});},
   async privacyQueue(){requireUser();if(isDemo)throw new Error('Nessun gestore reale nella demo.');return rpc('privacy_queue',{});},
   async respondPrivacy(id,status,response){requireUser();resourceId(id,isDemo);return rpc('respond_privacy_request',{p_request:id,p_status:status,p_response:response});},
-  async exportData(){requireUser();if(!isDemo)return {...await rpc('export_my_data',{}),account_email:api.user().email};return {exported_at:new Date().toISOString(),demo:true,profile:await api.profile(),listings:await api.myListings(),bookings:await api.bookings(),messages:structuredClone(db.messages),evidence:structuredClone(db.evidence),reviews:structuredClone(db.reviews),privacy_requests:await api.privacyRequests()};},
+  async exportData(){requireUser();if(!isDemo){const [data,receipts]=await Promise.all([rpc('export_my_data',{}),api.legalReceipts()]);return {...data,account_email:api.user().email,legal_receipts:receipts};}return {exported_at:new Date().toISOString(),demo:true,profile:await api.profile(),listings:await api.myListings(),bookings:await api.bookings(),messages:structuredClone(db.messages),evidence:structuredClone(db.evidence),reviews:structuredClone(db.reviews),privacy_requests:await api.privacyRequests()};},
   async unusedUploads(){requireUser();return isDemo?[]:rpc('unused_uploads',{});},
   async cleanUnusedUploads(){requireUser();const rows=await api.unusedUploads();for(const bucket of ['profile-photos','listing-photos','handoff-photos']){const paths=rows.filter(r=>r.bucket===bucket).map(r=>r.path);if(paths.some(p=>!p.startsWith(api.user().id+'/')||p.includes('..')))throw new Error('Percorso foto non valido.');if(paths.length)await request('/storage/v1/object/'+bucket,{method:'DELETE',body:JSON.stringify({prefixes:paths})});}const remaining=await api.unusedUploads();if(remaining.length)throw new Error('Alcuni file non sono stati eliminati. Riprova la pulizia più tardi.');api.photoCleanupPending=false;return rows.length;},
   resetDemo(){if(!isDemo)return;for(const key of [DEMO_KEY,'sic-favorites',PKCE_KEY])localStorage.removeItem(key);sessionStorage.removeItem(SESSION_KEY);location.reload();}
