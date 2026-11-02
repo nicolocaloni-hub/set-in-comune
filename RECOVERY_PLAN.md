@@ -1,6 +1,10 @@
 # Copie di sicurezza e ripristino · stato al 2 novembre 2026
 
-## Verificato adesso
+## Aggiornamento successivo · backup richiesto dal gestore
+
+Preflight aggiornato con le sole API di metadati: progetto `srjdysdhxnafjrutufmk` ACTIVE_HEALTHY, PostgreSQL 17.11.0.011, organizzazione Free e sette migrazioni elencate. Nessuna esportazione o ripristino è stato effettuato. Mancano ancora Supabase CLI, pg_dump, psql e Docker; non è stata effettuata alcuna installazione. Il collegamento Supabase non dispone di un export completo recuperabile del database e dei file. `BACKUP_TEST_STATUS.md` distingue le prove eseguite dal backup e dai collaudi ancora non effettuati.
+
+## Rapporto aggregato precedente (non rieseguito)
 
 Progetto Supabase `srjdysdhxnafjrutufmk`, organizzazione Free, Francoforte, PostgreSQL 17.11.0.011, stato ACTIVE_HEALTHY. Rapporto aggregato in `supabase/launch/operational-status-2026-11-02.json`; query ripetibile in `operational_status.sql`. La query è in transazione di sola lettura, non crea RPC e non esporta contenuti o identificativi personali.
 

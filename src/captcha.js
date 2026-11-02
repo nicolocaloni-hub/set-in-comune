@@ -35,8 +35,7 @@ export function createCaptchaClient({demo=false,siteKey='',document:doc=globalTh
  return {
   clear,
   async mount(form){
-   clear();if(demo||!form)return;
-   if(!siteKey)throw new Error('Verifica di sicurezza non configurata. Gli account reali non sono disponibili.');
+   clear();if(demo||!siteKey||!form)return;
    const box=doc.createElement('div'),status=doc.createElement('p');status.className='fineprint';status.setAttribute('role','status');status.textContent='Caricamento della verifica di sicurezza…';box.append(status);form.insertBefore(box,form.querySelector('button'));
    const entry={form,gate:createCaptchaGate(),id:undefined};active=entry;
    const provider=await load();if(active!==entry||!form.isConnected)return;
@@ -47,7 +46,7 @@ export function createCaptchaClient({demo=false,siteKey='',document:doc=globalTh
     'timeout-callback':()=>{if(active===entry){entry.gate.clear();status.textContent='Verifica scaduta: riprova.';}}
    });
   },
-  take(form){if(demo)return '';if(active?.form!==form)throw new Error('Completa la verifica di sicurezza e riprova.');return active.gate.take();},
+  take(form){if(demo||!siteKey)return '';if(active?.form!==form)throw new Error('Completa la verifica di sicurezza e riprova.');return active.gate.take();},
   reset(form){if(active?.form===form){active.gate.clear();if(active.id!==undefined)try{win.turnstile?.reset(active.id);}catch{};}}
  };
 }

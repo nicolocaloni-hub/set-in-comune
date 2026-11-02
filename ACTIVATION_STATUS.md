@@ -25,6 +25,12 @@ Il gestore ha chiesto di considerare risolta la privacy; scelta Gmail e approvaz
 
 Cloudflare Pages demo è stata creata dal gestore ed è raggiungibile a `https://rent-to-a-friend.pages.dev/`; home e privacy sono state verificate nel browser, header HTML forniti dal gestore coerenti con il build. Zona del dominio preparata; nessun cambio di delega eseguito dall'agente. Dopo gli errori del pannello IONOS, il gestore ha sospeso la migrazione: dominio ancora su Vercel. Le dichiarazioni precedenti sull'assenza del progetto Pages sono superate da questo aggiornamento.
 
+## Backup e prove · decisione successiva
+
+Turnstile rinviato dal gestore, non requisito di lancio. Opt-in del build esplicito e disattivato di default; moduli collegati senza widget utilizzabili, mantenendo i blocchi privacy/documenti e le verifiche quando il provider è configurato. Nessun controllo server già attivo è stato disabilitato. Le istruzioni CAPTCHA sotto descrivono lo storico, non un’attività da eseguire ora.
+
+Supabase ricontrollato in sola lettura tramite metadati: progetto sano, organizzazione Free, sette migrazioni elencate, advisor descritti in `BACKUP_TEST_STATUS.md`. Non è stato esportato il database o copiato lo Storage. Gli strumenti di backup/ripristino continuano a mancare; non sono stati installati né comprati. I contatori storici non sono presentati come nuovi e la query aggregata precedentemente bloccata non è stata ripetuta tramite un altro canale.
+
 ## Controlli ancora necessari prima degli utenti reali
 
 Aggiornamento successivo alle scelte del gestore: assistenza Gmail mantenuta; possibile AdSense futuro per i costi, ma attivazione rinviata. Preparazione Cloudflare nella PR #6, nessuna migrazione. 122 test locali e build demo Vercel/Pages superati, credenziali senza pattern rilevati, documenti RC4 rigenerati senza variazione delle impronte e senza SQL di pubblicazione. Cloudflare continua a mostrare un errore di accesso. Il tentativo di aggiornare il report aggregato Supabase è stato impedito dal controllo automatico per limite d'utilizzo e non è stato eseguito; non si attestano nuovi controlli remoti. Nessun account reale, pubblicità, pulizia periodica o modifica di recapito è stato attivato.
