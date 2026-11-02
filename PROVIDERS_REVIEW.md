@@ -16,6 +16,24 @@ Ambito effettivo: sito statico Vercel; progetto Supabase dedicato `srjdysdhxnafj
 
 ## I tre nodi da risolvere
 
+### Aggiornamento dopo accesso IONOS e scelta del gestore
+
+Il 2 novembre è stato verificato direttamente il pannello IONOS: contratto **IONOS Pack Dominio**, attivo dal **31 ottobre 2026**, con dominio aggiuntivo `rent-to-a-friend.it`. `assistenza@rent-to-a-friend.it` inoltra a `assistenza.rtaf@gmail.com`; `info@rent-to-a-friend.it` inoltra a `info.rent.to.a.friend@gmail.com`. Sono inoltri, non caselle complete. Nella selezione dei prodotti erano visibili inoltro gratuito e Mail Business con **Ordina**, senza un'opzione Mail Basic inclusa. Il dettaglio del contratto ha restituito un errore anche dopo una ricarica: non si certifica quindi l'assenza di ogni ulteriore diritto contrattuale. Non sono stati registrati qui identificativi cliente, numeri di contratto, indirizzi privati o pagamenti.
+
+Il gestore conferma di non avere un'altra casella oltre Gmail e sceglie di **preparare Cloudflare gratuito**. `CLOUDFLARE_PREPARATION.md` descrive il build pronto, prove e passaggio futuro: nessun progetto Pages, migrazione o DNS modificato. Le indicazioni precedenti di questo documento su verifiche non ancora effettuate vanno lette con questo aggiornamento.
+
+**Decisioni successive:** il gestore mantiene espressamente l'inoltro IONOS → `assistenza.rtaf@gmail.com`; Proton resta una possibilità studiata, non un'attività da eseguire o un acquisto necessario. La scelta è recepita senza dichiarare chiusa la valutazione del ruolo/accordo di Gmail. Il collegamento Gmail disponibile è dell'account personale `nicolocaloni@gmail.com`, non della casella di assistenza: nessuna lettura della posta personale è stata usata come prova di consegna o sicurezza dell'assistenza, né sono stati modificati inoltri o caselle.
+
+Il gestore prevede possibile pubblicità futura, forse AdSense, per sostenere i costi, ma ne rinvia l'attivazione. Nessun servizio pubblicitario è attivo o richiesto da questo lavoro. Vercel Hobby elenca esplicitamente gli annunci, incluso AdSense, fra gli usi commerciali: prima di monetizzare non si potrà usare Hobby come soluzione confermata. La preparazione Cloudflare Free resta il percorso scelto, subordinato a importazione e prove; non si attiva un piano Vercel a pagamento.
+
+Il pannello Cloudflare attuale mostra ancora **Unable to sign in**: nessuna sessione autenticata verificata per creare Pages e nessun nuovo tentativo di invio credenziali effettuato. La ripetizione del report SQL aggregato Supabase è stata impedita dal controllo automatico delle autorizzazioni per limite d'utilizzo; la query **non è stata eseguita** e non si aggiornano i conteggi come se lo fosse stata. I rapporti precedenti restano evidenze storiche, non una verifica nuova. Non si usa un altro canale per aggirare tale controllo.
+
+**Alternativa email gratuita individuata, non attivata:** Proton Mail dichiara che il DPA si applica anche al piano Free; il testo contrattuale lo collega all'uso del servizio da parte di un'attività/organizzazione indipendentemente dalla forma giuridica. Il piano Free offre un indirizzo Proton, 500 MB iniziali espandibili fino a 1 GB secondo la checklist, 150 email/giorno e non supporta un dominio personalizzato per inviare come `assistenza@rent-to-a-friend.it`. Si può valutare la ricezione tramite l'inoltro IONOS e la risposta dall'indirizzo Proton, già coerente con la scelta del gestore di rispondere da un indirizzo diverso. Questo percorso non elimina IONOS: la disciplina dell'inoltro va comunque documentata. Nessun account Proton creato, termini accettati, inoltro cambiato, email inviata o posta cancellata. La creazione delle credenziali e l'accettazione devono avvenire da parte del titolare; non usare registrazioni automatizzate vietate dai termini Proton. Servono poi prova di ricezione/risposta e gestione delle copie già su Gmail prima di togliere Google dall'elenco dei fornitori. Non attestare la conformità dell'intero canale solo perché esiste il DPA.
+
+Fonti Proton: https://proton.me/support/is-proton-mail-gdpr-compliant ; https://proton.me/legal/dpa (10 febbraio 2026); https://proton.me/mail/pricing ; https://proton.me/support/get-started-mail ; https://proton.me/support/custom-domain ; https://proton.me/legal/terms .
+
+La verifica del recapito e la valutazione motivata delle durate sono in `CONTACT_RETENTION_REVIEW.md`. Il gestore non ha autorizzato la pubblicazione di casa propria e ha accettato le durate in modo condizionato; nessun flag di conformità è stato forzato.
+
 1. **Assistenza:** verificare il prodotto IONOS già acquistato e se include una casella effettiva, senza ordinare servizi. Se si sceglie di cambiare destinazione, provarla prima, aggiornare i testi e valutare le copie di posta già esistenti; non cancellare posta per prova.
 2. **Hosting:** richiedere un riscontro sul modello preciso a Vercel o decidere una soluzione gratuita compatibile. Il proprietario ha già scelto di non pagare: questa revisione non riapre quella decisione né avvia migrazioni.
 3. **Dati del gestore e criteri operativi:** completare il recapito pertinente e la valutazione della conservazione. Non ricavare l'indirizzo di casa dalla posta, dai contratti o da altre fonti per pubblicarlo senza istruzione specifica.
@@ -26,7 +44,7 @@ Dal proprio account: Menu → Il mio account → Contratti & abbonamenti → con
 
 ## Limiti ed evidenze
 
-Una ricerca mirata nella casella Gmail collegata al dominio e ai mittenti IONOS non ha trovato riscontri contrattuali. Non sono state lette email estranee, inviate richieste ai fornitori, sottoscritte condizioni o acquistati servizi. Le configurazioni dichiarate dal proprietario restano distinte dagli account verificabili tramite collegamenti tecnici.
+Una precedente ricerca mirata al dominio e ai mittenti IONOS nella casella Gmail collegata all'assistente non ha trovato riscontri contrattuali; quella casella non è l'account Gmail di assistenza. Non sono state lette email estranee, inviate richieste ai fornitori, sottoscritte condizioni o acquistati servizi. Le configurazioni dichiarate dal proprietario restano distinte dagli account verificabili tramite collegamenti tecnici.
 
 La lista subfornitori non dimostra che ogni soggetto riceva ogni dato. L'app non invia chat o foto a modelli generativi; i controlli automatizzati di sicurezza dei fornitori sono distinti da questa dichiarazione. La registrazione in un piano gratuito non elimina obblighi o vincoli contrattuali, ma non implica automaticamente che sia obbligatorio pagare.
 
@@ -47,3 +65,5 @@ La lista subfornitori non dimostra che ogni soggetto riceva ogni dato. L'app non
 - Google Gmail consumer: https://support.google.com/policies/answer/9581826?hl=it
 - Vercel DPA: https://vercel.com/legal/dpa
 - Vercel Fair Use: https://vercel.com/docs/limits/fair-use-guidelines
+- Google AdSense, CMP e annunci personalizzati SEE/Regno Unito/Svizzera: https://support.google.com/adsense/answer/13554116?hl=en
+- Google AdSense, cookie negli annunci non personalizzati: https://support.google.com/adsense/answer/9007336?hl=en-GB

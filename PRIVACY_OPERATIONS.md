@@ -53,6 +53,14 @@ Registrare il riferimento della pratica, i dati indispensabili, la finalità, il
 
 ## Richieste degli interessati
 
+### Gestione dell'assistenza Gmail mantenuta dal gestore
+
+Canale confermato: `assistenza@rent-to-a-friend.it` inoltrato a `assistenza.rtaf@gmail.com`; risposte dalla casella Gmail come già scelto. Non creare una nuova casella, sostituire il destinatario o attivare risposte automatiche. Il gestore legge e gestisce personalmente le richieste; nessuna reperibilità continua è promessa.
+
+Raccogliere il riferimento al contenuto e il minimo necessario per il problema. Evitare documenti, dati finanziari e allegati non pertinenti; usare verifiche proporzionate dell'identità per le richieste sui dati. Separare le pratiche aperte da quelle chiuse e annotare data di chiusura, motivo di eventuale conservazione ulteriore e riesame. La proposta di 12 mesi richiede una revisione manuale di ricevuti, inviati e allegati: cancellare un account Supabase non elimina la posta. Non cancellare messaggi reali per collaudare la procedura.
+
+Verifiche ancora da riscontrare nella **casella di assistenza**, non nell'account Google personale: accesso riservato al gestore, protezione dell'account e recupero, destinatario effettivo dell'inoltro, ricezione e risposta, gestione delle copie. Nessuna di queste verifiche è attestata dal solo indirizzo pubblicato o dalla disponibilità di un collegamento Gmail di un altro account. Non esportare la posta in documenti pubblici o nel repository. L'informativa continua a indicare Gmail consumer e la questione contrattuale aperta; queste misure operative non sostituiscono la valutazione del ruolo e degli accordi.
+
 - Canali: I tuoi dati o email di contatto; non subordinare accesso, opposizione o cancellazione all’accettazione di nuove condizioni.
 - Identità: usare l’account autenticato o una verifica proporzionata; non richiedere di routine una copia del documento.
 - Termine: riscontro entro un mese; se sono applicabili proroghe, comunicarne motivo e durata entro il primo mese.
