@@ -1,0 +1,114 @@
+{
+  "run": "c620505c-2e8d-4d35-ad24-6cd0c9cf1798",
+  "project": "srjdysdhxnafjrutufmk",
+  "scope": "Real app API with synthetic pre-existing rental",
+  "checks": [
+    {
+      "name": "login_owner",
+      "ok": true
+    },
+    {
+      "name": "public_photo_still_blocked_before_legal_publication",
+      "ok": true
+    },
+    {
+      "name": "private_jpeg_uploaded",
+      "ok": true
+    },
+    {
+      "name": "owner_download_hash_matches",
+      "ok": true,
+      "bytes": 1610,
+      "status": 200
+    },
+    {
+      "name": "private_file_not_public",
+      "ok": true,
+      "status": 400
+    },
+    {
+      "name": "owner_message_saved",
+      "ok": true
+    },
+    {
+      "name": "login_renter",
+      "ok": true
+    },
+    {
+      "name": "counterparty_download_hash_matches",
+      "ok": true,
+      "status": 200
+    },
+    {
+      "name": "counterparty_reads_test_message",
+      "ok": true
+    },
+    {
+      "name": "login_outsider",
+      "ok": true
+    },
+    {
+      "name": "outsider_cannot_sign_private_file",
+      "ok": true
+    },
+    {
+      "name": "outsider_reads_no_chat_messages",
+      "ok": true
+    },
+    {
+      "name": "outsider_cannot_send_message",
+      "ok": true
+    },
+    {
+      "name": "outsider_cannot_delete_private_file",
+      "ok": true,
+      "status": 200
+    },
+    {
+      "name": "login_owner",
+      "ok": true
+    },
+    {
+      "name": "file_survives_foreign_deletion_attempt",
+      "ok": true
+    },
+    {
+      "name": "export_has_own_profile",
+      "ok": true
+    },
+    {
+      "name": "deleted_file_cannot_be_signed_again",
+      "ok": true
+    }
+  ],
+  "cleanup": {
+    "fileRemoved": true,
+    "loggedOut": true,
+    "databaseFixtureCounts": {
+      "auth_users": 0,
+      "profiles": 0,
+      "identities": 0,
+      "sessions": 0,
+      "listings": 0,
+      "bookings": 0,
+      "messages": 0,
+      "notifications": 0,
+      "storage_objects": 0
+    },
+    "verified": true
+  },
+  "photoBytes": 1610,
+  "photoHash": "e4fb7bf35b4d8c77605bf4280faf2d409ff740d0d236b80a1299a18937d59c73",
+  "migration": {
+    "name": "storage_upload_actor_quota",
+    "version": "20261102115131",
+    "applied": true,
+    "source_md5": "52e0c35cd1fc78612cf7b54aa20d8efc"
+  },
+  "quota": {
+    "one_upload_counted_once": true,
+    "owner_upload_hits": 1
+  },
+  "legal_release_active": false,
+  "result": "PASS"
+}

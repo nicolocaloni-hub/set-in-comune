@@ -24,9 +24,9 @@ Il gestore ha chiesto di considerare risolta la privacy. Approvazione e scelte s
 |---|---|---|
 | Documenti e fornitori | Conservare l’approvazione privacy del gestore; completare i riscontri fattuali degli account e pubblicare la versione coerente con l’hosting effettivo | Decisione del gestore acquisita; prove e accordi non inventati |
 | Conservazione | Provare la gestione dei criteri descritti, inclusa la posta di assistenza e le eccezioni | Approvazione del gestore acquisita; nessuna cancellazione periodica generale attiva |
-| Backup e ripristino | Creare una copia esterna completa di database e file e provarne il recupero isolato | Mancano strumenti di export/restore e contesto sicuro; nessuna installazione o spesa |
+| Backup e ripristino | Rinviato dal gestore per il primo avvio | Nessuna copia o prova di ripristino esistente; non richiedere nuovamente una configurazione già esclusa |
 | CAPTCHA | Rinviato dal gestore; nessuna attivazione richiesta per questa versione | Opt-in esplicito nel build; una Site Key residua non carica il provider |
-| Collaudo collegato | Dalla UI provare accettazione, accesso/recovery, upload, prenotazioni/chat, diritti, cancellazione e push | SQL e mail già provati; la UI con backend rimane bloccata dai prerequisiti reali |
+| Collaudo collegato | Completare le prove UI dopo i prerequisiti effettivi di rilascio | Correzione Storage applicata e 18 controlli HTTP superati; fixture rimosse. UI e telefoni ancora da collaudare: STORAGE_UPLOAD_TEST.md |
 | Telefono | Verificare impaginazione, tastiera, touch, foto e notifiche su Android/iPhone effettivi | Codice adattato; test fisici mancanti |
 
 ## Ordine di completamento
@@ -41,7 +41,7 @@ Il gestore ha chiesto di considerare risolta la privacy. Approvazione e scelte s
 - Controlli remoti: l'ultimo report SQL non è stato rieseguito perché il controllo automatico delle autorizzazioni ha raggiunto un limite d'utilizzo. Il report già salvato non è presentato come nuovo e non è un backup. Il blocco non viene aggirato.
 
 1. Chiudere i riscontri documentali e di hosting, senza nuovi abbonamenti. Le conferme già date dal proprietario non vanno richieste nuovamente.
-2. Predisporre e collaudare il recupero dati in un contesto adatto; attuare i criteri di conservazione approvati senza toccare dati reali per prova.
+2. Backup rinviato dal gestore; procedere alle prove autorizzate e verificare i criteri di conservazione su fixture, senza eliminare dati reali per collaudo.
 3. Pubblicare i testi definitivi e preparare il frontend collegato nel contesto autorizzato. Per l'anteprima protetta resta un limite di accesso documentato; non disabilitare le protezioni per superarlo.
 4. Turnstile rinviato: provare i flussi senza widget con sole fixture, mantenendo conferma email, rate limit e controlli di accesso. Un’eventuale attivazione futura richiede client e server coordinati, non è un requisito dell’apertura attuale.
 5. Verificare i dispositivi, quote e ripristino; pubblicare il commit verificato soltanto quando i blocchi effettivi sono risolti. Il sito rimane demo fino ad allora.

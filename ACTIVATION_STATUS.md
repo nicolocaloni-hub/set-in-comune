@@ -1,5 +1,11 @@
 # Attivazione · stato effettivo al 2 novembre 2026
 
+## Ultima prova fisica di upload
+
+Dopo l'autorizzazione specifica del gestore, correzione quote Storage applicata con migrazione `20261102115131`, `storage_upload_actor_quota`. Diciotto controlli HTTP reali superati: upload JPEG privato, download identico per le parti, isolamento del terzo account, chat/esportazione, rifiuto di eliminazione altrui e rimozione autorizzata via Storage API. Un upload conteggiato una sola volta. Tutte le fixture rimosse: zero account, sessioni, file e record di prova residui verificati. Funzione non eseguibile direttamente dai client, quote e blocchi legali preservati; advisors senza nuovi tipi di avviso. 132 test locali superati. Dettagli e limiti in `STORAGE_UPLOAD_TEST.md`.
+
+Il sito resta demo: nessuna apertura agli utenti reali o pubblicazione di documenti fittizi. UI collegata e telefoni restano da verificare. Backup rinviato dal gestore, Cloudflare in standby e Turnstile rinviato.
+
 ## Completato sul progetto dedicato
 
 - Destinazione verificata: Supabase `srjdysdhxnafjrutufmk`, progetto `set-in-comune`, Francoforte, stato ACTIVE_HEALTHY, organizzazione collegata al team del proprietario. Piano dell’organizzazione verificato Free.
