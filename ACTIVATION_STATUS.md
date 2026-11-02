@@ -13,11 +13,19 @@
 
 114 test locali erano passati sul codice RC2; con l’integrazione CAPTCHA RC3 i controlli sono aggiornati in TURNSTILE_SETUP.md. Build demo e scansione credenziali restano senza rilievi. Gli advisors dopo la migrazione riportano le tabelle private RLS senza policy (intenzionalmente prive di accesso diretto) e il precedente avviso di protezione da password compromesse disattivata. Nessun piano è stato cambiato per eliminare l’avviso.
 
+## Ultimi controlli · 2 novembre 2026
+
+PR #1 Turnstile integrata e PR #3 mobile pubblicata; main osservato `d521a1253031c82a52b0c216f32f2412200de46a`. Vercel produzione READY, dominio verificato, file pubblicati corrispondenti al build. 119 test superati; prova desktop di catalogo, filtri, dettaglio/calendario, profilo, modulo annuncio e domanda/chat nella sola demo. Il browser disponibile non permette emulazione del telefono né accesso alla preview locale; tastiera, touch e dispositivi reali restano da provare.
+
+Controllo operativo remoto: database circa 14,2 MB; zero file nei tre bucket, riscontri privati e limiti di upload attivi; nessuna pratica aperta o job in coda. Tutte le tabelle public/private hanno RLS e non ci sono funzioni privilegiate nello schema public. Il report è aggregato e di sola lettura, non un backup né il consumo fatturabile del provider. Dettagli e limiti in RECOVERY_PLAN.md.
+
 ## Blocchi effettivi alla versione per utenti reali
 
 1. CAPTCHA: il proprietario ha creato il widget Cloudflare nel proprio browser e fornito la Site Key pubblica. È configurata in Vercel, solo produzione. Client integrato con le modifiche legali correnti e worker account-erasure versione 3 attivo. Il worker inoltra il token e ammette le origini canoniche. Manca l’inserimento privato della Secret Key in Supabase e la prova completa widget/Auth; il controllo Auth resta spento. Nessun segreto è stato chiesto in chat.
 2. Accesso all’anteprima Vercel: deployment RC2 READY, ma protetto da login. Il collegamento Vercel per ottenere l’accesso temporaneo restituisce «The deployment could not be found, or your Vercel connection may not have access to it.» Nessuna CLI autenticata disponibile; non è stata modificata la protezione.
 3. Documenti definitivi: Vercel Hobby è la scelta del proprietario. Resta da riscontrare la copertura effettiva dei trattamenti/accordi degli account, inclusi IONOS/Gmail per l’assistenza, e qualificare gli ulteriori recapiti del gestore. Le revisioni non sono state dichiarate concluse per superare il blocco del build.
 4. Prove dal telefono e dal browser con account reali: il nuovo flusso e le push non sono stati collaudati nell’interfaccia collegata. I test SQL reali non sono presentati come prove di upload fisici, ricezione push o uso da telefono.
+
+5. Backup e recupero: manca la prima copia completa esterna di database e file e una prova di ripristino isolata. In questo ambiente non risultano disponibili CLI Supabase, pg_dump o psql; il collegamento SQL non sostituisce un backup. Nessun programma installato o servizio a pagamento attivato. Procedura concreta e query di controllo in RECOVERY_PLAN.md.
 
 Il sito può ricevere le migliorie della demo e i testi veritieri, ma non viene dichiarato aperto a utenti reali finché questi punti non sono risolti. Nessun abbonamento, chiave, DNS o impostazione Auth di redirect modificati.

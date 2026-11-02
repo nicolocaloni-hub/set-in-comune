@@ -1,0 +1,56 @@
+{
+  "project_id": "srjdysdhxnafjrutufmk",
+  "counts": {
+    "bookings": 0,
+    "listings": 0,
+    "profiles": 1,
+    "operators": 1,
+    "privacy_open": 0,
+    "legal_receipts": 0,
+    "active_legal_versions": 0
+  },
+  "storage": [
+    {
+      "bucket": "handoff-photos",
+      "public": false,
+      "objects": 0,
+      "known_bytes": 0,
+      "unknown_sizes": 0,
+      "file_size_limit": 512000,
+      "allowed_mime_types": [
+        "image/jpeg"
+      ]
+    },
+    {
+      "bucket": "listing-photos",
+      "public": true,
+      "objects": 0,
+      "known_bytes": 0,
+      "unknown_sizes": 0,
+      "file_size_limit": 512000,
+      "allowed_mime_types": [
+        "image/jpeg"
+      ]
+    },
+    {
+      "bucket": "profile-photos",
+      "public": true,
+      "objects": 0,
+      "known_bytes": 0,
+      "unknown_sizes": 0,
+      "file_size_limit": 512000,
+      "allowed_mime_types": [
+        "image/jpeg"
+      ]
+    }
+  ],
+  "push_jobs": {},
+  "checked_at": "2026-11-02T08:11:57.440211+00:00",
+  "erasure_jobs": {},
+  "database_bytes": 14243507,
+  "tables_without_rls": [],
+  "other_bucket_objects": 0,
+  "storage_quota_trigger": "O",
+  "public_definer_functions": [],
+  "scope": "Aggregate database and object metadata only; not provider billing usage, physical file verification or a backup."
+}
