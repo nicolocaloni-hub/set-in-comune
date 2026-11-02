@@ -18,7 +18,7 @@ I dati arrivano da ciò che inserisci, dalle controparti nelle richieste e nelle
 
 Scopi e visibilità
 
-Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La gestione degli abusi richiede una valutazione del legittimo interesse; possono applicarsi obblighi legali. Non usiamo pubblicità personalizzata o email marketing.
+Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La gestione degli abusi richiede una valutazione del legittimo interesse; possono applicarsi obblighi legali. Non mostriamo pubblicità e non inviamo email marketing.
 
 Basi del trattamento e dati necessari
 
@@ -102,7 +102,7 @@ L’accettazione delle condizioni e la dichiarazione di essere un privato maggio
 
 I tuoi diritti e i controlli disponibili
 
-Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali (https://www.garanteprivacy.it/). Il termine di riscontro è un mese, salvo le proroghe ammesse.
+Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali (https://www.garanteprivacy.it/). Il termine di riscontro è un mese, salvo le proroghe ammesse. Puoi scrivere anche senza un account e senza accettare nuove condizioni. Indica la richiesta e i riferimenti necessari: non inviare password, codici di accesso o copie di documenti d’identità di tua iniziativa. Eventuali verifiche dell’identità devono essere proporzionate al caso.
 
 Da I tuoi dati puoi esportare i record disponibili e richiedere la cancellazione. La procedura automatica verifica la password e gestisce gli account senza noleggi, conversazioni, segnalazioni o ruoli operatore. Gli altri casi passano al gestore con motivo visibile. La richiesta non equivale a una cancellazione conclusa; eventuali dati conservati per obblighi o controversie devono essere spiegati.
 

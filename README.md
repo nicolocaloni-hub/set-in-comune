@@ -113,7 +113,7 @@ Il frontend resta in demo mentre si completa un mittente SMTP gratuito per confe
 
 ## Preparazione del lancio
 
-Lo stato corrente, i controlli mancanti e le decisioni sui piani gratuiti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). I testi di demo e servizio collegato sono distinti; cambiare i testi non abilita gli account reali. La build collegata conserva il blocco privacy. Il dominio di callback Auth rimane `https://rent-to-a-friend.it/`.
+Lo stato corrente, i controlli mancanti e le decisioni sui piani gratuiti sono in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). L’approvazione privacy del gestore, la procedura e i limiti dei riscontri sono in [PRIVACY_CLOSEOUT.md](PRIVACY_CLOSEOUT.md); il cambio dominio Cloudflare resta in standby. I testi di demo e servizio collegato sono distinti; cambiare i testi non abilita gli account reali. La build collegata conserva il blocco privacy. Il dominio di callback Auth rimane `https://rent-to-a-friend.it/`.
 
 
 ### Privacy e condizioni RC2
