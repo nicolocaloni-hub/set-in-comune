@@ -1,0 +1,13 @@
+{
+  "project_id": "srjdysdhxnafjrutufmk",
+  "migrations": [
+    {
+      "version": "20261102000639",
+      "name": "legal_acceptance_and_profile_rectification",
+      "applied_via": "Supabase MCP apply_migration",
+      "source": "supabase/launch/legal_acceptance.sql",
+      "sha256_at_application": "6ef5804115a00f31f64e1a26903ce0339ef1efbde4341a4a7d7f6b6a04f8dec3",
+      "note": "The current file header was subsequently updated to record application; SQL logic is unchanged."
+    }
+  ]
+}

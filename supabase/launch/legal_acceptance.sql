@@ -1,7 +1,8 @@
--- PREPARATION ONLY: not applied remotely. Run after all existing migrations.
+-- Applied to srjdysdhxnafjrutufmk as migration 20261102000639 on 2026-11-02.
+-- Do not replay on the same database. The migration publishes no legal document.
 -- No document is published and no receipt is fabricated by this script.
--- Supabase CLI is unavailable in this environment: promote this reviewed script
--- with `supabase migration new legal_acceptance` in the release environment.
+-- Applied through the authenticated Supabase migration connector, with no CLI install.
+-- See applied-migrations.json for the source digest at application.
 begin;
 create table private.legal_releases (
  version text primary key check(char_length(version) between 1 and 80),

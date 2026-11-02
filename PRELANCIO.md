@@ -1,5 +1,10 @@
 # Prima del lancio
 
+## Aggiornamento operativo · 2 novembre 2026
+
+Lo stato corrente è in [ACTIVATION_STATUS.md](ACTIVATION_STATUS.md). Ricevute installate sul progetto Supabase dedicato con migrazione `20261102000639`; account gestore configurato; smoke test remoti ricevute e A/B/C superati con rollback delle fixture. I riferimenti sotto a SQL soltanto locale o non applicato sono lo storico della preparazione. Non sono stati pubblicati documenti definitivi né attivato il frontend per utenti reali. Restano blocchi di accesso Cloudflare/anteprima e verifiche documentali effettive.
+
+
 ## Stato attuale · preparazione del lancio, 1 novembre 2026
 
 Aggiornamento RC2: privacy/condizioni e conservazione predisposte, ricevute lato server e interfaccia implementate e testate localmente; nessuna applicazione remota o cancellazione periodica. Vedere `LEGAL_RELEASE.md` per pubblicazione e verifiche ancora da chiudere. Gli stati storici che indicano la ricevuta come non implementata sono superati dal codice RC2.
