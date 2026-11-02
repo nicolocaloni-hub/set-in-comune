@@ -176,3 +176,11 @@ dialog>h2{clear:both;padding-right:0}
   #app[data-route=messages]:has(.messenger.chat-open) footer{display:none}
   #app[data-route=messages]:has(.messenger.chat-open) .app-header{gap:0;padding-block:8px}
 }
+
+/* Password visibility: keep the field label and a 44px touch target. */
+.password-group{display:flex;flex-direction:column;gap:8px;min-width:0}
+.password-field{position:relative;display:flex;align-items:center;min-width:0}
+.password-field input{width:100%;min-width:0;padding-right:56px}
+.password-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:44px;height:44px;display:grid;place-items:center;border-radius:9px;color:var(--muted)}
+.password-toggle:hover{background:#eff6f3;color:var(--green)}
+.password-toggle:focus-visible{outline:2px solid var(--green);outline-offset:0}
