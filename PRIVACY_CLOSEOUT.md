@@ -54,3 +54,12 @@ Revisione locale: 122 test superati, build demo Vercel e Pages riusciti, control
 - Garante, contenuti dell'informativa: https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/8981258
 - D.lgs. 70/2003, artt. 2 e 7, testo pubblicato dal Parlamento: https://www.parlamento.it/parlam/leggi/deleghe/03070dl.htm
 - CNIL, scelta e attuazione delle durate: https://www.cnil.fr/sites/default/files/atoms/files/guide_durees_de_conservation.pdf
+
+
+## Testi pubblici per il servizio · 2 novembre 2026
+
+Su richiesta del gestore, privacy e condizioni pubbliche descrivono il servizio con account e il confine tra consultazione libera, accesso e registrazione. Le pagine pubbliche non usano più il testo principale delle condizioni demo. Un ambiente espressamente marcato demo rimane descritto separatamente, senza promettere operazioni reali in una build locale.
+
+Accesso Google rimandato dal gestore: nessuna attivazione OAuth e nessuna descrizione di Google Sign-In come funzione disponibile. IONOS/Gmail resta il canale di assistenza già scelto; non viene cambiato o dichiarato coperto da un DPA consumer. I criteri di conservazione pubblici distinguono le revisioni manuali dalla pulizia automatica generale, che non è attiva.
+
+L’aggiornamento dei testi pubblici non crea ricevute di accettazione né pubblica una versione attiva nel database. Verifica di rilascio: il dominio pubblico restituisce ancora una configurazione backend vuota; il database ha zero versioni legali attive. Login, profilo ed esportazione Android del proprietario sono acquisiti; registrazione, recupero email e scambio tra due account reali non sono attestati dalla sola demo. I guard del rilascio restano invariati.

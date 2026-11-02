@@ -2,15 +2,19 @@ TRASPARENZA · AGGIORNATA IL 2 NOVEMBRE 2026
 
 I tuoi dati, spiegati.
 
-Documento in preparazione per il servizio con account reali. La verifica di pre-lancio di recapiti, conservazione e accordi con i fornitori è ancora incompleta.
+Questa informativa riguarda RENT TO A FRIEND, il servizio di noleggio di attrezzature tra privati. Puoi consultare annunci, prezzi, profili pubblici e recensioni senza registrarti; per pubblicare, inviare richieste di noleggio o messaggi serve un account. I dati trattati dipendono dalle funzioni che utilizzi.
 
 Chi gestisce il sito
 
-Titolare: Nicolò Caloni. Verifica degli ulteriori recapiti del gestore in corso. Per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it (mailto:assistenza@rent-to-a-friend.it).
+Titolare: Nicolò Caloni. Per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it (mailto:assistenza@rent-to-a-friend.it).
 
-Quali dati usa questa versione
+Quali dati trattiamo
 
 Gli account usano email e credenziali tramite Supabase Auth, nome visibile, quartiere, foto e bio facoltative, annunci, richieste, messaggi, recensioni, riscontri e segnalazioni. Sono trattati anche date delle operazioni e dati tecnici di sicurezza.
+
+Registrazione e accesso
+
+Registrati con email crea un account e richiede la conferma dell’indirizzo tramite un link. Accedi con email usa esclusivamente le credenziali di un account esistente: un indirizzo scritto male non avvia una nuova registrazione dal modulo di accesso. La password è gestita da Supabase Auth e non viene pubblicata nel profilo. Per recuperarla usa Password dimenticata.
 
 Da dove arrivano i dati
 
@@ -18,11 +22,11 @@ I dati arrivano da ciò che inserisci, dalle controparti nelle richieste e nelle
 
 Scopi e visibilità
 
-Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La gestione degli abusi richiede una valutazione del legittimo interesse; possono applicarsi obblighi legali. Non mostriamo pubblicità e non inviamo email marketing.
+Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La sicurezza e la gestione degli abusi perseguono il legittimo interesse a proteggere il servizio e i suoi utenti; possono applicarsi obblighi legali. Non mostriamo pubblicità e non inviamo email marketing.
 
 Basi del trattamento e dati necessari
 
-Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. Per sicurezza e gestione degli abusi gli interessi perseguiti sono impedire accessi automatizzati, frodi, molestie e uso illecito della piattaforma e tutelare i diritti delle persone coinvolte. La base proposta è il legittimo interesse, con accessi limitati, verifica umana delle segnalazioni e valutazione documentata prima dell’apertura; gli obblighi legali si applicano alle operazioni che effettivamente li richiedono. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
+Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. Per sicurezza e gestione degli abusi gli interessi perseguiti sono impedire accessi automatizzati, frodi, molestie e uso illecito della piattaforma e tutelare i diritti delle persone coinvolte. La base è il legittimo interesse, con accessi limitati e verifica umana delle segnalazioni; gli obblighi legali si applicano alle operazioni che effettivamente li richiedono. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
 
 Fornitori: cosa è attivo
 
@@ -32,21 +36,21 @@ Fornitori: cosa è attivo
 
 • Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth. Non invia email per messaggi, noleggi o marketing.
 
-• Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Questo vale anche se il sito è in demo: scrivere un’email invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Questo aspetto resta da risolvere prima degli utenti reali. Non inviare documenti o dati sensibili non necessari.
+• Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Scrivere a questo recapito invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Non inviare documenti o dati sensibili non necessari.
 
 • Cloudflare Turnstile: non attivo in questa versione; non carichiamo il widget né inviamo segnali a Cloudflare Turnstile.
 
 • Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
 
-La verifica degli accordi, dei subfornitori, dei trasferimenti e dei cicli di backup e log per il servizio con account reali non è conclusa. Un database in UE non significa che tutti i trattamenti dei fornitori avvengano esclusivamente in UE.
+I fornitori possono coinvolgere subfornitori e trattare dati tecnici, log e copie secondo i rispettivi servizi e piani. Un database in UE non significa che tutti i trattamenti dei fornitori avvengano esclusivamente in UE.
 
 Destinatari e trasferimenti
 
-Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di consegna sono riservate alle controparti. Il gestore e gli eventuali incaricati autorizzati accedono solo per le finalità necessarie. I fornitori tecnici e i loro subfornitori possono trattare i dati nei limiti dei rispettivi ruoli e accordi. Eventuali richieste legittime delle autorità sono valutate nei limiti applicabili. Prima dell’apertura vanno completati il registro dei fornitori, le garanzie per i trasferimenti fuori SEE e i tempi di log e copie: questa bozza non li considera già verificati.
+Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di consegna sono riservate alle controparti. Il gestore e gli eventuali incaricati autorizzati accedono solo per le finalità necessarie. I fornitori tecnici e i loro subfornitori possono trattare i dati nei limiti dei rispettivi ruoli e accordi. Eventuali richieste legittime delle autorità sono valutate nei limiti applicabili. Resend dichiara conservazione negli Stati Uniti anche con invio da regione UE e richiama clausole contrattuali standard e Data Privacy Framework. Anche gli altri fornitori possono trattare dati fuori dallo Spazio economico europeo: la regione del database non determina la sede di tutti i trattamenti. I ruoli e le garanzie dipendono dal singolo servizio; puoi chiedere al gestore informazioni sulle condizioni applicabili.
 
 Documenti dei fornitori e garanzie
 
-Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Questi collegamenti non attestano da soli la copertura dell’account o l’approvazione del servizio; le verifiche ancora aperte restano indicate in questa informativa.
+Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Per il recapito di assistenza valgono le caratteristiche di IONOS e Gmail descritte sopra; l’uso di Gmail per la posta non abilita l’accesso Google all’app.
 
 Intelligenza artificiale
 
@@ -56,45 +60,49 @@ Foto e conservazione
 
 Le foto selezionate vengono ridimensionate e ricodificate nel browser, rimuovendo i metadati EXIF dell’originale. Le foto profilo e annunci sono pubbliche; i riscontri usano un archivio privato e link a scadenza breve. I file sostituiti vengono rimossi dopo il salvataggio; gli errori sono riprovabili da I tuoi dati.
 
-Il calendario di conservazione degli account reali non è approvato. Eventuali copie già scaricate da altre persone non possono essere ritirate dal sito.
+Conserviamo i dati per il tempo necessario alle funzioni richieste, all’assistenza e alla gestione di obblighi o contestazioni concrete, secondo i criteri indicati sotto. Alla chiusura dell’account verifichiamo i rapporti condivisi prima di eliminare o anonimizzare i dati non più necessari. Eventuali copie già scaricate da altre persone non possono essere ritirate dal sito.
 
 Memoria del browser e notifiche
 
 I preferiti sono salvati nel browser; la sessione di accesso è conservata nella memoria della scheda. Il service worker conserva la pagina offline, stile e icona. Le funzioni per sessione, link email e push degli account reali sono descritte separatamente nella pagina Cookie e memoria (https://rent-to-a-friend.it/#cookies). Non installiamo strumenti di analisi del pubblico o cookie pubblicitari.
 
-Conservazione del servizio con account reali
+Criteri di conservazione
 
-Il piano seguente è una bozza da approvare: non descrive cancellazioni periodiche attive e non sostituisce i tempi dei fornitori.
+I tempi seguenti sono criteri di conservazione e riesame. La revisione periodica è manuale: non è attiva una pulizia automatica generale. Quando servono dati per un obbligo o una controversia concreta, il gestore limita la conservazione a ciò che è necessario e riesamina le eccezioni. I tempi delle copie e dei log dei fornitori restano distinti.
 
-Consulta la bozza dei criteri di conservazione
+Consulta i criteri di conservazione
 
-Dati | Durata o criterio | Gestione prevista o predisposta |
+Dati | Durata o criterio | Gestione |
 
 Account e profilo | Finché l’account resta aperto; alla chiusura si eliminano i dati non più necessari | La richiesta di cancellazione avvia la verifica dei rapporti condivisi. Nessuna conservazione indefinita del profilo pubblico dopo la chiusura. |
 
 Foto sostituite o rimosse | Dopo il salvataggio della modifica | Eliminazione del file non più utilizzato tramite Storage; ripresa manuale in caso di errore. |
 
-Upload interrotti o mai utilizzati | Proposta: 24 ore, verificando che il file non sia associato a contenuti | Pulizia periodica da attivare prima di dichiarare questo termine operativo. La pulizia manuale attuale esclude file più recenti di un’ora. |
+Upload interrotti o mai utilizzati | Riesame dei file non associati a contenuti e rimozione quando non più necessari | Pulizia manuale da I tuoi dati; i file più recenti di un’ora sono esclusi per evitare di interrompere un caricamento. Non è garantita una rimozione automatica entro 24 ore. |
 
-Account senza noleggi, chat o segnalazioni | Alla conferma di cancellazione | Procedura automatica predisposta per file, record e account; ripresa in caso di errore. Da collaudare dalla UI collegata. |
+Account senza noleggi, chat o segnalazioni | Alla conferma di cancellazione | La procedura verifica le condizioni dell’account; quando il caso richiede una valutazione umana viene indicato il motivo e la richiesta passa al gestore. |
 
-Domande e chat senza noleggio | Proposta: 12 mesi dall’ultimo messaggio | Verifica e rimozione dei dati non necessari. Escludere le parti interessate da una controversia concreta, con motivazione e riesame. |
+Domande e chat senza noleggio | 12 mesi dall’ultimo messaggio | Verifica e rimozione dei dati non necessari. Escludere le parti interessate da una controversia concreta, con motivazione e riesame. |
 
-Noleggi conclusi, messaggi collegati e foto di consegna | Proposta: 24 mesi dalla chiusura del noleggio | Minimizzare prima della cancellazione: mantenere solo quanto serve per assistenza e contestazioni. I casi ancora aperti sono riesaminati ogni 6 mesi, con durata motivata per il singolo caso. |
+Noleggi conclusi, messaggi collegati e foto di consegna | 24 mesi dalla chiusura del noleggio | Minimizzare prima della cancellazione: mantenere solo quanto serve per assistenza e contestazioni. I casi ancora aperti sono riesaminati ogni 6 mesi, con durata motivata per il singolo caso. |
 
 Recensioni e annunci | Durante la pubblicazione; alla rimozione o chiusura account si verifica cosa eliminare o anonimizzare | Nascondere i contenuti rimossi; conservare eventuali prove di abusi separatamente e per il tempo strettamente necessario. |
 
-Segnalazioni e richieste sui dati | Proposta: 12 mesi dalla chiusura della pratica | Conservare esito e motivazione minimizzando il contenuto. Estensioni per obblighi o controversie vanno documentate e riesaminate ogni 6 mesi. |
+Segnalazioni e richieste sui dati | 12 mesi dalla chiusura della pratica | Conservare esito e motivazione minimizzando il contenuto. Estensioni per obblighi o controversie vanno documentate e riesaminate ogni 6 mesi. |
 
 Ricevute di accettazione delle condizioni | Durante l’account; eliminate con la cancellazione Auth salvo un’esigenza specifica documentata | Solo account, versione, impronte dei documenti, dichiarazioni e data server; nessun IP o user agent aggiuntivo. Le copie dei documenti restano prive di dati degli utenti. |
 
-Notifiche lette e log operativi dell’app | Proposta: 90 giorni; i log dei fornitori seguono condizioni separate | Nessun contenuto dei messaggi nei log. Cancellazione periodica da predisporre e verificare; non è ancora attiva. |
+Notifiche lette e log operativi dell’app | 90 giorni; i log dei fornitori seguono condizioni separate | Nessun contenuto dei messaggi nei log. Riesame e rimozione manuale; nessuna pulizia periodica automatica generale. |
 
-Assistenza ricevuta via email | Proposta: 12 mesi dalla chiusura della pratica, salvo un motivo specifico documentato | Revisione manuale di posta ricevuta, inviata e allegati; eliminare le copie non necessarie anche dalla casella di assistenza. Le copie dei fornitori seguono scadenze proprie. Nessuna pulizia automatica della posta è attiva. |
+Assistenza ricevuta via email | 12 mesi dalla chiusura della pratica, salvo un motivo specifico documentato | Revisione manuale di posta ricevuta, inviata e allegati; eliminare le copie non necessarie anche dalla casella di assistenza. Le copie dei fornitori seguono scadenze proprie. Nessuna pulizia automatica della posta è attiva. |
 
 Email e log Resend | Secondo il fornitore: 30 giorni; backup 7 giorni; dati residui entro 90 giorni dalla cessazione | Riscontro pubblico del 1 novembre 2026. La scelta della regione di invio non sposta la conservazione negli USA. |
 
-Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | Prima dell’apertura registrare le scadenze verificate. Nessuna promessa di cancellazione istantanea da copie o log; Supabase Free non include backup automatici gestiti. |
+Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | La rimozione dalle copie e dai log segue i cicli dei fornitori e non è istantanea. Supabase Free non include backup automatici gestiti. Per dettagli sul servizio e sul piano puoi contattare il gestore. |
+
+Eventuali ambienti di prova separati
+
+Se un ambiente è espressamente contrassegnato come demo, i suoi annunci e le sue operazioni sono simulazioni locali e non creano noleggi reali. I dati locali restano fino al ripristino o alla cancellazione della memoria del sito. Non inserire documenti o dati sensibili negli ambienti di prova.
 
 Ricevuta delle condizioni e scelte facoltative
 

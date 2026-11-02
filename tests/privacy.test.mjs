@@ -12,7 +12,7 @@ test('real-account builds fail closed until controller and retention are reviewe
  assert.notEqual(result.status,0);assert.match(result.stderr,/informativa privacy/);
 });
 test('privacy explains demo hosting, real providers, public photos, AI and erasure limits honestly',()=>{
- const html=privacyMarkup(true);for(const text of ['Vercel','Supabase','Resend','EXIF','non è un chatbot AI','non equivale','pre-lancio','indirizzo IP'])assert.ok(html.includes(text),text);
+ const html=privacyMarkup(true);for(const text of ['Vercel','Supabase','Resend','EXIF','non è un chatbot AI','non equivale','ambiente dimostrativo','indirizzo IP'])assert.ok(html.includes(text),text);
  assert.ok(termsMarkup().includes('non attiva abbonamenti'));assert.ok(termsMarkup().includes('simulazioni'));
 });
 const storage=new Map();globalThis.localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
@@ -59,4 +59,19 @@ test('contact review is explicit and does not force publication of a private hom
   assert.throws(()=>assertPrivacyReady({...complete,postalAddressRequired:null}));
   assert.throws(()=>assertPrivacyReady({...complete,postalAddressRequired:true}));
  }finally{retentionPolicy.approved=approved;}
+});
+
+// Public documents describe the service even while a dedicated test build remains isolated.
+test('public service documents separate browsing, login and signup without claiming Google is active',async()=>{
+ const privacy=privacyMarkup(false),terms=termsMarkup(false);
+ for(const text of ['Documento in preparazione','Stato attuale: demo pubblica','pre-lancio','bozza da approvare'])assert.ok(!privacy.includes(text),text);
+ assert.ok(privacy.includes('Accedi con email usa esclusivamente'));
+ assert.ok(terms.includes('Chiunque può consultare annunci, prezzi, profili pubblici e recensioni'));
+ assert.ok(terms.includes('il modulo Accedi non registra nuovi account'));
+ assert.ok(privacy.includes('non è attiva una pulizia automatica generale'));
+ assert.ok(!privacy.includes('accesso tramite Google'));
+ const {readFile}=await import('node:fs/promises');
+ const app=await readFile(new URL('../src/app.js',import.meta.url),'utf8');
+ assert.ok(app.includes('privacyMarkup(false)'));assert.ok(app.includes('termsMarkup(false)'));
+ assert.equal(privacySettings.reviewed,false);assert.equal(retentionPolicy.approved,false);
 });
