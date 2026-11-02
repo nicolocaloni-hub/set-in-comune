@@ -12,7 +12,10 @@ test('closed account check refuses production, other branches, another backend a
  const run=extra=>spawnSync(process.execPath,['scripts/build-account-check.mjs'],{cwd:dir,env:{...env,...extra},encoding:'utf8'});
  for(const extra of [{VERCEL_ENV:'production'},{VERCEL_ENV:''},{VERCEL_GIT_COMMIT_REF:'main'},{PUBLIC_SUPABASE_URL:'https://other.supabase.co'},{PUBLIC_SUPABASE_ANON_KEY:'private-fixture'}])assert.notEqual(run(extra).status,0);
  const result=run({});assert.equal(result.status,0,result.stderr);
- const config=await readFile(join(dir,'dist/config.js'),'utf8');assert.match(config,/"accountCheck":true/);
+ const config=await readFile(join(dir,'dist/config.js'),'utf8');assert.match(config,/"accountCheck":true/);assert.match(config,/"googleCheck":true/);
+ assert.equal(await readFile(join(dir,'dist/auth-config.js'),'utf8'),"export const AUTH_REDIRECT_URL=\"https://set-in-comune-app-git-test-ow-8738e0-nicolocaloni-hubs-projects.vercel.app/\";\n");
+ assert.equal(await readFile(join(dir,'src/auth-config.js'),'utf8'),await readFile(new URL('../src/auth-config.js',import.meta.url),'utf8'));
+
  assert.match(await readFile(join(dir,'dist/captcha-config.js'),'utf8'),/"siteKey":""/);
  // A test build never marks privacy, provider checks or legal readiness as approved.
  assert.match(await readFile(join(dir,'dist/service-policy.js'),'utf8'),/approved:false/);

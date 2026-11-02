@@ -31,8 +31,9 @@ test('mismatched registration email stops before calling the signup service',asy
  await handler({target:form,submitter:button,preventDefault(){}});assert.equal(calls,0);assert.match(err.textContent,/non coincidono/);assert.equal(button.disabled,false);
 });
 const storage=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};};
-async function client(t,{accountCheck=false}={}){
- const dir=await mkdtemp(join(tmpdir(),'rtaf-auth-visitor-'));t.after(()=>rm(dir,{recursive:true,force:true}));await cp(new URL('../src',import.meta.url),join(dir,'src'),{recursive:true});await writeFile(join(dir,'package.json'),'{"type":"module"}');await writeFile(join(dir,'src/config.js'),'export default '+JSON.stringify({url:'https://example.supabase.co',key:'sb_publishable_'+'a'.repeat(32),accountCheck})+';');
+async function client(t,{accountCheck=false,googleCheck=false,redirect=null}={}){
+ const dir=await mkdtemp(join(tmpdir(),'rtaf-auth-visitor-'));t.after(()=>rm(dir,{recursive:true,force:true}));await cp(new URL('../src',import.meta.url),join(dir,'src'),{recursive:true});await writeFile(join(dir,'package.json'),'{"type":"module"}');await writeFile(join(dir,'src/config.js'),'export default '+JSON.stringify({url:'https://example.supabase.co',key:'sb_publishable_'+'a'.repeat(32),accountCheck,googleCheck})+';');
+ if(redirect)await writeFile(join(dir,'src/auth-config.js'),'export const AUTH_REDIRECT_URL='+JSON.stringify(redirect)+';');
  const originals=Object.fromEntries(['fetch','localStorage','sessionStorage','location','history'].map(k=>[k,globalThis[k]]));t.after(()=>Object.assign(globalThis,originals));globalThis.localStorage=storage();globalThis.sessionStorage=storage();globalThis.location={href:'https://rent-to-a-friend.it/?redirect_to=https://attacker.example',origin:'https://rent-to-a-friend.it'};globalThis.history={replaceState(){}};
  return (await import(pathToFileURL(join(dir,'src/api.js')))).api;
 }
@@ -53,4 +54,15 @@ test('Google uses a fixed callback and PKCE; provider tokens are discarded after
 test('reserved account preview never initiates Google auth or makes provider settings requests',async t=>{
  const api=await client(t,{accountCheck:true});let requests=0;globalThis.fetch=async()=>{requests++;throw Error('Unexpected request');};
  await assert.rejects(api.googleSignInUrl(),/non è ancora disponibile/);assert.equal(requests,0);
+});
+
+test('dedicated Google preview uses only its fixed origin and callback',async t=>{
+ const redirect='https://set-in-comune-app-git-test-ow-8738e0-nicolocaloni-hubs-projects.vercel.app/';
+ const api=await client(t,{accountCheck:true,googleCheck:true,redirect});
+ location.origin=new URL(redirect).origin;location.href=redirect+'?redirect_to=https://attacker.example';
+ let enabled=false;globalThis.fetch=async()=>new Response(JSON.stringify({external:{google:enabled}}));
+ assert.equal((await api.authOptions()).google,false);enabled=true;
+ assert.equal((await api.authOptions()).google,true);
+ assert.equal(new URL(await api.googleSignInUrl()).searchParams.get('redirect_to'),redirect);
+ location.origin='https://rent-to-a-friend.it';assert.equal((await api.authOptions()).google,false);
 });

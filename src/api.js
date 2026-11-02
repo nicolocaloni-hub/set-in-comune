@@ -94,7 +94,7 @@ export const api={
     await api.logout().catch(()=>{});
   },
   async authOptions(){
-    if(isDemo||accountCheck||globalThis.location?.origin!==new URL(AUTH_REDIRECT_URL).origin)return {google:false};
+    if(isDemo||(accountCheck&&rawConfig.googleCheck!==true)||globalThis.location?.origin!==new URL(AUTH_REDIRECT_URL).origin)return {google:false};
     const response=await safeFetch(config.url+'/auth/v1/settings',{headers:{apikey:config.key}});
     if(!response.ok)throw new Error('Metodi di accesso non disponibili.');
     const settings=await response.json();return {google:settings.external?.google===true};
