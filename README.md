@@ -123,4 +123,4 @@ Lo stato corrente, i controlli mancanti e le decisioni sui piani gratuiti sono i
 
 ### CAPTCHA RC3
 
-Integrazione Turnstile con token in memoria monouso su registrazione, accesso, recupero e conferma cancellazione. Il build usa solo `PUBLIC_TURNSTILE_SITE_KEY`; il segreto resta esclusivamente in Supabase. La demo non carica il provider e il build collegato conserva tutti i blocchi privacy/documenti. Configurazione, verifiche effettive e ordine di attivazione in [TURNSTILE_SETUP.md](TURNSTILE_SETUP.md).
+Turnstile è rinviato su scelta del gestore e disattivato per impostazione predefinita. Una Site Key già presente non lo attiva: il build richiede l’opt-in esplicito `PUBLIC_TURNSTILE_ENABLED=true` e una `PUBLIC_TURNSTILE_SITE_KEY` valida. Senza opt-in i moduli non caricano il provider e non richiedono token. Il codice per un’attivazione futura mantiene i token in memoria monouso; il segreto resta esclusivamente in Supabase. Il build collegato conserva tutti i blocchi privacy/documenti. Configurazione, verifiche effettive e ordine di attivazione in [TURNSTILE_SETUP.md](TURNSTILE_SETUP.md).

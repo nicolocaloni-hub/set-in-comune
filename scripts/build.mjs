@@ -7,8 +7,12 @@ import {createHash} from 'node:crypto';
 import {publicAssets,securityHeaders,assertTrackingFree} from './assets.mjs';
 // Validate before writing: no arbitrary env value may reach the public artifact.
 const config=validatePublicConfig(process.env.PUBLIC_SUPABASE_URL||'',process.env.PUBLIC_SUPABASE_ANON_KEY||'');
-const siteKey=validateCaptchaSiteKey(process.env.PUBLIC_TURNSTILE_SITE_KEY||'');
-if(config.url){assertPrivacyReady();if(!legalRelease.approved)throw new Error('Completa e pubblica la revisione delle condizioni e della privacy prima degli account reali.');if(!siteKey)throw new Error('Configura PUBLIC_TURNSTILE_SITE_KEY prima di collegare gli account.');}
+// Turnstile is deferred by the owner. A leftover public site key must not enable it.
+const captchaSetting=process.env.PUBLIC_TURNSTILE_ENABLED||'false';
+if(!['true','false'].includes(captchaSetting))throw new Error('PUBLIC_TURNSTILE_ENABLED deve essere true o false.');
+const siteKey=captchaSetting==='true'?validateCaptchaSiteKey(process.env.PUBLIC_TURNSTILE_SITE_KEY||''):'';
+if(captchaSetting==='true'&&!siteKey)throw new Error('Configura PUBLIC_TURNSTILE_SITE_KEY quando abiliti Turnstile.');
+if(config.url){assertPrivacyReady();if(!legalRelease.approved)throw new Error('Completa e pubblica la revisione delle condizioni e della privacy prima degli account reali.');}
 assertTrackingFree(await Promise.all(publicAssets.filter(f=>/\.(?:js|html)$/.test(f)).map(async name=>({name,text:await readFile('src/'+name,'utf8')}))));
 const staging='.build-staging';
 await rm(staging,{recursive:true,force:true});

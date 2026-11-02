@@ -1,6 +1,12 @@
-# Cloudflare Turnstile · integrazione RC3
+# Cloudflare Turnstile · rinviato dal gestore
 
-Stato al 2 novembre 2026. Site Key pubblica fornita dal proprietario; nessuna Secret Key ricevuta, richiesta in chat, letta o memorizzata nel codice.
+Decisione successiva del 2 novembre 2026: **non includere Turnstile nella prima versione** e proseguire con backup e prove. Non è un requisito per il lancio. Il build usa `PUBLIC_TURNSTILE_ENABLED=false` per impostazione predefinita: ignora una Site Key rimasta nell'ambiente e genera configurazione vuota/CSP senza il provider. I moduli collegati senza Site Key non caricano il widget e non richiedono token; API e worker continuano a funzionare con il controllo Auth non configurato per CAPTCHA. Nessun segreto, Site Key remota o altra impostazione di sicurezza è modificato da questa revisione.
+
+Il codice di integrazione rimane disponibile per un eventuale opt-in futuro (`PUBLIC_TURNSTILE_ENABLED=true` più Site Key valida e server coordinato). Le verifiche del token, il monouso e la scadenza restano obbligatori quando il widget è configurato. Non disabilitare una verifica server già attiva per aggirare un errore: in quel caso fermare il rilascio e riallineare il piano.
+
+## Storico dell'integrazione RC3
+
+Stato precedente al 2 novembre 2026. Site Key pubblica fornita dal proprietario; nessuna Secret Key ricevuta, richiesta in chat, letta o memorizzata nel codice.
 
 ## Destinazioni verificate
 

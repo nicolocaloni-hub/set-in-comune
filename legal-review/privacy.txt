@@ -34,7 +34,7 @@ Fornitori: cosa è attivo
 
 • Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Questo vale anche se il sito è in demo: scrivere un’email invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Questo aspetto resta da risolvere prima degli utenti reali. Non inviare documenti o dati sensibili non necessari.
 
-• Cloudflare Turnstile: verifica antiabuso nei moduli di registrazione, accesso, recupero password e conferma cancellazione. Il browser comunica a Cloudflare segnali tecnici come IP, caratteristiche della connessione e del browser, Site Key e origine. Cloudflare dichiara di agire da responsabile per proteggere il sito e da titolare autonomo per migliorare il rilevamento dei bot. Il token è verificato da Supabase e non conservato dall’app.
+• Cloudflare Turnstile: non attivo in questa versione; non carichiamo il widget né inviamo segnali a Cloudflare Turnstile.
 
 • Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
 
