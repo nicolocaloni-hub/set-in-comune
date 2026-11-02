@@ -4,6 +4,7 @@ import captchaConfig from './captcha-config.js';
 import {captchaPayload} from './captcha.js';
 import {validatePublicConfig,validEmail,validPassword,resourceId} from './security.js';
 const config=validatePublicConfig(rawConfig.url,rawConfig.key);
+const accountCheck=rawConfig.accountCheck===true;
 import {sampleListings,sampleProfiles} from './data.js';
 import {available,validateRental,nextActions,validateListing} from './domain.js';
 import {validateTechnical,validateReview,validateChecklist,reportReasons} from './marketplace.js';
@@ -80,6 +81,7 @@ export const api={
   },
   isPasswordRecovery:()=>recoverySession,
   async changePassword(password,currentPassword){
+    if(accountCheck)throw new Error('Cambio password escluso da questa prima prova riservata.');
     if(isDemo)throw new Error('Il cambio password richiede un account reale. Non inserire password nella demo.');
     requireUser();
     const body={password:validPassword(password)};
@@ -92,8 +94,8 @@ export const api={
     await api.logout().catch(()=>{});
   },
   async login(email,password,captchaToken){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password),...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))}));},
-  async signup(email,password,display_name,captchaToken){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
-  async reset(email,captchaToken){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});},
+  async signup(email,password,display_name,captchaToken){if(accountCheck)throw new Error('Il collaudo riservato usa solo account già esistenti.');const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
+  async reset(email,captchaToken){if(accountCheck)throw new Error('Recupero password escluso da questa prima prova: il callback resta sul dominio pubblico.');const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});},
   async logout(){if(!isDemo&&session){try{await request('/auth/v1/logout',{method:'POST'});}finally{storeSession(null);localStorage.removeItem(PKCE_KEY);}}},
   async legalStatus(){requireUser();return isDemo?{available:false,accepted:false}:rpc('my_legal_status',{});},
   async legalReceipts(){requireUser();return isDemo?[]:rpc('my_legal_receipts',{});},
