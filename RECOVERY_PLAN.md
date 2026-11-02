@@ -1,5 +1,7 @@
 # Copie di sicurezza e ripristino · stato al 2 novembre 2026
 
+Decisione successiva del gestore: backup rinviato ed escluso dalle attività richieste per il primo avvio. Il piano sotto resta disponibile come procedura futura; nessuna copia è stata creata e nessun ripristino è dichiarato possibile o collaudato. Non richiedere nuovamente di attivarlo per proseguire le prove autorizzate.
+
 ## Aggiornamento successivo · backup richiesto dal gestore
 
 Preflight aggiornato con le sole API di metadati: progetto `srjdysdhxnafjrutufmk` ACTIVE_HEALTHY, PostgreSQL 17.11.0.011, organizzazione Free e sette migrazioni elencate. Nessuna esportazione o ripristino è stato effettuato. Mancano ancora Supabase CLI, pg_dump, psql e Docker; non è stata effettuata alcuna installazione. Il collegamento Supabase non dispone di un export completo recuperabile del database e dei file. `BACKUP_TEST_STATUS.md` distingue le prove eseguite dal backup e dai collaudi ancora non effettuati.

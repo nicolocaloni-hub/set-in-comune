@@ -1,5 +1,9 @@
 # Attivazione · stato effettivo al 2 novembre 2026
 
+## Ultima prova fisica di upload
+
+Il gestore ha rinviato il backup e autorizzato upload/eliminazione di soli contenuti tecnici di prova. Login Auth riuscito, ma il caricamento privato è respinto dal controllo delle quote durante la scrittura interna Storage senza JWT. Correzione e sette regressioni pronte, 132 test locali superati; la migrazione è stata respinta dal controllo automatico perché serve autorizzazione specifica alla correzione della funzione di sicurezza in produzione. Non applicata né aggirata. Tutti gli account e i record tecnici temporanei sono stati rimossi e verificati; zero oggetti Storage delle fixture. Dettagli in `STORAGE_UPLOAD_TEST.md`. Il flusso fisico non è dichiarato superato.
+
 ## Completato sul progetto dedicato
 
 - Destinazione verificata: Supabase `srjdysdhxnafjrutufmk`, progetto `set-in-comune`, Francoforte, stato ACTIVE_HEALTHY, organizzazione collegata al team del proprietario. Piano dell’organizzazione verificato Free.
