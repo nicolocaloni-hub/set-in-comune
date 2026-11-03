@@ -35,7 +35,7 @@ Prima del ciclo completo è stata provata la cancellazione autonoma su una prima
 
 La coppia del ciclo completo ha uno storico di prova. È stata preparata una transazione con controllo di identità, assenza di relazioni con terzi e assenza di noleggi aperti: elimina esclusivamente i rapporti sintetici e poi affida profili, sessioni e file fisici al worker di cancellazione già esistente.
 
-**Pulizia finale in attesa della conferma richiesta dal collegamento Supabase.** Il primo tentativo era stato fermato dal limite d'utilizzo del controllo automatico; la richiesta successiva è scaduta prima della conferma. Nessuno di questi tentativi ha eseguito la transazione. Alla lettura successiva risultavano ancora tre account totali, un annuncio archiviato, due prenotazioni e tre file di prova. Non viene dichiarata una cancellazione che non è stata verificata.
+**Pulizia finale completata e verificata.** Dopo il precedente blocco per limite d'utilizzo e una conferma scaduta, la richiesta Supabase è stata confermata ed eseguita. La transazione ha rimosso soltanto i rapporti sintetici; il worker esistente ha completato entrambe le cancellazioni, rimuovendo file fisici, profili e utenti Auth. La lettura finale riportava zero utenti/profili/sessioni/refresh token/annunci/file/ricevute della coppia, due lavorazioni concluse e un solo account totale: quello personale del titolare, preservato. I marcatori tecnici delle lavorazioni concluse non sono account attivi.
 
 ## Limiti ed esecuzione
 
