@@ -221,6 +221,7 @@ dialog.brand-intro{position:fixed;inset:0;width:100%;height:100dvh;max-width:non
 dialog.brand-intro[open]{display:grid;place-items:center}
 dialog.brand-intro::backdrop{background:#e7f5ee}
 .intro-content{width:min(90vw,448px);text-align:center}
+.intro-content:focus{outline:none}
 .intro-content video{display:block;width:100%;height:auto;max-height:calc(100svh - 96px);object-fit:contain;background:#e7f5ee}
 .intro-skip{position:absolute;right:max(24px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 0;border:0;border-radius:0;background:none;color:var(--green);font:inherit;font-size:14px;font-weight:650;cursor:pointer}
 .intro-skip:hover{text-decoration:underline;text-underline-offset:4px}
