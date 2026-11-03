@@ -47,6 +47,8 @@ test('the demo build excludes private files and CSP restricts configured backend
  for(const path of ['/.env','/.git/config','/supabase/001_initial.sql','/package-lock.json','/../README.md','/%2e%2e%2f.env'])assert.equal((await fetch(address+path)).status,404);
  assert.equal((await fetch(address+'/',{method:'POST'})).status,405);
  const intro=await fetch(address+'/intro.mp4');assert.equal(intro.status,200);assert.equal(intro.headers.get('content-type'),'video/mp4');const film=new Uint8Array(await intro.arrayBuffer());assert.equal(new TextDecoder().decode(film.slice(4,8)),'ftyp');
+ const font=await fetch(address+'/titan-one.woff');assert.equal(font.status,200);assert.equal(font.headers.get('content-type'),'font/woff');assert.equal(new TextDecoder().decode(new Uint8Array(await font.arrayBuffer()).slice(0,4)),'wOFF');
+ const license=await fetch(address+'/titan-one-license.txt');assert.equal(license.status,200);assert.match(await license.text(),/SIL OPEN FONT LICENSE/);
  const response=await fetch(address+'/',{headers:{Origin:'https://unrelated.example'}});
  assert.equal(response.status,200);assert.equal(response.headers.get('x-content-type-options'),'nosniff');assert.equal(response.headers.get('access-control-allow-origin'),null);assert.ok(response.headers.get('content-security-policy').includes("connect-src 'self'"));
  server.kill();
