@@ -1,6 +1,8 @@
 # Backup esterno: preparazione e stato reale
 
-Aggiornato: 3 novembre 2026. **Nessun backup reale del database o delle foto è stato creato e nessun ripristino del database è stato verificato.** Lo script è una preparazione da collaudare con gli accessi reali, non una procedura già certificata per il recupero.
+Aggiornato: 3 novembre 2026. **Backup reale cifrato creato e copia esterna su Drive verificata; prova di ripristino del database ancora da eseguire.**
+
+Il [run 41723359506](https://github.com/nicolocaloni-hub/set-in-comune/actions/runs/41723359506), commit `ff7b22f329b71d058a50d3f018b52fc0588678d8`, ha completato esportazione database/ruoli e inventario dei tre bucket. I file caricati dal titolare nella cartella privata sono stati riscaricati: archivio di **255.179 byte**, SHA-256 `6c7a90f99d957c6b6e3efcc8f24755a73ec92dc158fb635f0d7d10bc855a622d`, identico a quello registrato da GitHub; `SHA256SUMS` corrisponde. File Drive `1q5GT4DVPy-Fao9ajz1XXrVa7GZUlu9Nm` e `1FIosRRzuYK288XYEeE55AzUPTiEUz9jE`, proprietario unico `rent.to.a.friend@gmail.com`, nessuna condivisione pubblica rilevata. L'inventario fisico era vuoto: non esistono foto reali da ripristinare in questa copia. Nessuna pianificazione o sincronizzazione automatica Drive è attiva.
 
 Destinazione verificata: account `rent.to.a.friend@gmail.com`, cartella privata [RENT TO A FRIEND – Backup](https://drive.google.com/drive/folders/1v6XMqTwAZZQSxwrqyz_XFQCIjcxtYxM9). Il 3 novembre un file fittizio di 109 byte è stato caricato, riscaricato e confrontato byte per byte; aveva come unico proprietario l'account previsto. Il file di collaudo è stato eliminato. Questo prova soltanto il trasferimento tramite il collegamento Drive.
 
@@ -23,13 +25,13 @@ Le eventuali `RTAF_DB_HOST` e `RTAF_DB_USER` vanno nelle **Variables** della ste
 
 La chiave reale di recupero è stata generata e verificata il 3 novembre 2026 nel [run 41717578532](https://github.com/nicolocaloni-hub/set-in-comune/actions/runs/41717578532). Il titolare ha confermato il download del pacchetto e la configurazione delle chiavi pubbliche su GitHub. L'impronta pubblica è `C9EFC8DE0028369D0553D1CD10954ABD47A5A737`. La prova ha recuperato la chiave esportata in un portachiavi separato e decifrato dati fittizi: non è un ripristino del database reale. Conservare il file privato cifrato e la passphrase separatamente; non inserire la chiave privata nel repository.
 
-Il titolare ha verificato nel pannello Connect l'host session pooler `aws-1-eu-central-1.pooler.supabase.com`. Il wrapper cloud lo usa come predefinito, con utente `postgres.srjdysdhxnafjrutufmk`, porta 5432 e verifica TLS completa. Non serve aggiungere una variabile GitHub per questo host. La connessione autenticata e il dump reali restano da verificare.
+Il titolare ha verificato nel pannello Connect l'host session pooler `aws-1-eu-central-1.pooler.supabase.com`. Il wrapper cloud lo usa come predefinito, con utente `postgres.srjdysdhxnafjrutufmk`, porta 5432 e verifica TLS completa. Non serve aggiungere una variabile GitHub per questo host. La connessione autenticata e il dump reali sono stati verificati con successo nel run 41723359506.
 
 I primi due tentativi reali (run 41721319734 e 41722046083) si sono fermati su `pg_dump`; il secondo ha identificato `DB_TLS`. Nessun archivio completo è stato prodotto. Il wrapper ora usa la CA ufficiale Supabase in `scripts/certificates/supabase-prod-ca-2021.crt`, pubblica e non segreta, mantenendo `sslmode=verify-full`. Il file è stato scaricato dalla URL indicata nel codice ufficiale del Dashboard (`apps/studio/hooks/custom-content/custom-content.json`, commit Supabase `6891fc4cc65c73907fedc70b3086683dfc6c1cf8`): `https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt`. Impronta DER SHA-256: `807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa`. La verifica cloud include ora un handshake PostgreSQL STARTTLS con CA e hostname verificati, senza credenziali né query. Se fallisce, la copia reale non parte.
 
 Se riesce, il workflow pubblica temporaneamente (un giorno) **solo l'archivio cifrato e il suo checksum**, tra gli Artifacts del run. Nessun upload a Drive è implementato in questo workflow. Scaricare dal browser l'archivio cifrato e il checksum e caricarli nella cartella Drive verificata è un trasferimento di file, senza installare programmi. Prima di dichiarare la copia esterna completa, riscaricare da Drive e confrontare il checksum. Per automatizzare anche l'upload a Drive servirà un'autorizzazione Google dedicata al runner: il collegamento della chat non viene esportato.
 
-La copia reale, il trasferimento del relativo archivio e la prova di ripristino isolata restano da eseguire. Il workflow non contiene alcun comando di ripristino in produzione e non sostituisce la verifica di compatibilità del dump con il target Supabase.
+La copia reale e il trasferimento verificato sono completati; la prova di ripristino isolata resta da eseguire. Il workflow non contiene alcun comando di ripristino in produzione e non sostituisce la verifica di compatibilità del dump con il target Supabase.
 
 ## Prerequisiti da configurare in ambiente protetto
 
@@ -46,7 +48,7 @@ Il workflow **RTAF recovery key** crea la chiave su un runner temporaneo; non in
 
 La generazione cloud comporta temporaneamente la disponibilità del materiale privato al runner e della passphrase al segreto Actions: affidarsi solo al repository privato e ai suoi collaboratori fidati, eliminando la passphrase dal servizio a setup concluso. La chiave reale è stata generata nel run indicato sopra; la prova del pacchetto non equivale al ripristino del database.
 
-Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **17** (`pg_dump`, `pg_dumpall`, `pg_restore`), certificati CA aggiornati e GnuPG funzionante. Il runtime della sessione attuale non ha i client PostgreSQL e vieta i socket di `gpg-agent`: il test reale di cifratura/decifratura qui è rimasto non eseguito.
+Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **17** (`pg_dump`, `pg_dumpall`, `pg_restore`), certificati CA aggiornati e GnuPG funzionante. Il runtime della sessione attuale non ha i client PostgreSQL e vieta i socket di `gpg-agent`: il test reale locale resta non eseguito, ma i 19 test backup e il roundtrip GnuPG sono passati nel runner GitHub del run 41723359506.
 
 | Impostazione | Contenuto e provenienza |
 | --- | --- |
@@ -79,7 +81,17 @@ Serve una finestra senza scritture applicative per una copia coerente tra databa
 
 Il plaintext vive in una directory temporanea e viene rimosso all'uscita normale e sugli errori gestiti; questo non equivale a cancellazione forense e un arresto forzato potrebbe lasciarlo sul disco. Usare disco cifrato e runtime effimero. Caricare **soltanto** il file `.tar.gz.gpg` nella cartella verificata, poi riscaricarlo e confrontare SHA-256. Il comando `capture` non effettua upload e restituisce esplicitamente `drive_uploaded: false`.
 
-## Prova di ripristino ancora necessaria
+## Prova isolata cloud predisposta, esito reale ancora da verificare
+
+Il workflow `RTAF isolated restore test` usa un runner temporaneo GitHub; non installa programmi sul PC. Al push esegue soltanto un ripristino fittizio comprensivo di chiave esportata/cifratura, estensioni e vincoli. L'opzione manuale `restore_snapshot`, soltanto da `main` dopo esito positivo del collaudo, scarica i due artifact originali (backup run 41723359506 e chiave protetta run 41717578532). Sono disponibili soltanto per un giorno dalla loro creazione. La passphrase temporanea `RTAF_RECOVERY_PASSPHRASE` serve esclusivamente al passaggio GPG; nessuna credenziale di database o Storage produzione viene assegnata al test. Non rigenerare la chiave e non inviare segreti in chat.
+
+Il ripristino reale controlla l'hash esatto già riscontrato su Drive, l'impronta della chiave, tutti gli hash nel manifesto, quindi ripristina **ruoli, schemi, dati, proprietari e ACL senza ignorare errori** in un nuovo cluster PostgreSQL 17 del container ufficiale `supabase/postgres:17.6.1.136` (immagine indicata dal compose ufficiale, verificata il 3 novembre). Il target è della stessa major, ma di minor precedente alla sorgente 17.11: il successo va osservato, non presunto. Se estensioni o dump risultano incompatibili, il test fallisce e la copia non viene dichiarata recuperabile.
+
+Il container non pubblica porte, non monta directory dell'host, ha rete `none`, root filesystem in sola lettura e dati temporanei in tmpfs; il cron ha `launch_active_jobs=off`. È avviato direttamente tramite `initdb`, senza servizi Auth, SMTP, API o applicazione. Il programma non accetta destinazioni di ripristino né URL di produzione. Confronta il numero di righe di ogni sezione COPY del dump con il target e controlla RLS su profili, annunci e prenotazioni. Elimina container e chiavi decifrate all'uscita; il workflow ha inoltre pulizia `always()` e non pubblica nuovi artifact.
+
+Anche un esito positivo certifica il **ripristino del database**, non l'intero servizio: configurazione Auth/SMTP, chiavi API, funzioni, chiave radice Vault e test di login rimangono separati. L'inventario foto vuoto viene confrontato con `storage.objects`; non viene inventata una prova di ripristino di foto inesistenti. Con foto presenti servirà anche il ripristino fisico tramite servizio Storage isolato.
+
+## Ulteriori verifiche per recuperare l'intera applicazione
 
 1. Decifrare una copia riscaricata in un ambiente isolato. Eseguire `python3 scripts/rtaf_backup.py verify-archive /percorso/archivio.tar.gz`: verifica hash e contenuto, **non ripristina PostgreSQL**.
 2. Preparare un'istanza di prova compatibile con Supabase/PostgreSQL 17, estensioni, ruoli gestiti e migrazioni del repository. Nessuna connessione di scrittura alla produzione.
@@ -92,7 +104,7 @@ Il plaintext vive in una directory temporanea e viene rimosso all'uscita normale
 
 - Suite backup offline: 11 test superati, 1 test reale GnuPG non eseguito per il limite del runtime indicato sopra. Coperti paginazione dei bucket privati, hash, rifiuto di percorsi non sicuri e chiavi private, interruzione su foto cambiate e rimozione dell'output cifrato incompleto.
 - Suite applicativa: 172 test superati. Build completata. Scansione dei pattern noti di credenziali: nessun risultato in 136 file di lavoro e 489 blob della cronologia locale. La scansione non prova l'assenza di ogni possibile segreto.
-- Cartella Drive verificata vuota dopo l'eliminazione del file fittizio. Nessun dato reale o chiave privata caricati.
+- Copia reale cifrata su Drive verificata tramite download e SHA-256 il 3 novembre. Nessuna chiave privata caricata nella cartella backup.
 
 ## Riferimenti
 
@@ -101,4 +113,4 @@ Il plaintext vive in una directory temporanea e viene rimosso all'uscita normale
 - [PostgreSQL 17: pg_dump](https://www.postgresql.org/docs/17/app-pgdump.html)
 - [PostgreSQL 17: pg_dumpall](https://www.postgresql.org/docs/17/app-pg-dumpall.html)
 
-I precedenti `RECOVERY_PLAN.md` e `BACKUP_TEST_STATUS.md` descrivono controlli precedenti; la richiesta attuale autorizza a proseguire, ma non dimostra l'esistenza di una copia reale.
+I precedenti `RECOVERY_PLAN.md` e `BACKUP_TEST_STATUS.md` descrivono controlli precedenti; per lo stato attuale usare questo documento e i run collegati.

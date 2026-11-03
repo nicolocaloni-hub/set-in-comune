@@ -1,0 +1,90 @@
+name: RTAF isolated restore test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rtaf-restore-isolated.yml'
+      - 'scripts/rtaf_restore_isolated.py'
+      - 'tests/test_rtaf_restore_isolated.py'
+  workflow_dispatch:
+    inputs:
+      restore_snapshot:
+        description: 'Prova il backup reale del 3 novembre in un container isolato (nessuna modifica al sito)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rtaf-isolated-restore
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Synthetic restore, no production credentials
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
+      - name: Prepare temporary cloud tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends python3 gnupg
+          docker pull supabase/postgres:17.6.1.136
+      - name: Test isolation safeguards and COPY accounting
+        run: python3 -m unittest discover -s tests -p test_rtaf_restore_isolated.py -v
+      - name: Recover encrypted fixture and restore all its database objects
+        run: python3 scripts/rtaf_restore_isolated.py --self-test
+      - name: Remove disposable databases
+        if: always()
+        run: |
+          docker ps -aq --filter 'name=^rtaf-isolated-' | xargs -r docker rm -fv
+          find /tmp -maxdepth 1 -type d \( -name 'rtaf-restore-*' -o -name 'rtaf-key-setup-*' \) -exec rm -rf -- {} +
+
+  restore:
+    name: Actual snapshot, isolated database only
+    needs: verify
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.restore_snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
+      - name: Prepare temporary cloud tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends python3 gnupg
+          docker pull supabase/postgres:17.6.1.136
+      - name: Download original encrypted snapshot
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: '13272203816'
+          run-id: '41723359506'
+          github-token: ${{ github.token }}
+          path: restore-input/backup
+          merge-multiple: true
+      - name: Download password-protected recovery bundle
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: '13269553844'
+          run-id: '41717578532'
+          github-token: ${{ github.token }}
+          path: restore-input/key
+          merge-multiple: true
+      - name: Decrypt and restore without production access
+        env:
+          RTAF_RECOVERY_PASSPHRASE: ${{ secrets.RTAF_RECOVERY_PASSPHRASE }}
+        run: python3 scripts/rtaf_restore_isolated.py
+      - name: Remove all temporary files and databases
+        if: always()
+        run: |
+          docker ps -aq --filter 'name=^rtaf-isolated-' | xargs -r docker rm -fv
+          rm -rf -- restore-input
+          find /tmp -maxdepth 1 -type d -name 'rtaf-restore-*' -exec rm -rf -- {} +

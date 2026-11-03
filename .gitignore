@@ -22,3 +22,6 @@ backup-output/
 *private*.asc
 __pycache__/
 recovery-output/
+
+# Isolated restore input stays on the ephemeral runner only
+restore-input/
