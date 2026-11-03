@@ -21,3 +21,4 @@ backup-output/
 *.backup
 *private*.asc
 __pycache__/
+recovery-output/

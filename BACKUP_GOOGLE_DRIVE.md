@@ -29,6 +29,19 @@ La copia reale, il trasferimento del relativo archivio e la prova di ripristino 
 
 ## Prerequisiti da configurare in ambiente protetto
 
+### Preparare la chiave di recupero dal browser
+
+Il workflow **RTAF recovery key** crea la chiave su un runner temporaneo; non installa nulla sul computer del titolare. Al push esegue soltanto il collaudo con una chiave fittizia e passphrase casuale temporanea, senza credenziali di produzione. Per la creazione reale:
+
+1. Generare nel proprio gestore password una passphrase casuale di almeno 32 caratteri, su una sola riga, e conservarla. Inserirla temporaneamente nei segreti Actions come `RTAF_RECOVERY_PASSPHRASE`.
+2. Aprire **Actions → RTAF recovery key → Run workflow**, selezionare `main` e attivare `generate` e `saved_passphrase`. Si crea una NUOVA coppia di chiavi a ogni avvio: non ripetere per errore e non sostituire una chiave usata per backup precedenti senza conservare anche quella vecchia.
+3. Il programma genera una chiave OpenPGP RSA 3072 protetta dalla passphrase e con validità di tre anni. La esporta in un ulteriore involucro GPG AES-256 protetto dalla stessa passphrase. In un portachiavi separato riapre il file esportato e verifica la decifratura di dati fittizi; verifica anche il rifiuto di una password errata. Nessun accesso a Supabase avviene in questo passaggio.
+4. A run riuscito scaricare dagli Artifacts il pacchetto `rtaf-recovery-key-…` (disponibile per un giorno). Conservare **PRIVATE_RECOVERY_KEY.asc.gpg** in un luogo sicuro separato dai backup, con una seconda copia indipendente. La passphrase resta nel gestore password. Scaricare questi documenti non cambia impostazioni o sistema operativo del PC.
+5. Aprire come testo `PUBLIC_KEY.asc` e inserirne il contenuto in `RTAF_BACKUP_PUBLIC_KEY_ASC`; inserire il contenuto di `FINGERPRINT.txt` in `RTAF_BACKUP_FINGERPRINT`. Sono i soli dati da trasferire al workflow che crea backup.
+6. Dopo aver salvato le copie e verificato i file, eliminare da GitHub il segreto temporaneo `RTAF_RECOVERY_PASSPHRASE` e l'artifact di generazione. Non eliminare le copie di recupero conservate dal titolare. Non inviare chiave privata o passphrase in chat.
+
+La generazione cloud comporta temporaneamente la disponibilità del materiale privato al runner e della passphrase al segreto Actions: affidarsi solo al repository privato e ai suoi collaboratori fidati, eliminando la passphrase dal servizio a setup concluso. Nessuna chiave reale è stata ancora generata; la prova del pacchetto non equivale al ripristino del database.
+
 Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **17** (`pg_dump`, `pg_dumpall`, `pg_restore`), certificati CA aggiornati e GnuPG funzionante. Il runtime della sessione attuale non ha i client PostgreSQL e vieta i socket di `gpg-agent`: il test reale di cifratura/decifratura qui è rimasto non eseguito.
 
 | Impostazione | Contenuto e provenienza |
@@ -42,7 +55,7 @@ Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **1
 
 Le credenziali non vanno incollate in chat, in comandi con valori letterali, nel repository, nei log o nelle variabili pubbliche del sito. Il collegamento Drive della chat non fornisce un token esportabile per programmi esterni. Per un processo autonomo occorrerebbe configurare separatamente un'identità Google autorizzata alla cartella; ciò non è stato fatto.
 
-La chiave privata di recupero e la relativa passphrase restano al titolare, in un luogo sicuro separato dalla cartella dei backup. Prima della prima copia reale generare la coppia sul suo dispositivo e provare a decifrare un archivio fittizio. Non è stata generata una chiave privata di produzione in questa sessione.
+La chiave privata di recupero e la relativa passphrase restano al titolare, in un luogo sicuro separato dalla cartella dei backup. Prima della prima copia reale generare la coppia in un ambiente controllato, anche tramite il workflow cloud descritto sopra, e provare a decifrare un archivio fittizio. Non è stata generata una chiave privata di produzione in questa sessione.
 
 ## Esecuzione manuale preparata
 

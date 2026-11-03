@@ -1,0 +1,69 @@
+name: RTAF recovery key
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rtaf-recovery-key.yml'
+      - 'scripts/rtaf_recovery_key.py'
+      - 'tests/test_rtaf_recovery_key.py'
+  workflow_dispatch:
+    inputs:
+      generate:
+        description: 'Genera una nuova chiave reale (disattivato = solo collaudo fittizio)'
+        type: boolean
+        default: false
+      saved_passphrase:
+        description: 'Ho conservato la passphrase nel mio gestore password'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rtaf-recovery-key
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container: postgres:17.11-bookworm
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
+      - name: Prepare cloud tools
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends python3 gnupg ca-certificates
+      - name: Recover a disposable key and reject a wrong password
+        timeout-minutes: 4
+        run: |
+          python3 -m unittest discover -s tests -p test_rtaf_recovery_key.py -v
+          python3 scripts/rtaf_recovery_key.py --self-test
+      - name: Generate and verify owner recovery bundle
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.generate && inputs.saved_passphrase
+        timeout-minutes: 4
+        env:
+          RTAF_RECOVERY_PASSPHRASE: ${{ secrets.RTAF_RECOVERY_PASSPHRASE }}
+        run: python3 scripts/rtaf_recovery_key.py
+      - name: Keep only password-protected recovery bundle for one day
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.generate && inputs.saved_passphrase
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rtaf-recovery-key-${{ github.run_id }}
+          path: |
+            recovery-output/PUBLIC_KEY.asc
+            recovery-output/FINGERPRINT.txt
+            recovery-output/PRIVATE_RECOVERY_KEY.asc.gpg
+            recovery-output/READ_ME.txt
+            recovery-output/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - name: Remove temporary cloud files
+        if: always()
+        run: |
+          rm -rf -- recovery-output
+          find /tmp -maxdepth 1 -type d \( -name 'rtaf-key-setup-*' -o -name 'rtaf-key-test-*' -o -name 'rtaf-gpg-*' \) -exec rm -rf -- {} +
