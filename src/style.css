@@ -212,10 +212,12 @@ dialog>h2{clear:both;padding-right:0}
  .app-header{grid-template-columns:minmax(0,1fr) auto}
  .app-header .brand{min-width:0;gap:10px}
  .app-header .brand .brand-mark{width:88px;height:88px}
- .app-header .brand-name{flex:1;font-size:clamp(20px,5.8vw,27px)}
+ .app-header .brand-name{flex:1;min-width:0;container-type:inline-size;font-size:clamp(26px,8vw,40px)}
+ .app-header .brand-name>span{font-size:min(25cqw,40px)}
  .footer-main .brand .brand-mark{width:88px;height:88px}
  #app[data-route=messages]:has(.messenger.chat-open) .app-header .brand .brand-mark{width:54px;height:54px}
  #app[data-route=messages]:has(.messenger.chat-open) .app-header .brand-name{font-size:16px}
+ #app[data-route=messages]:has(.messenger.chat-open) .app-header .brand-name>span{font-size:inherit}
 }
 
 /* The film starts independently of app loading; the skip link never shifts its centre. */
