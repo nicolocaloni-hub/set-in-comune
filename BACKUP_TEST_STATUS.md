@@ -1,5 +1,7 @@
 # Backup e prove · riscontri del 2 novembre 2026
 
+> Aggiornamento 3 novembre 2026: copia cifrata reale su Drive verificata e ripristino isolato del database superato nel [run 41730965867](https://github.com/nicolocaloni-hub/set-in-comune/actions/runs/41730965867), conteggi corrispondenti per 62 tabelle. Zero foto fisiche nella copia; recupero completo del servizio e periodicità non verificati/configurati. Stato attuale e limiti in [BACKUP_GOOGLE_DRIVE.md](BACKUP_GOOGLE_DRIVE.md). Il testo seguente conserva i riscontri storici del 2 novembre.
+
 Il gestore ha scelto di rinviare Turnstile e proseguire con backup e prove. Nessuna installazione, piano a pagamento, apertura a utenti reali, modifica DNS o ripristino sulla produzione è autorizzato implicitamente dai test.
 
 ## Destinazione e preflight remoto

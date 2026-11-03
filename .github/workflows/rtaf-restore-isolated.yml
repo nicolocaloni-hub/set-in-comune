@@ -47,9 +47,7 @@ jobs:
   restore:
     name: Actual snapshot, isolated database only
     needs: verify
-    # Temporary one-off continuation of the owner's manual run 41730256087.
-    # Remove this exact-commit-message retry path after the snapshot test.
-    if: github.ref == 'refs/heads/main' && ((github.event_name == 'workflow_dispatch' && inputs.restore_snapshot) || (github.event_name == 'push' && github.actor == 'nicolocaloni-hub' && github.event.head_commit.message == 'RTAF retry authorized restore 41730256087'))
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.restore_snapshot
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:

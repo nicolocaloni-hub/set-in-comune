@@ -1,5 +1,7 @@
 # Copie di sicurezza e ripristino · stato al 2 novembre 2026
 
+> Aggiornamento 3 novembre 2026: copia cifrata reale su Drive verificata e ripristino isolato del database superato nel [run 41730965867](https://github.com/nicolocaloni-hub/set-in-comune/actions/runs/41730965867), conteggi corrispondenti per 62 tabelle. Zero foto fisiche nella copia; recupero completo del servizio e periodicità non verificati/configurati. Stato attuale e limiti in [BACKUP_GOOGLE_DRIVE.md](BACKUP_GOOGLE_DRIVE.md). Il testo seguente conserva i riscontri storici del 2 novembre.
+
 Decisione successiva del gestore: backup rinviato ed escluso dalle attività richieste per il primo avvio. Il piano sotto resta disponibile come procedura futura; nessuna copia è stata creata e nessun ripristino è dichiarato possibile o collaudato. Non richiedere nuovamente di attivarlo per proseguire le prove autorizzate.
 
 ## Aggiornamento successivo · backup richiesto dal gestore
