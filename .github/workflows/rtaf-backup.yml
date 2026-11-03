@@ -26,8 +26,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: rtaf-backup
-  cancel-in-progress: false
+  group: rtaf-backup${{ github.event_name == 'workflow_dispatch' && inputs.capture && '-capture' || '' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' || !inputs.capture }}
 
 jobs:
   verify:
@@ -44,6 +44,7 @@ jobs:
           apt-get update -qq
           apt-get install -y --no-install-recommends python3 gnupg ca-certificates
       - name: Test archive checks and real GPG fixture roundtrip
+        timeout-minutes: 3
         run: |
           python3 - <<'PY'
           import unittest

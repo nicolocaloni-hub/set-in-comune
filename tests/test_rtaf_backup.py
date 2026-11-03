@@ -147,8 +147,14 @@ class BackupTests(unittest.TestCase):
             cmd = ["gpg", "--homedir", str(home), "--batch", "--no-tty"]
             def gpg(*args): return b.run(cmd + list(args))
             try:
-                probe = subprocess.run(["gpg-agent", "--homedir", str(home), "--daemon"], capture_output=True)
-                if b"Operation not permitted" in probe.stderr:
+                # A daemon may inherit stderr. A PIPE would wait for EOF until
+                # the agent exits, so use a regular temporary file for the probe.
+                with tempfile.TemporaryFile() as log:
+                    probe = subprocess.run(["gpg-agent", "--homedir", str(home), "--daemon"],
+                                           stdout=subprocess.DEVNULL, stderr=log, timeout=15)
+                    log.seek(0)
+                    probe_error = log.read()
+                if b"Operation not permitted" in probe_error:
                     self.skipTest("Runtime forbids GnuPG agent sockets; real roundtrip NOT verified")
                 if probe.returncode:
                     self.fail("GnuPG agent could not start")
