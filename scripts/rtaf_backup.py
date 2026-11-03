@@ -44,6 +44,22 @@ def digest(path):
     return h.hexdigest()
 
 
+def failure_category(stderr):
+    """Return only fixed labels, never provider text or SQL from stderr."""
+    message = stderr.decode("utf-8", errors="replace").lower()
+    checks = (
+        ("DB_AUTH", ("password authentication failed", "wrong password", "sasl authentication", "tenant or user not found")),
+        ("DB_TLS", ("certificate verify failed", "root certificate", "does not match host name", "ssl error", "tls error")),
+        ("DB_NETWORK", ("could not translate host name", "network is unreachable", "connection refused", "connection timed out", "timeout expired")),
+        ("DB_PERMISSION", ("permission denied", "must be owner", "row-level security")),
+        ("DB_VERSION", ("server version mismatch", "aborting because of server version")),
+        ("DB_COMPATIBILITY", ("unrecognized configuration parameter", "unrecognized connection parameter")),
+    )
+    for category, patterns in checks:
+        if any(pattern in message for pattern in patterns): return category
+    return "PROCESS_FAILURE"
+
+
 def run(args, *, env=None, timeout=1800):
     """Do not expose subprocess stderr: providers may include credentials in it."""
     try:
@@ -52,7 +68,8 @@ def run(args, *, env=None, timeout=1800):
     except (OSError, subprocess.TimeoutExpired):
         raise BackupError(f"Esecuzione non riuscita: {Path(args[0]).name}.") from None
     if result.returncode:
-        raise BackupError(f"Comando non riuscito: {Path(args[0]).name}. Nessuna copia dichiarata completa.")
+        category = failure_category(result.stderr)
+        raise BackupError(f"Comando non riuscito: {Path(args[0]).name} [{category}]. Nessuna copia dichiarata completa.")
     return result.stdout
 
 

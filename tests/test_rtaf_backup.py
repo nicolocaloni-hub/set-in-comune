@@ -37,6 +37,21 @@ class FakeStorage:
 
 
 class BackupTests(unittest.TestCase):
+    def test_subprocess_error_categories_never_expose_secret_text(self):
+        cases = (("password authentication failed", "DB_AUTH"),
+                 ("SSL error: certificate verify failed", "DB_TLS"),
+                 ("Network is unreachable", "DB_NETWORK"),
+                 ("permission denied for table fixture", "DB_PERMISSION"),
+                 ("aborting because of server version mismatch", "DB_VERSION"),
+                 ("unknown error", "PROCESS_FAILURE"))
+        for error, category in cases:
+            with self.subTest(category=category), patch.object(b.subprocess, "run", return_value=
+                    subprocess.CompletedProcess([], 1, b"private-output-fixture", (error + " private-secret-fixture").encode())):
+                with self.assertRaises(b.BackupError) as raised: b.run(["pg_dump", "--no-password"])
+                self.assertIn(category, str(raised.exception))
+                self.assertNotIn("private-secret-fixture", str(raised.exception))
+                self.assertNotIn("private-output-fixture", str(raised.exception))
+
     def test_storage_auth_supports_modern_keys_and_legacy_jwts(self):
         for secret, bearer in (("sb_secret_fixture_only", None),
                                ("fixture.legacy.jwt", "Bearer fixture.legacy.jwt")):
