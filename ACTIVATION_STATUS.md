@@ -2,7 +2,7 @@
 
 Nuova versione dei documenti: `2026-11-03-1`, con intestazioni formattabili e chiarimenti su custodia e ruolo della piattaforma. La versione precedente `2026-11-02-7` non viene riscritta. Le accettazioni precedenti rimangono riferite ai testi precedenti; la nuova versione richiede una scelta esplicita. Le modifiche sono autorizzate dalla richiesta del gestore del 3 novembre; nessun account è rappresentato come cancellato finché il connettore non conferma l’operazione.
 
-La registrazione e conferma email Android risultano riuscite per l’account di prova indicato dal gestore. Il profilo non ha annunci, rapporti di noleggio, chat, segnalazioni, ruoli operatore o oggetti Storage. Cancellazione richiesta dal gestore, ma la prima conferma del connettore Supabase è scaduta senza esecuzione; resta da completare tramite la conferma prevista dal connettore. Non sono conservati in questo documento email o credenziali dell’account.
+La registrazione e conferma email Android risultano riuscite per l’account di prova indicato dal gestore. Il profilo non ha annunci, rapporti di noleggio, chat, segnalazioni, ruoli operatore o oggetti Storage. Cancellazione richiesta dal gestore e completata dopo la conferma del connettore Supabase. Verifica remota: account Auth, profilo, sessioni, refresh token e ricevute dell’account di prova assenti; lavorazione conclusa con stato done. Account principale del gestore presente e invariato. Nessun rapporto condiviso o oggetto Storage era presente. Non sono conservati in questo documento email o credenziali dell’account.
 
 ## Rilascio di produzione precedente
 
