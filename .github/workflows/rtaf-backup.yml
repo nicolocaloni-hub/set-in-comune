@@ -1,6 +1,11 @@
 name: RTAF cloud backup
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/rtaf-backup.yml'
+      - 'scripts/rtaf_backup*.py'
+      - 'tests/test_rtaf_backup*.py'
   push:
     paths:
       - '.github/workflows/rtaf-backup.yml'
