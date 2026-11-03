@@ -8,9 +8,15 @@ import tempfile
 
 import rtaf_backup as backup
 
+# Session pooler host confirmed by the owner in the project Connect panel.
+PROJECT_SESSION_HOST = "aws-1-eu-central-1.pooler.supabase.com"
+
 
 def cloud_capture(output_dir, env=os.environ, *, capture=backup.capture):
     config = {key: value for key, value in env.items() if value}
+    config.setdefault("RTAF_DB_HOST", PROJECT_SESSION_HOST)
+    if config.get("RTAF_BACKUP_FINGERPRINT"):
+        config["RTAF_BACKUP_FINGERPRINT"] = config["RTAF_BACKUP_FINGERPRINT"].strip().upper()
     required = ("RTAF_DB_PASSWORD", "RTAF_STORAGE_SECRET",
                 "RTAF_BACKUP_PUBLIC_KEY_ASC", "RTAF_BACKUP_FINGERPRINT")
     if any(not config.get(name) for name in required):

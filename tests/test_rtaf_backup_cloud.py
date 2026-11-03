@@ -25,12 +25,17 @@ class CloudTests(unittest.TestCase):
             root = Path(temporary); keys = []
             env = {"RTAF_DB_PASSWORD": "fixture-password", "RTAF_STORAGE_SECRET": "fixture-token",
                    "RTAF_BACKUP_PUBLIC_KEY_ASC": "-----BEGIN PGP PUBLIC KEY BLOCK-----\nfixture",
-                   "RTAF_BACKUP_FINGERPRINT": "A" * 40, "RTAF_DB_HOST": ""}
+                   "RTAF_BACKUP_FINGERPRINT": "a" * 40 + "\n", "RTAF_DB_HOST": ""}
             def capture(output_dir, config):
                 keys.append(Path(config["RTAF_BACKUP_PUBLIC_KEY"]))
                 self.assertTrue(keys[0].exists())
                 self.assertNotIn("RTAF_BACKUP_PUBLIC_KEY_ASC", config)
-                self.assertNotIn("RTAF_DB_HOST", config)
+                self.assertEqual(config["RTAF_DB_HOST"], "aws-1-eu-central-1.pooler.supabase.com")
+                pg_env = backup.database_env(config)
+                self.assertEqual(pg_env["PGUSER"], "postgres." + backup.PROJECT)
+                self.assertEqual(pg_env["PGPORT"], "5432")
+                self.assertEqual(pg_env["PGSSLMODE"], "verify-full")
+                self.assertEqual(config["RTAF_BACKUP_FINGERPRINT"], "A" * 40)
                 archive = Path(output_dir) / "fixture.tar.gz.gpg"
                 archive.write_bytes(b"fixture ciphertext only")
                 return {"path": str(archive)}

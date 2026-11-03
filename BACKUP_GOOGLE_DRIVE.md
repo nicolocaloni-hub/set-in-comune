@@ -21,7 +21,9 @@ La copia reale parte soltanto da `main`, tramite avvio manuale, con entrambe le 
 
 Le eventuali `RTAF_DB_HOST` e `RTAF_DB_USER` vanno nelle **Variables** della stessa pagina, usando il pooler in modalità sessione e i valori del pannello Connect del progetto. Nessun segreto va negli input visibili del workflow o in chat. Le credenziali permettono l'accesso a dati reali: mantenere privato il repository e consentire modifiche a codice e workflow soltanto a collaboratori fidati.
 
-La chiave privata di produzione resta ancora da predisporre e custodire separatamente: il collaudo usa una chiave usa e getta e non ne crea una per il titolare. Non inserire una chiave privata nel repository né confonderla con la chiave server Supabase.
+La chiave reale di recupero è stata generata e verificata il 3 novembre 2026 nel [run 41717578532](https://github.com/nicolocaloni-hub/set-in-comune/actions/runs/41717578532). Il titolare ha confermato il download del pacchetto e la configurazione delle chiavi pubbliche su GitHub. L'impronta pubblica è `C9EFC8DE0028369D0553D1CD10954ABD47A5A737`. La prova ha recuperato la chiave esportata in un portachiavi separato e decifrato dati fittizi: non è un ripristino del database reale. Conservare il file privato cifrato e la passphrase separatamente; non inserire la chiave privata nel repository.
+
+Il titolare ha verificato nel pannello Connect l'host session pooler `aws-1-eu-central-1.pooler.supabase.com`. Il wrapper cloud lo usa come predefinito, con utente `postgres.srjdysdhxnafjrutufmk`, porta 5432 e verifica TLS completa. Non serve aggiungere una variabile GitHub per questo host. La connessione e il dump reali restano da verificare.
 
 Se riesce, il workflow pubblica temporaneamente (un giorno) **solo l'archivio cifrato e il suo checksum**, tra gli Artifacts del run. Nessun upload a Drive è implementato in questo workflow. Scaricare dal browser l'archivio cifrato e il checksum e caricarli nella cartella Drive verificata è un trasferimento di file, senza installare programmi. Prima di dichiarare la copia esterna completa, riscaricare da Drive e confrontare il checksum. Per automatizzare anche l'upload a Drive servirà un'autorizzazione Google dedicata al runner: il collegamento della chat non viene esportato.
 
@@ -40,7 +42,7 @@ Il workflow **RTAF recovery key** crea la chiave su un runner temporaneo; non in
 5. Aprire come testo `PUBLIC_KEY.asc` e inserirne il contenuto in `RTAF_BACKUP_PUBLIC_KEY_ASC`; inserire il contenuto di `FINGERPRINT.txt` in `RTAF_BACKUP_FINGERPRINT`. Sono i soli dati da trasferire al workflow che crea backup.
 6. Dopo aver salvato le copie e verificato i file, eliminare da GitHub il segreto temporaneo `RTAF_RECOVERY_PASSPHRASE` e l'artifact di generazione. Non eliminare le copie di recupero conservate dal titolare. Non inviare chiave privata o passphrase in chat.
 
-La generazione cloud comporta temporaneamente la disponibilità del materiale privato al runner e della passphrase al segreto Actions: affidarsi solo al repository privato e ai suoi collaboratori fidati, eliminando la passphrase dal servizio a setup concluso. Nessuna chiave reale è stata ancora generata; la prova del pacchetto non equivale al ripristino del database.
+La generazione cloud comporta temporaneamente la disponibilità del materiale privato al runner e della passphrase al segreto Actions: affidarsi solo al repository privato e ai suoi collaboratori fidati, eliminando la passphrase dal servizio a setup concluso. La chiave reale è stata generata nel run indicato sopra; la prova del pacchetto non equivale al ripristino del database.
 
 Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **17** (`pg_dump`, `pg_dumpall`, `pg_restore`), certificati CA aggiornati e GnuPG funzionante. Il runtime della sessione attuale non ha i client PostgreSQL e vieta i socket di `gpg-agent`: il test reale di cifratura/decifratura qui è rimasto non eseguito.
 
@@ -55,7 +57,7 @@ Usare una macchina amministrata e temporanea con Python 3, client PostgreSQL **1
 
 Le credenziali non vanno incollate in chat, in comandi con valori letterali, nel repository, nei log o nelle variabili pubbliche del sito. Il collegamento Drive della chat non fornisce un token esportabile per programmi esterni. Per un processo autonomo occorrerebbe configurare separatamente un'identità Google autorizzata alla cartella; ciò non è stato fatto.
 
-La chiave privata di recupero e la relativa passphrase restano al titolare, in un luogo sicuro separato dalla cartella dei backup. Prima della prima copia reale generare la coppia in un ambiente controllato, anche tramite il workflow cloud descritto sopra, e provare a decifrare un archivio fittizio. Non è stata generata una chiave privata di produzione in questa sessione.
+La chiave privata di recupero e la relativa passphrase restano al titolare, in un luogo sicuro separato dalla cartella dei backup. La coppia reale è già stata generata e verificata come indicato sopra: non rigenerarla per avviare il backup.
 
 ## Esecuzione manuale preparata
 
