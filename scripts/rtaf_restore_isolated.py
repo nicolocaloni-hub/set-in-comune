@@ -105,7 +105,8 @@ class Database:
                      "initdb -D /tmp/rtaf-data -U " + ADMIN + " --auth=trust --encoding=UTF8 --locale=C >/dev/null 2>&1; "
                      "exec postgres -D /tmp/rtaf-data -k /tmp -c listen_addresses='' "
                      "-c shared_buffers=32MB -c max_connections=20 "
-                     "-c shared_preload_libraries=pg_cron,pg_stat_statements,pg_net,supabase_vault "
+                     # Vault is loaded lazily: its production root key is not available here.
+                     "-c shared_preload_libraries=pg_cron,pg_stat_statements,pg_net "
                      "-c cron.database_name=" + DATABASE + " -c cron.launch_active_jobs=off "
                      "-c log_statement=none -c log_min_messages=fatal -c log_min_error_statement=panic"])
             for attempt in range(45):
