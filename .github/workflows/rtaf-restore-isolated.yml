@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends python3 gnupg
-          docker pull supabase/postgres:17.6.1.136
+          docker pull supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
       - name: Test isolation safeguards and COPY accounting
         run: python3 -m unittest discover -s tests -p test_rtaf_restore_isolated.py -v
       - name: Recover encrypted fixture and restore all its database objects
@@ -61,7 +61,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends python3 gnupg
-          docker pull supabase/postgres:17.6.1.136
+          docker pull supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00
       - name: Download original encrypted snapshot
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:

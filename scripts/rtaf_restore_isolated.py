@@ -20,7 +20,7 @@ import time
 from rtaf_backup import BackupError, REQUIRED_DATA, digest, verify_archive, pack, encrypt_archive
 from rtaf_recovery_key import gpg, make_bundle, validate_passphrase
 
-IMAGE = "supabase/postgres:17.6.1.136"  # Official self-hosting compose, checked 2026-11-03.
+IMAGE = "supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00"  # Official self-hosting compose, checked 2026-11-03.
 ADMIN = "rtaf_restore_operator"
 DATABASE = "rtaf_restore"
 BACKUP_NAME = "rtaf-20261103T213735479758Z.tar.gz.gpg"
@@ -105,7 +105,7 @@ class Database:
                      "initdb -D /tmp/rtaf-data -U " + ADMIN + " --auth=trust --encoding=UTF8 --locale=C >/dev/null 2>&1; "
                      "exec postgres -D /tmp/rtaf-data -k /tmp -c listen_addresses='' "
                      "-c shared_buffers=32MB -c max_connections=20 "
-                     "-c shared_preload_libraries=pg_cron,pg_stat_statements "
+                     "-c shared_preload_libraries=pg_cron,pg_stat_statements,pg_net,supabase_vault "
                      "-c cron.database_name=" + DATABASE + " -c cron.launch_active_jobs=off "
                      "-c log_statement=none -c log_min_messages=fatal -c log_min_error_statement=panic"])
             for attempt in range(45):
