@@ -41,6 +41,7 @@ export function startIntro({env=globalThis}={}){
   // A slow/failed video can never hold the app behind this introduction indefinitely.
   timer=env.setTimeout(dismiss,5000);
   video.muted=true;video.defaultMuted=true;video.playsInline=true;
+  video.defaultPlaybackRate=video.playbackRate=1.375;
   video.src='/intro.mp4';
   video.play()?.catch(dismiss);
  }catch{dismiss();}
