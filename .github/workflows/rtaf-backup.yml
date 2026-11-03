@@ -6,11 +6,13 @@ on:
       - '.github/workflows/rtaf-backup.yml'
       - 'scripts/rtaf_backup*.py'
       - 'tests/test_rtaf_backup*.py'
+      - 'scripts/certificates/*.crt'
   push:
     paths:
       - '.github/workflows/rtaf-backup.yml'
       - 'scripts/rtaf_backup*.py'
       - 'tests/test_rtaf_backup*.py'
+      - 'scripts/certificates/*.crt'
   workflow_dispatch:
     inputs:
       capture:
@@ -42,7 +44,7 @@ jobs:
       - name: Prepare temporary cloud tools
         run: |
           apt-get update -qq
-          apt-get install -y --no-install-recommends python3 gnupg ca-certificates
+          apt-get install -y --no-install-recommends python3 gnupg ca-certificates openssl
       - name: Test archive checks and real GPG fixture roundtrip
         timeout-minutes: 3
         run: |
@@ -53,6 +55,8 @@ jobs:
           if not result.wasSuccessful() or result.skipped:
               raise SystemExit('All backup tests must pass without skips in the cloud.')
           PY
+      - name: Verify pooler certificate without database credentials
+        run: python3 scripts/rtaf_backup_cloud.py --tls-probe
 
   capture:
     name: Read-only capture; encrypted artifact; Drive copy still required
@@ -68,7 +72,7 @@ jobs:
       - name: Prepare temporary cloud tools
         run: |
           apt-get update -qq
-          apt-get install -y --no-install-recommends python3 gnupg ca-certificates
+          apt-get install -y --no-install-recommends python3 gnupg ca-certificates openssl
       - name: Export and encrypt
         env:
           RTAF_DB_PASSWORD: ${{ secrets.RTAF_DB_PASSWORD }}
