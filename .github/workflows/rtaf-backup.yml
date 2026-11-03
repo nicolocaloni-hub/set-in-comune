@@ -1,0 +1,90 @@
+name: RTAF cloud backup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rtaf-backup.yml'
+      - 'scripts/rtaf_backup*.py'
+      - 'tests/test_rtaf_backup*.py'
+  workflow_dispatch:
+    inputs:
+      capture:
+        description: 'Copia reale (lascia disattivato per eseguire solo i test fittizi)'
+        type: boolean
+        default: false
+      quiet_window:
+        description: 'Per la copia reale ho predisposto una finestra senza scritture applicative'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rtaf-backup
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Offline tests, no production credentials
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    container: postgres:17.11-bookworm
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
+      - name: Prepare temporary cloud tools
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends python3 gnupg ca-certificates
+      - name: Test archive checks and real GPG fixture roundtrip
+        run: |
+          python3 - <<'PY'
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tests', pattern='test_rtaf_backup*.py')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          if not result.wasSuccessful() or result.skipped:
+              raise SystemExit('All backup tests must pass without skips in the cloud.')
+          PY
+
+  capture:
+    name: Read-only capture; encrypted artifact; Drive copy still required
+    needs: verify
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.capture && inputs.quiet_window
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    container: postgres:17.11-bookworm
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
+      - name: Prepare temporary cloud tools
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends python3 gnupg ca-certificates
+      - name: Export and encrypt
+        env:
+          RTAF_DB_PASSWORD: ${{ secrets.RTAF_DB_PASSWORD }}
+          RTAF_STORAGE_SECRET: ${{ secrets.RTAF_STORAGE_SECRET }}
+          RTAF_BACKUP_PUBLIC_KEY_ASC: ${{ secrets.RTAF_BACKUP_PUBLIC_KEY_ASC }}
+          RTAF_BACKUP_FINGERPRINT: ${{ secrets.RTAF_BACKUP_FINGERPRINT }}
+          RTAF_DB_HOST: ${{ vars.RTAF_DB_HOST }}
+          RTAF_DB_USER: ${{ vars.RTAF_DB_USER }}
+          TMPDIR: /tmp
+        run: python3 scripts/rtaf_backup_cloud.py
+      - name: Keep only encrypted copy temporarily (one day)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: rtaf-encrypted-backup-${{ github.run_id }}
+          path: |
+            backup-output/*.tar.gz.gpg
+            backup-output/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+      - name: Remove temporary runner files
+        if: always()
+        run: |
+          rm -rf -- backup-output
+          find /tmp -maxdepth 1 -type d \( -name 'rtaf-plaintext-*' -o -name 'rtaf-gpg-*' -o -name 'rtaf-cloud-public-key-*' \) -exec rm -rf -- {} +

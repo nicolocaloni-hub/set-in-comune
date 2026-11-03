@@ -14,3 +14,10 @@ test-results/
 *.dump
 
 supabase/.temp/
+
+# Backup payloads and recovery keys must never enter Git or the public build.
+backup-output/
+*.tar.gz.gpg
+*.backup
+*private*.asc
+__pycache__/
