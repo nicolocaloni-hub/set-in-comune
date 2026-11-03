@@ -22,6 +22,7 @@ from rtaf_recovery_key import gpg, make_bundle, validate_passphrase
 
 IMAGE = "supabase/postgres:17.6.1.136@sha256:f371b5f3f2ac0a05703f33d6e6134515fb2498cab708fb948a0aeb7481467c00"  # Official self-hosting compose, checked 2026-11-03.
 ADMIN = "rtaf_restore_operator"
+BOOTSTRAP = "supabase_admin"  # Source pg_roles OID 10, verified read-only.
 DATABASE = "rtaf_restore"
 BACKUP_NAME = "rtaf-20261103T213735479758Z.tar.gz.gpg"
 BACKUP_SHA = "6c7a90f99d957c6b6e3efcc8f24755a73ec92dc158fb635f0d7d10bc855a622d"
@@ -65,7 +66,7 @@ def unquote(value):
 def copy_counts(sql):
     counts = {}
     current = None
-    for line in sql.decode().splitlines():
+    for line in sql.decode().split("\n"):
         if current is not None:
             if line == r"\.":
                 current = None
@@ -84,6 +85,18 @@ def copy_counts(sql):
     return counts
 
 
+def prepare_roles(roles):
+    if ADMIN.encode() in roles or re.search(rb"\bPASSWORD\s+(?!NULL\b)", roles, re.I):
+        raise BackupError("UNEXPECTED_ROLE_DUMP")
+    # pg_dumpall emits CREATE even for the existing bootstrap role. Keep its
+    # ALTERs and every GRANTED BY intact; only the duplicate CREATE is removed.
+    # Preserving OID 10's name avoids PostgreSQL 16+ grantor/admin-option errors.
+    sql, count = re.subn(rb'(?m)^CREATE ROLE (?:supabase_admin|"supabase_admin");\r?\n', b"", roles)
+    if count != 1:
+        raise BackupError("SOURCE_BOOTSTRAP_ROLE_NOT_CONFIRMED")
+    return sql.decode()
+
+
 class Database:
     def __init__(self):
         self.name = "rtaf-isolated-" + secrets.token_hex(8)
@@ -91,9 +104,9 @@ class Database:
     def execute(self, args, data=None):
         return command(["docker", "exec", "-i", "--user", "postgres", self.name, *args], data=data)
 
-    def sql(self, sql, db=DATABASE):
+    def sql(self, sql, db=DATABASE, user=ADMIN):
         return self.execute(["psql", "-X", "-qAt", "-v", "ON_ERROR_STOP=1",
-                             "-h", "/tmp", "-U", ADMIN, "-d", db], sql.encode())
+                             "-h", "/tmp", "-U", user, "-d", db], sql.encode())
 
     def __enter__(self):
         try:
@@ -102,7 +115,7 @@ class Database:
                      "--user", "postgres", "--memory", "2g", "--cpus", "2", "--pids-limit", "128",
                      "--tmpfs", "/tmp:rw,nosuid,size=1073741824,mode=1777",
                      "--entrypoint", "/bin/sh", IMAGE, "-ec",
-                     "initdb -D /tmp/rtaf-data -U " + ADMIN + " --auth=trust --encoding=UTF8 --locale=C >/dev/null 2>&1; "
+                     "initdb -D /tmp/rtaf-data -U " + BOOTSTRAP + " --auth=trust --encoding=UTF8 --locale=C >/dev/null 2>&1; "
                      "exec postgres -D /tmp/rtaf-data -k /tmp -c listen_addresses='' "
                      "-c shared_buffers=32MB -c max_connections=20 "
                      # Vault is loaded lazily: its production root key is not available here.
@@ -111,7 +124,7 @@ class Database:
                      "-c log_statement=none -c log_min_messages=fatal -c log_min_error_statement=panic"])
             for attempt in range(45):
                 try:
-                    self.sql("SELECT 1", "postgres")
+                    self.sql("SELECT 1", "postgres", user=BOOTSTRAP)
                     break
                 except BackupError:
                     if attempt == 44: raise BackupError("ISOLATED_DATABASE_STARTUP_FAILED") from None
@@ -120,6 +133,10 @@ class Database:
             if (state["HostConfig"]["NetworkMode"] != "none" or state["HostConfig"].get("PortBindings")
                     or state["HostConfig"].get("Binds")):
                 raise BackupError("ISOLATION_NOT_VERIFIED")
+            identity = self.sql("SELECT rolname FROM pg_roles WHERE oid=10 AND rolsuper", "postgres", user=BOOTSTRAP)
+            if identity.decode().strip() != BOOTSTRAP:
+                raise BackupError("TARGET_BOOTSTRAP_IDENTITY_MISMATCH")
+            self.sql("CREATE ROLE " + ADMIN + " WITH SUPERUSER LOGIN", "postgres", user=BOOTSTRAP)
             self.sql("CREATE DATABASE " + DATABASE + " TEMPLATE template0", "postgres")
             return self
         except Exception:
@@ -137,15 +154,15 @@ def stage(name):
 
 
 def restore(payload):
-    roles = (payload / "roles.sql").read_bytes()
-    if ADMIN.encode() in roles or re.search(rb"\bPASSWORD\s+(?!NULL\b)", roles, re.I):
-        raise BackupError("UNEXPECTED_ROLE_DUMP")
+    roles = prepare_roles((payload / "roles.sql").read_bytes())
     stage("start_disposable_database")
     with Database() as db:
         # This is a fresh initdb, not an existing Supabase project. Restore all
         # roles/owners/ACLs; do not ignore errors or strip managed schemas.
         stage("restore_roles")
-        db.sql(roles.decode(), "postgres")
+        db.sql(roles, "postgres")
+        if db.sql("SELECT rolname FROM pg_roles WHERE oid=10 AND rolsuper", "postgres").decode().strip() != BOOTSTRAP:
+            raise BackupError("RESTORED_BOOTSTRAP_IDENTITY_MISMATCH")
         db.execute(["sh", "-c", "cat > /tmp/database.dump"], (payload / "database.dump").read_bytes())
         base = ["pg_restore", "--exit-on-error", "-h", "/tmp", "-U", ADMIN,
                 "-d", DATABASE, "/tmp/database.dump"]
@@ -228,7 +245,10 @@ def fixture():
                 ["pg_dump", "-h", "/tmp", "-U", ADMIN, "-d", DATABASE, "-Fc", "--no-owner"]))
             # The synthetic dump is owned by the local operator, which exists on
             # both sides. The real test restores the complete captured role file.
-            (payload / "roles.sql").write_text("CREATE ROLE postgres;\n")
+            (payload / "roles.sql").write_text(
+                "CREATE ROLE supabase_admin;\nALTER ROLE supabase_admin WITH SUPERUSER LOGIN;\n"
+                "CREATE ROLE postgres;\nCREATE ROLE fixture_group;\nCREATE ROLE fixture_member;\n"
+                "GRANT fixture_group TO fixture_member WITH INHERIT TRUE GRANTED BY supabase_admin;\n")
         (payload / "storage-inventory.json").write_text("[]")
         bundle = root / "bundle.tar.gz"
         pack(payload, bundle, {"format": 1, "project": "srjdysdhxnafjrutufmk"})

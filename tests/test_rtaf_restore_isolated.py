@@ -47,5 +47,21 @@ class IsolatedRestoreTests(unittest.TestCase):
             with self.assertRaisesRegex(BackupError, '^ISOLATED_PROCESS_FAILURE$'):
                 restore.command(['fixture'])
 
+    def test_bootstrap_create_only_is_removed_and_grantor_and_attributes_survive(self):
+        sql = (b'CREATE ROLE supabase_admin;\nALTER ROLE supabase_admin WITH SUPERUSER;\n'
+               b'GRANT fixture_group TO fixture_member WITH INHERIT TRUE GRANTED BY supabase_admin;\n')
+        result = restore.prepare_roles(sql)
+        self.assertNotIn('CREATE ROLE supabase_admin;', result)
+        self.assertIn('ALTER ROLE supabase_admin WITH SUPERUSER;', result)
+        self.assertIn('GRANTED BY supabase_admin;', result)
+        for bad in (b'CREATE ROLE other;\n', sql + b'CREATE ROLE supabase_admin;\n',
+                    sql + b'ALTER ROLE fixture PASSWORD \'do-not-log\';\n',
+                    sql + b'CREATE ROLE rtaf_restore_operator;\n'):
+            with self.assertRaises(BackupError): restore.prepare_roles(bad)
+
+    def test_unicode_line_separators_do_not_create_extra_copy_rows(self):
+        sql = copy_fixture('COPY public.extra (x) FROM stdin;\nhello\u2028world\n\\.\n')
+        self.assertEqual(restore.copy_counts(sql.encode())[('public', 'extra')], 1)
+
 
 if __name__ == '__main__': unittest.main()
