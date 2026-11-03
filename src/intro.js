@@ -16,7 +16,7 @@ export function startIntro({env=globalThis}={}){
  if(typeof dialog.showModal!=='function')return noop;
  dialog.className='brand-intro';dialog.id='brand-intro';
  dialog.setAttribute('aria-label','Benvenuto in RENT TO A FRIEND');
- dialog.innerHTML='<div class="intro-content"><video id="intro-video" muted playsinline autoplay preload="auto" disablepictureinpicture poster="/intro-poster.webp" width="448" height="796" aria-label="Animazione del logo RENT TO A FRIEND"></video><p>L’attrezzatura si condivide.<br>Le storie si moltiplicano.</p></div><button class="intro-skip" type="button" autofocus>Salta introduzione <span aria-hidden="true">→</span></button>';
+ dialog.innerHTML='<div class="intro-content"><video id="intro-video" muted playsinline autoplay preload="auto" disablepictureinpicture poster="/intro-poster.webp" width="448" height="796" aria-label="Animazione del logo RENT TO A FRIEND"></video></div><button class="intro-skip" type="button" autofocus>Salta l’intro <span aria-hidden="true">→</span></button>';
  const video=dialog.querySelector('video'),skip=dialog.querySelector('button');
  let closed=false,appReady=false,playbackEnded=false,timer;
  const cleanups=[];
@@ -46,3 +46,7 @@ export function startIntro({env=globalThis}={}){
  }catch{dismiss();}
  return {ready,dismiss};
 }
+
+// Loaded directly by the page, before the app and its API dependencies.
+// ES module caching gives app.js the same controller without replaying the film.
+export const intro=startIntro();
