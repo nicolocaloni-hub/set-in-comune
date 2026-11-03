@@ -1,5 +1,7 @@
 # RENT TO A FRIEND · Piano prima del lancio
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 Stato effettivo al 2 novembre 2026. Questo elenco sostituisce il precedente riepilogo con riferimenti superati. La fonte dettagliata è ACTIVATION_STATUS.md; PRELANCIO.md conserva lo storico.
 
 ## Completato

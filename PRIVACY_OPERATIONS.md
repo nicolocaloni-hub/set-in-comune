@@ -1,5 +1,7 @@
 # Privacy e conservazione · revisione operativa RC5
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 Approvazione del gestore ricevuta il 2 novembre 2026: privacy considerata risolta, Gmail mantenuto. La decisione e i limiti fattuali sono registrati in [PRIVACY_CLOSEOUT.md](PRIVACY_CLOSEOUT.md). Questa approvazione non dichiara eseguite le procedure o le prove di rilascio elencate sotto; nessun job o controllo di build viene attivato da questo documento.
 
 Titolare: Nicolò Caloni. Contatto pubblico: assistenza@rent-to-a-friend.it.

@@ -1,5 +1,7 @@
 # Recapito e conservazione · verifica del 2 novembre 2026
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 Aggiornamento successivo: il gestore ha chiesto espressamente di considerare risolta la privacy e mantiene Gmail. La decisione è acquisita in [PRIVACY_CLOSEOUT.md](PRIVACY_CLOSEOUT.md); non si chiede nuovamente un'approvazione generica. La verifica qui sotto resta il riscontro dei fatti e delle fonti, distinto dalla scelta del gestore e dalle prove tecniche del rilascio.
 
 ## Istruzione ricevuta

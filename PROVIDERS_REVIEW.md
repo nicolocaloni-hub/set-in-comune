@@ -1,5 +1,37 @@
 # Fornitori e trasferimenti · revisione del 2 novembre 2026
 
+## Riscontro aggiornato · 3 novembre 2026
+
+Stato operativo attuale e limiti in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Il servizio è collegato al backend; i riferimenti a demo e backup non eseguito nelle sezioni storiche non descrivono più lo stato corrente. Restano le scelte già acquisite: Gmail e IONOS mantenuti, dominio su Vercel, Cloudflare in standby, Turnstile/Google Login/pubblicità rinviati. Nessun nuovo piano o contratto è stato acquistato o sottoscritto dall'assistente.
+
+| Servizio effettivo | Riscontro ricontrollato | Esito e limite documentato |
+|---|---|---|
+| Supabase | Progetto dedicato a Francoforte; DPA pubblico v1 del 1 agosto 2026 incorporato nei termini | Documento standard attuale individuato. Non è richiesta una nuova firma dedotta; un database in UE non esaurisce tutti i trattamenti e trasferimenti |
+| Resend | Il DPA standard è in vigore per ogni account, eseguito all'iscrizione, senza ulteriore controfirma; copia scaricabile dall'account. Email/log 30 giorni, backup 7 giorni, residui entro 90 giorni dalla cessazione; conservazione negli USA | Invio Auth già collaudato nei rapporti precedenti. Non è stata scaricata una copia privata dell'accordo, né inventata una nuova firma |
+| IONOS | Inoltro e prodotto dominio già riscontrati; il centro assistenza conferma che dal 19 luglio 2022 le disposizioni sono incorporate nei nuovi contratti | Non richiedere automaticamente un accordo aggiuntivo. Il prodotto inoltro non viene equiparato a Mail Basic/Business o a una casella completa |
+| Gmail assistenza | Il titolare ha confermato ricezione, risposta, verifica in due passaggi e recupero sulla casella corretta | Controllo operativo acquisito come attestazione del titolare. Google dichiara che Gmail consumer non ha un DPA: proteggere l'account non crea copertura contrattuale da responsabile |
+| Vercel | Collegamento nativo ricontrollato: team `nicolocaloni-hubs-projects`, piano **hobby**, progetto `set-in-comune-app`. DPA pubblico applicabile a Pro/Enterprise; Hobby limitato all'uso personale non commerciale | La compatibilità del servizio effettivo e la qualificazione dei trattamenti non sono attestate dal solo deployment READY o dall'assenza di commissioni. Nessun upgrade o migrazione eseguiti |
+| GitHub Actions | Workflow reali di esportazione e ripristino osservati; plaintext nel runner temporaneo, soli output cifrati negli artifact di backup, conservazione impostata a un giorno | Va incluso nel registro dei fornitori, non solo considerato archivio del codice. L'hub contrattuale pubblico elenca il DPA per specifici prodotti/piani: il piano/accordo effettivo di questo account non è stato verificato e non viene presunta una copertura universale |
+| Google Drive | Account backup rent.to.a.friend@gmail.com, cartella privata e download/checksum verificati; chiave privata custodita separatamente | Solo archivio cifrato e checksum nella cartella. Google dichiara che anche Drive consumer non ha un DPA: la cifratura è una protezione tecnica, non una qualificazione contrattuale automatica. Eliminazione e durata delle copie restano manuali |
+| Cloudflare | Servizi predisposti già documentati, senza migrazione del dominio o attivazione CAPTCHA in questa revisione | Non descritto come hosting principale o CAPTCHA effettivamente attivo |
+
+Fonti primarie ricontrollate:
+
+- https://supabase.com/legal/customer-resources/data-processing-addendum
+- https://resend.com/security/gdpr/
+- https://resend.com/legal/terms-of-service
+- https://www.ionos.it/aiuto/protezione-dei-dati/informazioni-generali-sullordinanza-di-base-sulla-protezione-dei-dati-oderr/contratto-per-il-trattamento-dei-dati/
+- https://support.google.com/policies/answer/9581826?hl=en-GB
+- https://vercel.com/legal/dpa
+- https://vercel.com/docs/limits/fair-use-guidelines
+- https://github.com/customer-terms
+- https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+- https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features
+
+I riscontri distinguono documento pubblico, stato tecnico dell'account e attestazione del titolare. Non sono una certificazione giuridica, non cambiano la scelta Gmail e non chiudono con un booleano le questioni ancora prive di riscontro specifico.
+
+## Storico della revisione precedente
+
 Ambito effettivo: sito statico Vercel; progetto Supabase dedicato `srjdysdhxnafjrutufmk` a Francoforte; Resend per sole conferma email e recupero; assistenza IONOS inoltrata a `assistenza.rtaf@gmail.com`; Turnstile predisposto ma non richiesto da Auth; push facoltative da provare. La demo non usa il backend per i contenuti locali. Gli accordi esistenti possono incorporare un DPA: non si richiede automaticamente una nuova firma o un acquisto.
 
 ## Esito per fornitore

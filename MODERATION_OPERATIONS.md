@@ -1,5 +1,7 @@
 # Segnalazioni, noleggi e riesame · proposta operativa RC2
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 Gestore previsto: Nicolò Caloni. Canale pubblico: assistenza@rent-to-a-friend.it.
 Le email dell’app restano soltanto conferma e recupero password; la corrispondenza manuale di assistenza è distinta. Nessuna reperibilità 24/7 promessa.
 

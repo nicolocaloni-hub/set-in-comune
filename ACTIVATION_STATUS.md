@@ -1,5 +1,7 @@
 # Tre migliorie dell’interfaccia · 3 novembre 2026
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 Attuate su richiesta del gestore: messaggio dedicato al catalogo vuoto, requisiti dei campi e contatori di caratteri, archivio reversibile degli annunci. Il messaggio della community si usa solo quando non ci sono annunci pubblicati; filtri senza risultati e preferiti hanno messaggi distinti. I contatori dei testi riflettono la lunghezza senza spazi iniziali/finali; le password non hanno un contatore del contenuto.
 
 L’archivio conserva annuncio, foto e storico. Un annuncio archiviato è inattivo e rimane gestibile dal solo proprietario; il ripristino torna sempre in pausa. Le richieste pendenti e i noleggi accettati, ritirati o in restituzione devono essere gestiti prima di archiviare. Il controllo è anche nel database, non solo nella schermata; richieste di prenotazione e aggiornamenti serializzano sull’annuncio. Nessuna cancellazione fisica e nessuna archiviazione di annunci del gestore è eseguita durante il rilascio.

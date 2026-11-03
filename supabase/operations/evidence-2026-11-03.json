@@ -1,0 +1,71 @@
+{
+  "project": "srjdysdhxnafjrutufmk",
+  "recorded_at": "2026-11-03T22:59:40.494768+00:00",
+  "scope": "Operational SQL rehearsal and aggregate manual review; not a phone UI or external email delivery test",
+  "smoke": {
+    "test_mode": "SQL roles in one transaction, not signed HTTP or phone UI",
+    "physical_uploads": false,
+    "fixtures_persisted": false,
+    "external_messages_sent": false,
+    "operations_smoke_passed": true,
+    "manual_pause_and_restoration": true,
+    "report_and_privacy_lifecycle": true,
+    "export_owner_and_no_credentials": true,
+    "closed_case_retention_boundaries": true,
+    "moderator_and_stranger_isolation": true,
+    "case_closure_is_not_account_erasure": true
+  },
+  "review": {
+    "mode": "manual_review_only",
+    "checked_at": "2026-11-03T22:59:40.494768+00:00",
+    "open_reports": 0,
+    "external_checks": "Email, provider logs, external backups, legal holds and physical Storage copies require separate review",
+    "deletion_executed": false,
+    "moderator_accounts": 1,
+    "app_storage_objects": 0,
+    "open_privacy_requests": 0,
+    "inquiries_review_12_months": 0,
+    "closed_privacy_review_12_months": 0,
+    "closed_reports_review_12_months": 0,
+    "privacy_requests_past_one_month": 0,
+    "closed_bookings_review_24_months": 0,
+    "read_notifications_review_90_days": 0
+  },
+  "cleanup": {
+    "fixture_accounts": 0,
+    "fixture_profiles": 0,
+    "fixture_listings": 0,
+    "fixture_reports": 0,
+    "fixture_privacy_requests": 0,
+    "total_auth_users": 1,
+    "total_moderators": 1,
+    "app_storage_objects": 0,
+    "source": "Independent post-rollback SELECT on 2026-11-03"
+  },
+  "support_mailbox": {
+    "address": "assistenza.rtaf@gmail.com",
+    "forwarded_from": "assistenza@rent-to-a-friend.it",
+    "receipt_reply_two_factor_and_recovery": "confirmed by owner in this session",
+    "assurance": "Owner attestation; not inspection of Google account settings by assistant"
+  },
+  "publication_approval": "Preserved, not requested again",
+  "unresolved_external_evidence": [
+    "Applicability of postal-address disclosure and any address authorized for publication",
+    "Provider-role/contract coverage for Vercel Hobby and consumer Gmail/Drive, plus actual GitHub Actions account terms"
+  ],
+  "automatic_deletion_enabled": false,
+  "provider_account_observed": {
+    "vercel_team": "nicolocaloni-hubs-projects",
+    "vercel_project": "set-in-comune-app",
+    "vercel_plan": "hobby",
+    "source": "Native Vercel get_git_deployment_context, 2026-11-03"
+  },
+  "local_validation": {
+    "application_tests_passed": 172,
+    "application_tests_failed": 0,
+    "application_tests_skipped": 0,
+    "syntax_check": "passed",
+    "build": "passed (demo build; production environment remains configured in Vercel)",
+    "security_scan": "passed; see contemporaneous command output"
+  }
+}

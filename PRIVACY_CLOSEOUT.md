@@ -1,5 +1,7 @@
 # Privacy · consegna operativa del 2 novembre 2026
 
+> Aggiornamento 3 novembre 2026: prove operative sul backend e controllo manuale di conservazione completati; assistenza confermata dal titolare. Riscontri, procedure e sole questioni esterne ancora aperte in [OPERATIONS_CLOSEOUT.md](OPERATIONS_CLOSEOUT.md). Le sezioni successive conservano lo storico e non attestano nuovi collaudi.
+
 **Decisione del gestore: privacy approvata e considerata risolta il 2 novembre 2026.** Nicolò ha confermato espressamente di considerare risolta la questione dopo il riepilogo dei limiti di Gmail. Restano assistenza Gmail, piani gratuiti, pubblicità rinviata e Cloudflare in attesa del ripristino IONOS. Non occorre un altro consenso generico a queste scelte. L'approvazione del gestore non attesta prove tecniche non effettuate, non crea accordi mancanti con i fornitori e non apre il servizio agli utenti reali.
 
 ## Fatti acquisiti e lavoro predisposto
