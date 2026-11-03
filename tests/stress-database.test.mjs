@@ -1,0 +1,58 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {PGlite} from '@electric-sql/pglite';
+
+// Isolated Postgres/WASM. Promise bursts queue transactions on one connection;
+// this proves invariants and quotas, not cross-session lock scheduling.
+test('stress: queued booking collisions, spam and outsider reads stay constrained',async t=>{
+ const db=new PGlite();t.after(()=>db.close());
+ await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;
+ create schema auth;create schema storage;create schema vault;create schema net;
+ create table auth.users(id uuid primary key,email_confirmed_at timestamptz,raw_user_meta_data jsonb default '{}');
+ create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+ create function auth.jwt() returns jsonb language sql stable as $$select jsonb_build_object('role',current_setting('request.jwt.claim.role',true))$$;
+ create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
+ create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text,metadata jsonb default '{}');
+ create function storage.foldername(text) returns text[] language sql immutable as $$select (string_to_array($1,'/'))[1:array_length(string_to_array($1,'/'),1)-1]$$;
+ alter table storage.objects enable row level security;
+ grant usage on schema public,auth,storage to anon,authenticated,service_role;grant select on storage.objects to anon,authenticated;grant insert,delete on storage.objects to authenticated;
+ create table vault.decrypted_secrets(id uuid primary key,decrypted_secret text);
+ create table net.requests(id bigserial,url text,body jsonb,headers jsonb);
+ create function net.http_post(url text,body jsonb,headers jsonb,timeout_milliseconds integer) returns bigint language plpgsql as $$declare n bigint;begin insert into net.requests(url,body,headers) values(url,body,headers) returning id into n;return n;end;$$;`);
+ await db.exec(await readFile(new URL('../supabase/001_initial.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/migrations/20261030174113_notifications.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/migrations/20261031103706_marketplace_trust_and_inquiries.sql',import.meta.url),'utf8'));
+
+ await db.exec(await readFile(new URL('../supabase/launch/listing_archive.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/launch/legal_acceptance.sql',import.meta.url),'utf8'));
+ const owner='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',outsider='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+ const renters=Array.from({length:16},(_,i)=>'cccccccc-cccc-4ccc-8ccc-'+String(i).padStart(12,'0'));
+ for(const id of [owner,outsider,...renters])await db.query('insert into auth.users values($1,now(),$2)',[id,JSON.stringify({display_name:'Isolated stress fixture'})]);
+ const as=(uid,fn)=>db.transaction(async tx=>{await tx.exec('set local role authenticated');await tx.query("select set_config('request.jwt.claim.sub',$1,true),set_config('request.jwt.claim.role','authenticated',true)",[uid]);return fn(tx);});
+ await db.query("insert into private.legal_releases(version,terms_text,privacy_text,published_at,active) values('isolated-stress','Fixture conditions for isolated stress tests','Fixture privacy for isolated stress tests',now(),true)");
+ const doc=(await as(owner,tx=>tx.query('select public.my_legal_status() s'))).rows[0].s;
+ for(const id of [owner,outsider,...renters])await as(id,tx=>tx.query('select public.accept_legal_documents($1,$2,$3,true,true,true)',[doc.version,doc.terms_hash,doc.privacy_hash]));
+ const listing=(await as(owner,tx=>tx.query("insert into public.listings(owner_id,title,category,zone,description,price,accessories,conditions,images) values($1,'Camera stress isolato','Camere','Prati','Camera esclusivamente per stress test isolato',20,'Borsa','Condizioni fixture',$2) returning id",[owner,['https://example.supabase.co/storage/v1/object/public/listing-photos/'+owner+'/'+outsider+'.jpg']]))).rows[0].id;
+ const started=performance.now();
+ const request=uid=>as(uid,tx=>tx.query("select (public.request_booking($1,'2090-01-01','2090-01-02','')).id",[listing]));
+ const duplicates=await Promise.allSettled(Array.from({length:32},()=>request(renters[0])));
+ assert.equal(duplicates.filter(r=>r.status==='fulfilled').length,1);
+ for(const result of duplicates.filter(r=>r.status==='rejected'))assert.match(result.reason.message,/unique|già|duplicate/i);
+ await Promise.all(renters.slice(1).map(request));
+ const pending=(await db.query('select id from public.bookings')).rows;
+ assert.equal(pending.length,16);
+ const accepted=await Promise.allSettled(pending.map(b=>as(owner,tx=>tx.query("select public.transition_booking($1,'accepted')",[b.id]))));
+ assert.equal(accepted.filter(r=>r.status==='fulfilled').length,1);
+ for(const result of accepted.filter(r=>r.status==='rejected'))assert.match(result.reason.message,/occupate/);
+ const booking=(await db.query("select id,renter_id from public.bookings where status='accepted'")).rows[0];
+ const spam=await Promise.allSettled(Array.from({length:128},(_,i)=>as(booking.renter_id,tx=>tx.query('insert into public.messages(booking_id,sender_id,body) values($1,$2,$3)',[booking.id,booking.renter_id,'Burst fixture '+i]))));
+ assert.equal(spam.filter(r=>r.status==='fulfilled').length,5);
+ for(const result of spam.filter(r=>r.status==='rejected'))assert.match(result.reason.message,/Troppe operazioni/);
+ const intrusions=await Promise.all(Array.from({length:64},()=>as(outsider,tx=>tx.query('select * from public.messages'))));
+ assert.ok(intrusions.every(r=>r.rows.length===0));
+ await assert.rejects(as(outsider,tx=>tx.query('insert into public.messages(booking_id,sender_id,body) values($1,$2,$3)',[booking.id,outsider,'Unauthorized fixture'])),/row-level security/);
+ await assert.rejects(as(owner,tx=>tx.query('select public.set_listing_archived($1,true)',[listing])),/Gestisci prima/);
+ assert.equal(Number((await db.query('select count(*) n from public.messages')).rows[0].n),5);
+ t.diagnostic(JSON.stringify({engine:'PGlite single-connection queue',duplicateRequests:32,acceptedDuplicates:1,competingAcceptances:16,acceptedBookings:1,messageAttempts:128,storedMessages:5,outsiderReads:64,leakedRows:0,elapsedMs:Math.round(performance.now()-started)}));
+});
