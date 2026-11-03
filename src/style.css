@@ -209,6 +209,8 @@ dialog>h2{clear:both;padding-right:0}
 .community-empty .btn{margin-top:0}
 @media(max-width:760px){
  .app-header{gap:8px;padding-bottom:10px}
+ .category-strip{position:relative}
+ .category-strip.has-more-categories::after{content:'';position:absolute;top:0;right:0;bottom:1px;width:34px;background:linear-gradient(90deg,transparent,#fff 92%);pointer-events:none}
  .categories{padding-top:10px}
  .category{gap:6px;padding-bottom:10px}
  .marketplace{padding-top:12px}
