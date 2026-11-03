@@ -46,6 +46,7 @@ test('the demo build excludes private files and CSP restricts configured backend
  const address=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Test server did not start')),4000);server.stdout.once('data',data=>{clearTimeout(timer);resolve(String(data).trim());});server.once('exit',()=>{clearTimeout(timer);reject(new Error('Test server exited'));});});
  for(const path of ['/.env','/.git/config','/supabase/001_initial.sql','/package-lock.json','/../README.md','/%2e%2e%2f.env'])assert.equal((await fetch(address+path)).status,404);
  assert.equal((await fetch(address+'/',{method:'POST'})).status,405);
+ const intro=await fetch(address+'/intro.mp4');assert.equal(intro.status,200);assert.equal(intro.headers.get('content-type'),'video/mp4');const film=new Uint8Array(await intro.arrayBuffer());assert.equal(new TextDecoder().decode(film.slice(4,8)),'ftyp');
  const response=await fetch(address+'/',{headers:{Origin:'https://unrelated.example'}});
  assert.equal(response.status,200);assert.equal(response.headers.get('x-content-type-options'),'nosniff');assert.equal(response.headers.get('access-control-allow-origin'),null);assert.ok(response.headers.get('content-security-policy').includes("connect-src 'self'"));
  server.kill();

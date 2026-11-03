@@ -16,7 +16,7 @@ const server=createServer(async(req,res)=>{
     const name=path==='/'?'index.html':path.slice(1);
     if(!allowed.has(name))throw new Error();
     const body=await readFile('dist/'+name);
-    res.setHeader('Content-Type',name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript; charset=utf-8':name.endsWith('.css')?'text/css; charset=utf-8':name.endsWith('.png')?'image/png':name.endsWith('.webp')?'image/webp':name.endsWith('.webmanifest')?'application/manifest+json':'image/svg+xml');
+    res.setHeader('Content-Type',name.endsWith('.html')?'text/html; charset=utf-8':name.endsWith('.js')?'text/javascript; charset=utf-8':name.endsWith('.css')?'text/css; charset=utf-8':name.endsWith('.mp4')?'video/mp4':name.endsWith('.png')?'image/png':name.endsWith('.webp')?'image/webp':name.endsWith('.webmanifest')?'application/manifest+json':'image/svg+xml');
     res.end(req.method==='HEAD'?undefined:body);
   }catch{res.writeHead(404);res.end('Not found');}
 });
