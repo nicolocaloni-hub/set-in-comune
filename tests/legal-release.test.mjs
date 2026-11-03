@@ -18,6 +18,9 @@ test('approved publication preserves exact UTF-8 hashes and still refuses an una
  assert.ok(json.privacy_text.includes('IONOS'));assert.ok(json.privacy_text.includes('Gmail'));
  assert.ok(json.terms_text.includes('assistenza@rent-to-a-friend.it'));
  assert.ok(!/<(?:script|h1|p|div)\b/.test(json.terms_text));
+ assert.ok(json.terms_text.includes('## Solo privati maggiorenni'));
+ assert.ok(json.terms_text.includes('## Richieste, chat e disponibilità'));
+ assert.ok(json.privacy_text.includes('## Chi gestisce il sito'));
  const publish=spawnSync(process.execPath,['scripts/prepare-legal-release.mjs','--publish-sql'],{encoding:'utf8'});
  assert.equal(publish.status,0,publish.stderr);
  const approved=JSON.parse(await readFile(new URL('../legal-review/release-candidate.json',import.meta.url),'utf8'));

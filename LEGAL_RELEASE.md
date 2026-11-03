@@ -1,3 +1,15 @@
+# Aggiornamento condizioni e leggibilità · 3 novembre 2026
+
+Versione `2026-11-03-1`, richiesta dal gestore: titoletti riconoscibili nella finestra di accettazione, obblighi di custodia dell’utilizzatore, controlli del proprietario e chiarimento del ruolo della piattaforma. Il testo non introduce un esonero generale del gestore né una manleva per sue condotte: conserva espressamente responsabilità per fatti od omissioni imputabili al gestore, dolo, colpa grave, obblighi di ordine pubblico e altri diritti inderogabili. La responsabilità per perdita o deterioramento è descritta con la prova della causa non imputabile e il normale uso conforme, senza addebiti o attribuzioni automatiche della piattaforma.
+
+Gli snapshot nuovi mantengono marcatori di intestazione testuali inclusi nelle impronte; il frontend li rende come titoli semantici in grassetto ed esegue escaping integrale di ogni testo. Nessun HTML fornito dal server viene eseguito. La versione precedente resta archiviata e immutabile; ogni accettazione è ancora personale e legata a versione e impronte. Nessuna ricevuta viene trasferita alla nuova versione.
+
+Verifica locale: 145 test superati, compresi escaping delle intestazioni, clausole di custodia e responsabilità inderogabili, integrità degli snapshot, invalidazione delle vecchie accettazioni e controlli di pubblicazione. La prova Android inviata dal gestore mostra registrazione e profilo riusciti; il database conferma l’indirizzo del nuovo account verificato. Questo non attesta ancora recupero password, noleggio tra due controparti o cancellazione self-service.
+
+Riferimenti primari consultati: Codice civile, artt. 1229, 1341, 1587, 1588 e 1590; documentazione normativa del Ministero dell’Economia e delle Finanze e testo ufficiale del Codice civile. Nessuna attestazione di efficacia universale o approvazione legale viene dedotta dal solo testo pubblicato.
+
+## Storico dei rilasci
+
 # Attivazione dei documenti e delle ricevute
 
 ## Rilascio autorizzato · 2 novembre 2026

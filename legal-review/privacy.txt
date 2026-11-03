@@ -1,34 +1,34 @@
-TRASPARENZA · AGGIORNATA IL 2 NOVEMBRE 2026
+TRASPARENZA · AGGIORNATA IL 3 NOVEMBRE 2026
 
-I tuoi dati, spiegati.
+# I tuoi dati, spiegati.
 
 Questa informativa riguarda RENT TO A FRIEND, il servizio di noleggio di attrezzature tra privati. Puoi consultare annunci, prezzi, profili pubblici e recensioni senza registrarti; per pubblicare, inviare richieste di noleggio o messaggi serve un account. I dati trattati dipendono dalle funzioni che utilizzi.
 
-Chi gestisce il sito
+## Chi gestisce il sito
 
 Titolare: Nicolò Caloni. Per assistenza e diritti sui dati: assistenza@rent-to-a-friend.it (mailto:assistenza@rent-to-a-friend.it).
 
-Quali dati trattiamo
+## Quali dati trattiamo
 
 Gli account usano email e credenziali tramite Supabase Auth, nome visibile, quartiere, foto e bio facoltative, annunci, richieste, messaggi, recensioni, riscontri e segnalazioni. Sono trattati anche date delle operazioni e dati tecnici di sicurezza.
 
-Registrazione e accesso
+## Registrazione e accesso
 
 Registrati con email crea un account e richiede la conferma dell’indirizzo tramite un link. Accedi con email usa esclusivamente le credenziali di un account esistente: un indirizzo scritto male non avvia una nuova registrazione dal modulo di accesso. La password è gestita da Supabase Auth e non viene pubblicata nel profilo. Per recuperarla usa Password dimenticata.
 
-Da dove arrivano i dati
+## Da dove arrivano i dati
 
 I dati arrivano da ciò che inserisci, dalle controparti nelle richieste e nelle chat, dagli autori di recensioni e segnalazioni e dalle operazioni tecniche del servizio. Una recensione o segnalazione è una dichiarazione del suo autore, non un fatto verificato automaticamente.
 
-Scopi e visibilità
+## Scopi e visibilità
 
 Account e comunicazioni servono a fornire il servizio richiesto, su base contrattuale e precontrattuale. Nome visibile, quartiere, bio, foto profilo, annunci e recensioni sono pubblici; email esclusa. Chat e riscontri sono riservati ai partecipanti. Il gestore accede ai dati necessari ad assistenza, sicurezza e diritti. La sicurezza e la gestione degli abusi perseguono il legittimo interesse a proteggere il servizio e i suoi utenti; possono applicarsi obblighi legali. Non mostriamo pubblicità e non inviamo email marketing.
 
-Basi del trattamento e dati necessari
+## Basi del trattamento e dati necessari
 
 Email, credenziali e nome visibile servono per creare e gestire l’account; dati degli annunci, richieste e chat servono alle funzioni richieste e alle misure precontrattuali fra utenti. Foto profilo e bio sono facoltative; il quartiere sostituisce un indirizzo preciso negli annunci. Se non fornisci i dati necessari non puoi usare la funzione corrispondente. Per sicurezza e gestione degli abusi gli interessi perseguiti sono impedire accessi automatizzati, frodi, molestie e uso illecito della piattaforma e tutelare i diritti delle persone coinvolte. La base è il legittimo interesse, con accessi limitati e verifica umana delle segnalazioni; gli obblighi legali si applicano alle operazioni che effettivamente li richiedono. Le notifiche push sono facoltative e revocabili; il permesso del browser non autorizza marketing o altri trattamenti.
 
-Fornitori: cosa è attivo
+## Fornitori: cosa è attivo
 
 • Vercel distribuisce il sito e tratta dati tecnici delle richieste.
 
@@ -44,29 +44,29 @@ Fornitori: cosa è attivo
 
 I fornitori possono coinvolgere subfornitori e trattare dati tecnici, log e copie secondo i rispettivi servizi e piani. Un database in UE non significa che tutti i trattamenti dei fornitori avvengano esclusivamente in UE.
 
-Destinatari e trasferimenti
+## Destinatari e trasferimenti
 
 Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di consegna sono riservate alle controparti. Il gestore e gli eventuali incaricati autorizzati accedono solo per le finalità necessarie. I fornitori tecnici e i loro subfornitori possono trattare i dati nei limiti dei rispettivi ruoli e accordi. Eventuali richieste legittime delle autorità sono valutate nei limiti applicabili. Resend dichiara conservazione negli Stati Uniti anche con invio da regione UE e richiama clausole contrattuali standard e Data Privacy Framework. Anche gli altri fornitori possono trattare dati fuori dallo Spazio economico europeo: la regione del database non determina la sede di tutti i trattamenti. I ruoli e le garanzie dipendono dal singolo servizio; puoi chiedere al gestore informazioni sulle condizioni applicabili.
 
-Documenti dei fornitori e garanzie
+## Documenti dei fornitori e garanzie
 
 Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Per il recapito di assistenza valgono le caratteristiche di IONOS e Gmail descritte sopra; l’uso di Gmail per la posta non abilita l’accesso Google all’app.
 
-Intelligenza artificiale
+## Intelligenza artificiale
 
 La chat non è un chatbot AI. L’app non invia messaggi, bio o foto a modelli AI per generare risposte o addestrarli. La chat mette in comunicazione gli utenti.
 
-Foto e conservazione
+## Foto e conservazione
 
 Le foto selezionate vengono ridimensionate e ricodificate nel browser, rimuovendo i metadati EXIF dell’originale. Le foto profilo e annunci sono pubbliche; i riscontri usano un archivio privato e link a scadenza breve. I file sostituiti vengono rimossi dopo il salvataggio; gli errori sono riprovabili da I tuoi dati.
 
 Conserviamo i dati per il tempo necessario alle funzioni richieste, all’assistenza e alla gestione di obblighi o contestazioni concrete, secondo i criteri indicati sotto. Alla chiusura dell’account verifichiamo i rapporti condivisi prima di eliminare o anonimizzare i dati non più necessari. Eventuali copie già scaricate da altre persone non possono essere ritirate dal sito.
 
-Memoria del browser e notifiche
+## Memoria del browser e notifiche
 
 I preferiti sono salvati nel browser; la sessione di accesso è conservata nella memoria della scheda. Il service worker conserva la pagina offline, stile e icona. Le funzioni per sessione, link email e push degli account reali sono descritte separatamente nella pagina Cookie e memoria (https://rent-to-a-friend.it/#cookies). Non installiamo strumenti di analisi del pubblico o cookie pubblicitari.
 
-Criteri di conservazione
+## Criteri di conservazione
 
 I tempi seguenti sono criteri di conservazione e riesame. La revisione periodica è manuale: non è attiva una pulizia automatica generale. Quando servono dati per un obbligo o una controversia concreta, il gestore limita la conservazione a ciò che è necessario e riesamina le eccezioni. I tempi delle copie e dei log dei fornitori restano distinti.
 
@@ -100,15 +100,15 @@ Email e log Resend | Secondo il fornitore: 30 giorni; backup 7 giorni; dati resi
 
 Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | La rimozione dalle copie e dai log segue i cicli dei fornitori e non è istantanea. Supabase Free non include backup automatici gestiti. Per dettagli sul servizio e sul piano puoi contattare il gestore. |
 
-Eventuali ambienti di prova separati
+## Eventuali ambienti di prova separati
 
 Se un ambiente è espressamente contrassegnato come demo, i suoi annunci e le sue operazioni sono simulazioni locali e non creano noleggi reali. I dati locali restano fino al ripristino o alla cancellazione della memoria del sito. Non inserire documenti o dati sensibili negli ambienti di prova.
 
-Ricevuta delle condizioni e scelte facoltative
+## Ricevuta delle condizioni e scelte facoltative
 
 L’accettazione delle condizioni e la dichiarazione di essere un privato maggiorenne sono espresse mediante caselle non preselezionate dopo la conferma email. La presa visione della privacy è registrata separatamente e non è un consenso generico al trattamento. Una ricevuta associa l’account alla versione e all’impronta dei testi mostrati, con data del server. Puoi consultarla da I tuoi dati. Non vengono raccolti IP o user agent aggiuntivi per questa ricevuta. Non usiamo la presa visione dell’informativa come consenso a tutte le finalità. L’eventuale consenso per funzioni facoltative può essere revocato senza invalidare i trattamenti già effettuati legittimamente.
 
-I tuoi diritti e i controlli disponibili
+## I tuoi diritti e i controlli disponibili
 
 Puoi contattare il titolare per accesso, rettifica, cancellazione, limitazione, opposizione e portabilità, quando applicabili, e presentare reclamo al Garante per la protezione dei dati personali (https://www.garanteprivacy.it/). Il termine di riscontro è un mese, salvo le proroghe ammesse. Puoi scrivere anche senza un account e senza accettare nuove condizioni. Indica la richiesta e i riferimenti necessari: non inviare password, codici di accesso o copie di documenti d’identità di tua iniziativa. Eventuali verifiche dell’identità devono essere proporzionate al caso.
 

@@ -4,7 +4,8 @@ import {privacyMarkup,termsMarkup,assertPrivacyReady} from '../src/privacy.js';
 import {legalRelease} from '../src/service-policy.js';
 
 export function documentText(markup){
- return markup.replace(/<a\b[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gs,(_m,url,label)=>`${label} (${url.startsWith('#')?'https://rent-to-a-friend.it/'+url:url})`)
+ return markup.replace(/<h([1-3])\b[^>]*>(.*?)<\/h\1>/gs,(_m,level,title)=>`\n${'#'.repeat(Number(level))} ${title}\n`)
+ .replace(/<a\b[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gs,(_m,url,label)=>`${label} (${url.startsWith('#')?'https://rent-to-a-friend.it/'+url:url})`)
  .replace(/<li\b[^>]*>/g,'\n• ').replace(/<tr\b[^>]*>/g,'\n').replace(/<\/(?:td|th)>/g,' | ')
  .replace(/<\/?(?:h[1-6]|p|ul|ol|div|details|summary|table|thead|tbody)\b[^>]*>/g,'\n')
  .replace(/<[^>]*>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&')
