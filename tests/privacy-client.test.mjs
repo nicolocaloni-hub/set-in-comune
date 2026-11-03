@@ -12,7 +12,7 @@ test('photo replacement saves first, deletes via Storage API and offers retry on
  const storage=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};};globalThis.localStorage=storage();globalThis.sessionStorage=storage();globalThis.location={search:''};
  let failDelete=true,removed=false;const calls=[];
  globalThis.fetch=async(url,options)=>{calls.push({url,options});if(url.includes('/auth/v1/token'))return Response.json({access_token:'fixture-token',refresh_token:'fixture-refresh',expires_in:3600,user:{id:uid}});
- if(url.includes('/rest/v1/profiles'))return Response.json(options.method==='PATCH'?null:[{id:uid,avatar_url:origin+'/storage/v1/object/public/profile-photos/'+photo}]);
+ if(url.includes('/rest/v1/profiles'))return Response.json(options.method==='PATCH'?[{id:uid,avatar_url:''}]:[{id:uid,avatar_url:origin+'/storage/v1/object/public/profile-photos/'+photo}]);
  if(url.includes('/rpc/unused_uploads'))return Response.json(removed?[]:[{bucket:'profile-photos',path:photo}]);
  if(url.includes('/storage/v1/object/profile-photos')){if(failDelete)return Response.json({}, {status:503});removed=true;return Response.json([{name:photo}]);}
  throw new Error('Unexpected fixture request');};

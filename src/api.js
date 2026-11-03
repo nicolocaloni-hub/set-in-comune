@@ -25,18 +25,21 @@ function demoState(value){
 }
 function pkceFlow(){const flow=read(PKCE_KEY,null);if(!flow||typeof flow.verifier!=='string'||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000){localStorage.removeItem(PKCE_KEY);return null;}return flow;}
 let session=storedSession(read(SESSION_KEY,null,globalThis.sessionStorage));
+let sessionGeneration=0;
+const changedSession=()=>new Error('L’accesso è cambiato. Riprova dalla schermata attuale.');
+function assertSession(generation){if(generation!==sessionGeneration)throw changedSession();}
 // Live accounts never depend on (or rewrite) old demonstration storage.
 let db=demoState(isDemo?read(DEMO_KEY,null):null);
 for(const sample of sampleListings){const existing=db.listings.find(l=>l.id===sample.id);if(existing)for(const key of ['brand','model','lens_mount','light_power_w','equipment_condition','included_tags'])if(existing[key]===undefined)existing[key]=sample[key]??(key==='included_tags'?[]:key==='light_power_w'?null:'');}
 let savedDemo = JSON.stringify(db);
 const save=()=>{const json=JSON.stringify(db);try{localStorage.setItem(DEMO_KEY,json);savedDemo=json;}catch{db=JSON.parse(savedDemo);throw new Error('Spazio della demo esaurito su questo browser. Rimuovi alcune foto dai tuoi annunci o ripristina la demo dal Profilo. Nessun piano a pagamento viene attivato.');}};
-const storeSession=value=>{if(value){const {provider_token,provider_refresh_token,...appSession}=value;value={...appSession,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}session=value;};
-let refreshPromise;
+const storeSession=(value,renewal=false)=>{if(value){const {provider_token,provider_refresh_token,...appSession}=value;value={...appSession,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}if(!renewal)sessionGeneration++;session=value;if(!value)globalThis.dispatchEvent?.(new Event('rtaf-session-cleared'));};
+let refreshPromise,refreshGeneration;
 let recoverySession=false;
 const safeFetch=(url,options={})=>fetch(url,{...options,mode:'cors',credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',cache:'no-store',signal:AbortSignal.timeout(20000)});
 async function auth(path,body) {
   const res=await safeFetch(config.url+'/auth/v1/'+path,{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!res.ok){if(res.status===429)throw new Error('Troppi tentativi. Attendi qualche minuto e riprova.');throw new Error(path.startsWith('token?grant_type=password')?'Email o password non corrette.':'Operazione di accesso non riuscita. Riprova o richiedi un nuovo link.');}
+  if(!res.ok){if(res.status===429)throw new Error('Troppi tentativi. Attendi qualche minuto e riprova.');const error=new Error(path.startsWith('token?grant_type=password')?'Email o password non corrette.':'Operazione di accesso non riuscita. Riprova o richiedi un nuovo link.');error.invalidSession=path==='token?grant_type=refresh_token'&&[400,401,403].includes(res.status);throw error;}
   return res.json();
 }
 async function startPkce(purpose){
@@ -47,17 +50,24 @@ async function startPkce(purpose){
   return {code_challenge:challenge,code_challenge_method:'s256'};
 }
 const redirectPath=path=>path+'?redirect_to='+encodeURIComponent(AUTH_REDIRECT_URL);
-async function token() {
+async function token(generation=sessionGeneration) {
+  assertSession(generation);
   if(!session) return config.key;
   if(session.expires_at*1000 < Date.now()+60000) {
-    refreshPromise ||= auth('token?grant_type=refresh_token',{refresh_token:session.refresh_token}).then(s=>{storeSession(s);return s.access_token;}).catch(e=>{storeSession(null);throw e;}).finally(()=>refreshPromise=null);
+    if(!refreshPromise||refreshGeneration!==generation){
+      const current=session;
+      const pending=auth('token?grant_type=refresh_token',{refresh_token:current.refresh_token}).then(s=>{assertSession(generation);if(s.user?.id!==current.user.id)throw changedSession();storeSession(s,true);return s.access_token;}).catch(e=>{if(e.invalidSession&&generation===sessionGeneration)storeSession(null);throw e;}).finally(()=>{if(refreshPromise===pending)refreshPromise=null;});
+      refreshGeneration=generation;refreshPromise=pending;
+    }
     return refreshPromise;
   }
   return session.access_token;
 }
 async function request(path, options={}) {
-  const res=await safeFetch(config.url+path,{...options,headers:{apikey:config.key,Authorization:'Bearer '+await token(),'Content-Type':'application/json',...options.headers}});
+  const generation=sessionGeneration,accessToken=await token(generation);assertSession(generation);
+  const res=await safeFetch(config.url+path,{...options,headers:{apikey:config.key,Authorization:'Bearer '+accessToken,'Content-Type':'application/json',...options.headers}});
   const raw=await res.text();let data;try{data=raw?JSON.parse(raw):null;}catch{data=null;}
+  assertSession(generation);
   if(!res.ok){if(path==='/auth/v1/user'&&options.method==='PUT'){if(['current_password_required','current_password_mismatch'].includes(data?.code))throw new Error('La password attuale non è corretta. Riprova.');if(data?.code==='same_password')throw new Error('Scegli una password diversa da quella attuale.');if(data?.code==='reauthentication_needed')throw new Error('Accedi di nuovo prima di cambiare la password.');if(data?.code==='weak_password')throw new Error('La nuova password non rispetta i requisiti di sicurezza.');}if(res.status===401){storeSession(null);throw new Error('La sessione è scaduta. Accedi di nuovo.');}if(res.status===403)throw new Error('Non hai accesso a questa operazione.');if(res.status===429)throw new Error('Troppi tentativi. Attendi e riprova.');if(data?.code==='23505')throw new Error('Questa richiesta è già presente.');throw new Error(data?.code==='P0001'?data.message:'Operazione non riuscita. Controlla i dati e riprova.');}
   return data;
 }
@@ -98,10 +108,10 @@ export const api={
       const flow=pkceFlow();
       localStorage.removeItem(PKCE_KEY);
       if(!flow||!flow.verifier||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000)throw new Error('Richiedi un nuovo link e aprilo nello stesso browser usato per la richiesta.');
-      const result=await auth('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});
+      const generation=++sessionGeneration;const result=await auth('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});assertSession(generation);
       storeSession(result);recovery=flow.purpose==='recovery';recoverySession=recovery;
     }
-    if(session){try{await token();const user=await request('/auth/v1/user');storeSession({...session,user});}catch(e){storeSession(null);throw e;}}
+    if(session){const generation=sessionGeneration;await token(generation);const user=await request('/auth/v1/user');assertSession(generation);storeSession({...session,user},true);}
     return recovery;
   },
   isPasswordRecovery:()=>recoverySession,
@@ -131,10 +141,10 @@ export const api={
     url.searchParams.set('scopes','openid email profile');url.searchParams.set('prompt','select_account');
     return url.href;
   },
-  async login(email,password,captchaToken){recoverySession=false;storeSession(await auth('token?grant_type=password',{email:validEmail(email),password:validPassword(password),...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))}));},
-  async signup(email,password,display_name,captchaToken){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const params=await startPkce('signup');const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});if(s.access_token)storeSession(s);return Boolean(s.access_token);},
+  async login(email,password,captchaToken){const body={email:validEmail(email),password:validPassword(password),...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))};const generation=++sessionGeneration;recoverySession=false;const result=await auth('token?grant_type=password',body);assertSession(generation);storeSession(result);},
+  async signup(email,password,display_name,captchaToken){const name=String(display_name||'').trim();if(name.length<2||name.length>60)throw new Error('Inserisci un nome tra 2 e 60 caratteri.');const generation=++sessionGeneration;const params=await startPkce('signup');assertSession(generation);const s=await auth(redirectPath('signup'),{email:validEmail(email),password:validPassword(password),data:{display_name:name},...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});assertSession(generation);if(s.access_token)storeSession(s);return Boolean(s.access_token);},
   async reset(email,captchaToken){const params=await startPkce('recovery');await auth(redirectPath('recover'),{email:validEmail(email),...params,...captchaPayload(captchaToken,Boolean(captchaConfig.siteKey))});},
-  async logout(){if(!isDemo&&session){try{await request('/auth/v1/logout',{method:'POST'});}finally{storeSession(null);localStorage.removeItem(PKCE_KEY);}}},
+  async logout(){if(isDemo)return;const current=session;storeSession(null);localStorage.removeItem(PKCE_KEY);if(current){const res=await safeFetch(config.url+'/auth/v1/logout',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+current.access_token,'Content-Type':'application/json'}});if(!res.ok&&res.status!==401)throw new Error('Accesso chiuso su questo dispositivo. Riprova la disconnessione dal servizio.');}},
   async legalStatus(){requireUser();return isDemo?{available:false,accepted:false}:rpc('my_legal_status',{});},
   async legalReceipts(){requireUser();return isDemo?[]:rpc('my_legal_receipts',{});},
   async acceptLegalDocuments(doc,choices){
@@ -153,10 +163,10 @@ export const api={
   async profile(){requireUser();if(isDemo)return structuredClone({...db.profile,completed_rentals:db.bookings.filter(b=>b.status==='completed'&&['demo-me'].some(id=>[b.owner_id,b.renter_id].includes(id))).length});return (await rest('profiles','?id=eq.'+api.user().id))[0];},
   async publicProfile(id){if(isDemo){if(id==='demo-me')return structuredClone({...db.profile,id,email_verified:false,completed_rentals:db.bookings.filter(b=>b.status==='completed'&&[b.owner_id,b.renter_id].includes(id)).length});const p=sampleProfiles.find(p=>p.id===id);if(!p)throw new Error('Profilo non disponibile.');return structuredClone({...p,completed_rentals:db.bookings.filter(b=>b.status==='completed'&&[b.owner_id,b.renter_id].includes(id)).length});}const rows=await rest('profiles','?id=eq.'+encodeURIComponent(id)+'&select=id,display_name,bio,zone,avatar_url,email_verified,created_at,completed_rentals');if(!rows.length)throw new Error('Profilo non disponibile.');return rows[0];},
   async publicListings(id){if(isDemo)return (await api.listings()).filter(l=>l.owner_id===id);return restAll('listings','?owner_id=eq.'+encodeURIComponent(id)+'&active=eq.true&order=created_at.desc,id.desc');},
-  async saveProfile(data){requireUser();data=Object.fromEntries(['display_name','bio','zone','avatar_url'].filter(k=>Object.hasOwn(data,k)).map(k=>[k,data[k]]));if(Object.hasOwn(data,'display_name')&&(data.display_name.trim().length<2||data.display_name.trim().length>60))throw new Error('Inserisci un nome tra 2 e 60 caratteri.');if(isDemo){Object.assign(db.profile,data);db.listings.filter(l=>l.owner_id==='demo-me').forEach(l=>l.owner_name=db.profile.display_name);save();return;}const old=Object.hasOwn(data,'avatar_url')?(await api.profile()).avatar_url:'';await request('/rest/v1/profiles?id=eq.'+api.user().id,{method:'PATCH',body:JSON.stringify(data)});if(old&&old!==data.avatar_url)try{await api.removeUploads([old],null,true);}catch{api.photoCleanupPending=true;}},
+  async saveProfile(data){requireUser();data=Object.fromEntries(['display_name','bio','zone','avatar_url'].filter(k=>Object.hasOwn(data,k)).map(k=>[k,data[k]]));if(Object.hasOwn(data,'display_name')&&(data.display_name.trim().length<2||data.display_name.trim().length>60))throw new Error('Inserisci un nome tra 2 e 60 caratteri.');if(isDemo){Object.assign(db.profile,data);db.listings.filter(l=>l.owner_id==='demo-me').forEach(l=>l.owner_name=db.profile.display_name);save();return;}const generation=sessionGeneration,uid=api.user().id;const old=Object.hasOwn(data,'avatar_url')?(await api.profile()).avatar_url:'';assertSession(generation);const rows=await request('/rest/v1/profiles?id=eq.'+uid,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(data)});if(!Array.isArray(rows)||rows.length!==1||rows[0].id!==uid)throw new Error('Profilo non aggiornato. Controlla i permessi e riprova.');if(old&&old!==data.avatar_url)try{await api.removeUploads([old],null,true);}catch{api.photoCleanupPending=true;}},
   async publish(data){requireUser();data={...validateListing(data),...validateTechnical(data)};if(isDemo){const row={...data,id:uuid(),owner_id:'demo-me',owner_name:db.profile.display_name,active:true,blocked:[]};db.listings.unshift(row);save();return row;}const {art,color,...fields}=data;return (await post('listings',{...fields,owner_id:api.user().id}))[0];},
   async updateListing(id,data){requireUser();resourceId(id,isDemo);data={...validateListing(data),...validateTechnical(data)};if(isDemo){const row=db.listings.find(l=>l.id===id&&l.owner_id===api.user().id);if(!row)throw new Error('Annuncio non trovato.');Object.assign(row,data);save();return structuredClone(row);}const previous=(await api.myListings()).find(l=>l.id===id);const rows=await request('/rest/v1/listings?id=eq.'+encodeURIComponent(id)+'&owner_id=eq.'+api.user().id,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(data)});if(!rows?.length)throw new Error('Annuncio non trovato o permessi insufficienti.');try{await api.removeUploads((previous?.images||[]).filter(ref=>!data.images.includes(ref)));}catch{api.photoCleanupPending=true;}return rows[0];},
-  async toggleListing(id,active){requireUser();resourceId(id,isDemo);if(isDemo){const l=db.listings.find(x=>x.id===id&&x.owner_id==='demo-me');if(!l)throw new Error('Annuncio non trovato.');if(l.archived&&active)throw new Error('Ripristina prima l’annuncio dall’archivio.');l.active=active;save();return;}await request('/rest/v1/listings?id=eq.'+id+'&owner_id=eq.'+api.user().id,{method:'PATCH',body:JSON.stringify({active})});},
+  async toggleListing(id,active){requireUser();resourceId(id,isDemo);if(isDemo){const l=db.listings.find(x=>x.id===id&&x.owner_id==='demo-me');if(!l)throw new Error('Annuncio non trovato.');if(l.archived&&active)throw new Error('Ripristina prima l’annuncio dall’archivio.');l.active=active;save();return;}const rows=await request('/rest/v1/listings?id=eq.'+id+'&owner_id=eq.'+api.user().id,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({active})});if(!Array.isArray(rows)||rows.length!==1||rows[0].id!==id)throw new Error('Annuncio non aggiornato. Controlla i permessi e riprova.');},
   async setListingArchived(id,archived){requireUser();resourceId(id,isDemo);if(typeof archived!=='boolean')throw new Error('Operazione non valida.');if(isDemo){const l=db.listings.find(x=>x.id===id&&x.owner_id===api.user().id);if(!l)throw new Error('Annuncio non trovato.');if(archived&&db.bookings.some(b=>b.listing_id===id&&['requested','accepted','collected','returned'].includes(b.status)))throw new Error('Gestisci prima le richieste pendenti e i noleggi in corso.');l.archived=archived;l.active=false;save();return;}await rpc('set_listing_archived',{p_listing:id,p_archived:archived});},
   async block(id,start_date,end_date){requireUser();resourceId(id,isDemo);validateRental(start_date,end_date);if(isDemo){const l=db.listings.find(x=>x.id===id&&x.owner_id==='demo-me');if(!l)throw new Error('Annuncio non trovato.');if(!available(l,start_date,end_date,db.bookings))throw new Error('Esiste già un blocco o un noleggio in queste date.');l.blocked.push({start_date,end_date});save();return;}await rpc('block_dates',{p_listing:id,p_start:start_date,p_end:end_date});},
   async unblock(id){requireUser();resourceId(id,isDemo);if(isDemo){db.listings.find(x=>x.id===id&&x.owner_id==='demo-me').blocked=[];save();return;}await rpc('clear_blocks',{p_listing:id});},
