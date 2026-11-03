@@ -37,6 +37,21 @@ class FakeStorage:
 
 
 class BackupTests(unittest.TestCase):
+    def test_storage_auth_supports_modern_keys_and_legacy_jwts(self):
+        for secret, bearer in (("sb_secret_fixture_only", None),
+                               ("fixture.legacy.jwt", "Bearer fixture.legacy.jwt")):
+            with self.subTest(kind="modern" if bearer is None else "legacy"):
+                storage = b.Storage(secret)
+                from unittest.mock import MagicMock
+                response = MagicMock()
+                response.__enter__.return_value.read.return_value = b"[]"
+                storage.opener = MagicMock()
+                storage.opener.open.return_value = response
+                self.assertEqual(storage.listing("handoff-photos", "", 0), [])
+                request = storage.opener.open.call_args.args[0]
+                self.assertEqual(request.get_header("Apikey"), secret)
+                self.assertEqual(request.get_header("Authorization"), bearer)
+
     def test_preflight_never_includes_secret_values(self):
         result = b.preflight({"RTAF_DB_PASSWORD": "fixture-secret"})
         self.assertFalse(result["backup_created"])

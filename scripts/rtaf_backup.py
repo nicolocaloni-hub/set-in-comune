@@ -98,10 +98,13 @@ class Storage:
     def request(self, path, body=None, limit=2 * 1024**2):
         if not path.startswith("/storage/v1/"):
             raise BackupError("Percorso Storage non consentito.")
+        headers = {"apikey": self.secret, "Content-Type": "application/json"}
+        # Modern server keys are opaque API keys, not JWT bearer tokens.
+        if not self.secret.startswith("sb_secret_"):
+            headers["Authorization"] = "Bearer " + self.secret
         request = urllib.request.Request(ORIGIN + path,
             data=None if body is None else json.dumps(body).encode(),
-            headers={"Authorization": "Bearer " + self.secret, "apikey": self.secret,
-                     "Content-Type": "application/json"},
+            headers=headers,
             method="GET" if body is None else "POST")
         try:
             with self.opener.open(request, timeout=45) as response:
