@@ -1,4 +1,4 @@
-export const publicAssets=['index.html','app.js','api.js','auth-config.js','hosting-config.js','captcha.js','captcha-config.js','domain.js','marketplace.js','privacy.js','legal-documents.js','browser-storage.js','retention.js','service-policy.js','data.js','art.js','photos.js','security.js','style.css','logo-mark.webp','notifications.js','sw.js','manifest.webmanifest','offline.html','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png'];
+export const publicAssets=['index.html','app.js','api.js','auth-config.js','hosting-config.js','captcha.js','captcha-config.js','domain.js','marketplace.js','privacy.js','legal-documents.js','form-hints.js','browser-storage.js','retention.js','service-policy.js','data.js','art.js','photos.js','security.js','style.css','logo-mark.webp','notifications.js','sw.js','manifest.webmanifest','offline.html','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png'];
 
 // This release has no consent manager: known trackers and external executable
 // embeds must not silently enter the build. This is a bounded source check,

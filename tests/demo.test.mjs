@@ -76,3 +76,16 @@ test('demo acceptance produces an unread message counter which clears only after
  await api.readNotifications(booking.id,'message',messages.at(-1).created_at);
  assert.equal((await api.notificationCounts()).messages,before);
 });
+
+
+test('demo archive removes the item from publication, persists and restores in pause',async()=>{
+ const own=(await api.myListings())[0];await api.toggleListing(own.id,true);
+ await api.setListingArchived(own.id,true);
+ assert.ok(!(await api.listings()).some(l=>l.id===own.id));
+ assert.equal((await api.myListings()).find(l=>l.id===own.id).archived,true);
+ await assert.rejects(api.toggleListing(own.id,true),/Ripristina prima/);
+ await assert.rejects(api.setListingArchived('demo-foreign',true),/non trovato/);
+ await api.setListingArchived(own.id,false);
+ const restored=(await api.myListings()).find(l=>l.id===own.id);assert.equal(restored.archived,false);assert.equal(restored.active,false);
+ assert.ok(storage.get('sic-demo-v1').includes('"archived":false'));
+});

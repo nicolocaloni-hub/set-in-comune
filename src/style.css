@@ -197,3 +197,5 @@ dialog>h2{clear:both;padding-right:0}
 @media(max-width:480px){.auth-choices .btn{flex:1;min-width:100px}.guest-access{padding:17px}}
 
 .legal-document .legal-heading{font-size:1em;line-height:1.4;font-weight:750;margin:1.3em 0 .65em;letter-spacing:0}.legal-document .legal-heading:first-child{margin-top:0}.legal-document p{white-space:pre-wrap;margin:.75em 0}.legal-page h2,.legal-page h3{font-weight:750}
+
+.field-requirement{font-size:.75em;font-weight:400;color:var(--muted)}.field-hint,.field-counter{display:block;font-size:12px;font-weight:400;line-height:1.5;color:var(--muted);margin-top:5px}.field-counter.incomplete{color:#a63f56}.listing-archive{margin:24px 0}.listing-archive>summary{font-weight:700;cursor:pointer;padding:8px 0}.listing-archive .my-listing:last-child{margin-bottom:0}.my-listing.archived .my-art{opacity:.7}

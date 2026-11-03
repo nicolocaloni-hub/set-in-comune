@@ -1,3 +1,15 @@
+# Tre migliorie dell’interfaccia · 3 novembre 2026
+
+Attuate su richiesta del gestore: messaggio dedicato al catalogo vuoto, requisiti dei campi e contatori di caratteri, archivio reversibile degli annunci. Il messaggio della community si usa solo quando non ci sono annunci pubblicati; filtri senza risultati e preferiti hanno messaggi distinti. I contatori dei testi riflettono la lunghezza senza spazi iniziali/finali; le password non hanno un contatore del contenuto.
+
+L’archivio conserva annuncio, foto e storico. Un annuncio archiviato è inattivo e rimane gestibile dal solo proprietario; il ripristino torna sempre in pausa. Le richieste pendenti e i noleggi accettati, ritirati o in restituzione devono essere gestiti prima di archiviare. Il controllo è anche nel database, non solo nella schermata; richieste di prenotazione e aggiornamenti serializzano sull’annuncio. Nessuna cancellazione fisica e nessuna archiviazione di annunci del gestore è eseguita durante il rilascio.
+
+Migrazione Supabase `20261103073928_listing_archive`, versione generata dal connettore e applicata al progetto dedicato. RPC SECURITY INVOKER, permessi solo authenticated, RLS del proprietario e vincolo archived → inactive. Verifica remota di colonna, vincolo, trigger e grants riuscita; nessun nuovo rilievo security rispetto allo stato precedente. I due rilievi preesistenti rimangono invariati. Versione legale attiva invariata `2026-11-03-1`.
+
+147 test automatici superati, compresi accessi di terzi/anonimi/non confermati, rifiuto dell’archivio con rapporti aperti, conservazione di prenotazioni e registri, ripristino in pausa e persistenza locale. Build collegato riuscito e scansione dei pattern di credenziali senza rilievi. Non è un’attestazione del collaudo completo tra due account reali.
+
+## Stato precedente
+
 # Aggiornamento del 3 novembre 2026
 
 Nuova versione dei documenti: `2026-11-03-1`, con intestazioni formattabili e chiarimenti su custodia e ruolo della piattaforma. La versione precedente `2026-11-02-7` non viene riscritta. Le accettazioni precedenti rimangono riferite ai testi precedenti; la nuova versione richiede una scelta esplicita. Le modifiche sono autorizzate dalla richiesta del gestore del 3 novembre; nessun account è rappresentato come cancellato finché il connettore non conferma l’operazione.
