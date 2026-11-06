@@ -288,3 +288,20 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
  body:has(#print-root:not(:empty))>:not(#print-root){display:none!important}
  body:has(#print-root:not(:empty)) #print-root{display:block}
 }
+
+/* Schematic neighbourhood map (Esplora → Mappa). */
+.zone-map{margin:0 0 22px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px 24px;align-items:start}
+.zone-map-heading{grid-column:1/-1}
+.zone-map-heading h3{margin:0 0 4px}
+.zone-map svg{width:100%;height:auto;max-height:360px;background:#f3f8f6;border-radius:12px}
+.map-river{fill:none;stroke:#b9dbe4;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.map-zone{cursor:pointer}
+.map-zone circle{fill:var(--accent);fill-opacity:.78;stroke:#fff;stroke-width:2;transition:fill .15s}
+.map-zone.empty circle{fill:#c9d4d6}
+.map-zone.selected circle,.map-zone:hover circle{fill:var(--green);fill-opacity:1}
+.map-count{fill:#fff;font-size:11px;font-weight:700;text-anchor:middle;pointer-events:none}
+.map-label{fill:var(--ink);font-size:11px;paint-order:stroke;stroke:#f3f8f6;stroke-width:3px;pointer-events:none}
+.zone-map-list{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+.zone-map-list button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
+.zone-map-list button.selected{background:var(--green);border-color:var(--green);color:#fff}
+@media (max-width:720px){.zone-map{grid-template-columns:1fr}.zone-map-list{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.zone-map-list button{flex:none}}
