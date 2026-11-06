@@ -47,3 +47,35 @@ export function chooseCalendarDate(item,date,start='',end=''){
  if(!available(item,start,date))throw new Error('Il periodo comprende giorni già occupati. Scegli un’altra restituzione.');
  return {start,end:date};
 }
+// Saved searches: the catalog filters that can trigger alerts. Dates, favourites and
+// "free only" are excluded; the neighbourhood is an exact match server-side.
+export const SAVED_SEARCH_MAX=10;
+export function searchFiltersFromState(s={}){
+ const f={};
+ if(s.query?.trim())f.query=s.query.trim().slice(0,80);
+ if(s.category&&s.category!=='Tutto')f.category=s.category;
+ if(s.zone)f.zone=s.zone;
+ if(s.max!==''&&s.max!=null&&Number.isFinite(Number(s.max))&&Number(s.max)>=0)f.max_price=Math.min(10000,Number(s.max));
+ for(const key of ['brand','mount','accessory','condition'])if(s[key])f[key]=String(s[key]).slice(0,40);
+ return f;
+}
+export function describeSearch(f={}){
+ const parts=[f.query&&`“${f.query}”`,f.category,f.brand,f.mount,f.accessory&&'con '+f.accessory,f.condition&&'condizioni '+f.condition.toLowerCase(),f.zone&&'a '+f.zone,f.max_price!=null&&`fino a ${f.max_price} €/giorno`].filter(Boolean);
+ return (parts.join(' · ')||'Tutta l’attrezzatura').slice(0,80);
+}
+export function validateSavedSearch(label,filters){
+ const clean=String(label??'').trim();
+ if(clean.length<1||clean.length>80)throw new Error('Dai un nome alla ricerca, fino a 80 caratteri.');
+ const keys=['query','category','zone','max_price','brand','mount','accessory','condition'];
+ if(!filters||typeof filters!=='object'||Array.isArray(filters)||!Object.keys(filters).length||Object.keys(filters).some(k=>!keys.includes(k)))throw new Error('Scegli almeno un filtro da salvare: parola chiave, categoria, quartiere o dettagli tecnici.');
+ for(const [k,v] of Object.entries(filters)){
+  if(k==='max_price'){if(typeof v!=='number'||!Number.isFinite(v)||v<0||v>10000)throw new Error('Prezzo massimo non valido.');}
+  else if(typeof v!=='string'||!v||v.length>(k==='query'?80:40))throw new Error('Filtro non valido.');
+ }
+ return {label:clean,filters:{...filters}};
+}
+// Mirrors private.search_matches: used for the demo and for "nuovi" counts in the app.
+export function matchesSavedSearch(f,l){
+ const text=[l.title,l.description,l.brand,l.model].join(' ').toLowerCase();
+ return (!f.category||f.category===l.category)&&(!f.zone||f.zone===l.zone)&&(f.max_price==null||Number(l.price)<=f.max_price)&&(!f.brand||String(l.brand||'').toLowerCase()===f.brand.toLowerCase())&&(!f.mount||l.lens_mount===f.mount)&&(!f.accessory||(l.included_tags||[]).includes(f.accessory))&&(!f.condition||l.equipment_condition===f.condition)&&(!f.query||text.includes(f.query.toLowerCase()));
+}

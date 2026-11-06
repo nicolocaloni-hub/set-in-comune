@@ -10,14 +10,14 @@ self.addEventListener('message',event=>{
  if(data.type==='BIND_PUSH_USER'&&/^[a-f0-9-]{36}$/i.test(data.userId))event.waitUntil((async()=>{const cache=await caches.open(STATE_CACHE);await cache.put(STATE_URL,new Response(JSON.stringify({userId:data.userId}),{headers:{'Content-Type':'application/json'}}));})());
  if(data.type==='CLEAR_PUSH_USER')event.waitUntil((async()=>{const cache=await caches.open(STATE_CACHE);await cache.delete(STATE_URL);for(const n of await self.registration.getNotifications())n.close();await self.navigator.clearAppBadge?.();})());
 });
-function notificationUrl(value){try{const u=new URL(value,self.location.origin);return u.origin===self.location.origin&&/^\/#(?:(?:messages|bookings)\?booking|messages\?conversation)=[a-f0-9-]{36}$/i.test(u.pathname+u.hash)?u.href:new URL('/#messages',self.location.origin).href;}catch{return new URL('/#messages',self.location.origin).href;}}
+function notificationUrl(value){try{const u=new URL(value,self.location.origin);return u.origin===self.location.origin&&/^\/#(?:(?:messages|bookings)\?booking|messages\?conversation|search\?listing)=[a-f0-9-]{36}$/i.test(u.pathname+u.hash)?u.href:new URL('/#messages',self.location.origin).href;}catch{return new URL('/#messages',self.location.origin).href;}}
 self.addEventListener('push',event=>event.waitUntil((async()=>{
- let data;try{data=event.data?.json();}catch{}if(!data||!['message','request','reminder'].includes(data.kind))return;if(data.kind==='reminder'&&!['pickup','return'].includes(data.stage))return;
+ let data;try{data=event.data?.json();}catch{}if(!data||!['message','request','reminder','search'].includes(data.kind))return;if(data.kind==='reminder'&&!['pickup','return'].includes(data.stage))return;
  const response=await caches.match(STATE_URL);let binding;try{binding=await response?.json();}catch{}
  if(!binding||binding.userId!==data.userId)return;
  const url=notificationUrl(data.url);
- const reminder=data.kind==='reminder',pickup=data.stage==='pickup';
- await self.registration.showNotification(reminder?(pickup?'Domani il ritiro':'Domani la restituzione'):data.kind==='message'?'Nuovo messaggio':'Nuova richiesta di noleggio',{body:reminder?(pickup?'Ricorda il ritiro dell’attrezzatura: controllate insieme accessori e condizioni.':'Ricorda la restituzione: confrontate l’attrezzatura con il registro del ritiro.'):data.kind==='message'?'Qualcuno ti ha scritto su RENT TO A FRIEND.':'Apri l’app per vedere la richiesta ricevuta.',icon:'/icon-192.png',badge:'/icon-192.png',tag:String(data.tag||'set-in-comune').slice(0,100),data:{url},renotify:false});
+ const reminder=data.kind==='reminder',pickup=data.stage==='pickup',search=data.kind==='search';
+ await self.registration.showNotification(search?'Nuovo annuncio per te':reminder?(pickup?'Domani il ritiro':'Domani la restituzione'):data.kind==='message'?'Nuovo messaggio':'Nuova richiesta di noleggio',{body:search?'È stata pubblicata attrezzatura che corrisponde a una tua ricerca salvata.':reminder?(pickup?'Ricorda il ritiro dell’attrezzatura: controllate insieme accessori e condizioni.':'Ricorda la restituzione: confrontate l’attrezzatura con il registro del ritiro.'):data.kind==='message'?'Qualcuno ti ha scritto su RENT TO A FRIEND.':'Apri l’app per vedere la richiesta ricevuta.',icon:'/icon-192.png',badge:'/icon-192.png',tag:String(data.tag||'set-in-comune').slice(0,100),data:{url},renotify:false});
  if(Number.isInteger(data.unreadTotal)&&data.unreadTotal>=0)try{if(data.unreadTotal)await self.navigator.setAppBadge?.(data.unreadTotal);else await self.navigator.clearAppBadge?.();}catch{}
  for(const client of await self.clients.matchAll({type:'window',includeUncontrolled:true}))client.postMessage({type:'NOTIFICATIONS_CHANGED'});
 })()));

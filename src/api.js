@@ -7,7 +7,7 @@ const config=validatePublicConfig(rawConfig.url,rawConfig.key);
 const accountCheck=rawConfig.accountCheck===true;
 import {sampleListings,sampleProfiles} from './data.js';
 import {available,validateRental,nextActions,validateListing} from './domain.js';
-import {validateTechnical,validateReview,validateChecklist,reportReasons} from './marketplace.js';
+import {validateTechnical,validateReview,validateChecklist,reportReasons,validateSavedSearch,SAVED_SEARCH_MAX} from './marketplace.js';
 import {PHOTO_MAX_BYTES} from './photos.js';
 export const isDemo = !config.url || !config.key || new URLSearchParams(globalThis.location?.search||'').get('demo')==='1';
 const uuid=()=>{if(crypto.randomUUID)return crypto.randomUUID();const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&15)|64;b[8]=(b[8]&63)|128;const h=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;};
@@ -15,9 +15,9 @@ const SESSION_KEY='sic-session-v2', PKCE_KEY='sic-pkce-v1', DEMO_KEY='sic-demo-v
 function read(key,fallback,storage=globalThis.localStorage) {try{return JSON.parse(storage?.getItem(key)) ?? fallback;}catch{return fallback;}}
 function storedSession(value){return value&&typeof value==='object'&&!Array.isArray(value)&&typeof value.access_token==='string'&&value.access_token.length>0&&typeof value.refresh_token==='string'&&value.refresh_token.length>0&&typeof value.user?.id==='string'&&/^[a-f0-9-]{36}$/i.test(value.user.id)&&Number.isFinite(value.expires_at)&&value.expires_at>0?value:null;}
 function demoState(value){
- const defaults={listings:structuredClone(sampleListings),bookings:[],messages:[],evidence:[],privacyRequests:[],notifications:[],inquiries:[],reviews:[],blocks:[],reports:[],profile:{display_name:'Il tuo profilo demo',bio:'Filmmaker a Roma',zone:'Prati'}};
+ const defaults={listings:structuredClone(sampleListings),bookings:[],messages:[],evidence:[],privacyRequests:[],notifications:[],inquiries:[],reviews:[],blocks:[],reports:[],savedSearches:[],profile:{display_name:'Il tuo profilo demo',bio:'Filmmaker a Roma',zone:'Prati'}};
  if(!value||typeof value!=='object'||Array.isArray(value))return defaults;
- for(const key of ['listings','bookings','messages','evidence','privacyRequests','notifications','inquiries','reviews','reports'])if(Array.isArray(value[key]))defaults[key]=value[key].filter(row=>row&&typeof row==='object'&&!Array.isArray(row)&&typeof row.id==='string');
+ for(const key of ['listings','bookings','messages','evidence','privacyRequests','notifications','inquiries','reviews','reports','savedSearches'])if(Array.isArray(value[key]))defaults[key]=value[key].filter(row=>row&&typeof row==='object'&&!Array.isArray(row)&&typeof row.id==='string');
  defaults.listings=defaults.listings.map(row=>({...row,blocked:Array.isArray(row.blocked)?row.blocked.filter(p=>p&&typeof p.start_date==='string'&&typeof p.end_date==='string'):[],images:Array.isArray(row.images)?row.images.filter(p=>typeof p==='string'):[]}));
  if(Array.isArray(value.blocks))defaults.blocks=value.blocks.filter(id=>typeof id==='string');
  for(const key of ['display_name','bio','zone','avatar_url'])if(typeof value.profile?.[key]==='string')defaults.profile[key]=value.profile[key];
@@ -186,6 +186,9 @@ export const api={
   async safetySettings(){requireUser();if(isDemo)return {blocked:db.blocks.map(id=>({id,name:(sampleProfiles.find(p=>p.id===id)||{}).display_name||'Profilo'})),reports:db.reports,moderator:false};return rpc('safety_settings',{});},
   async setBlock(id,blocked){requireUser();resourceId(id,isDemo);if(id===api.user().id)throw new Error('Non puoi bloccare il tuo profilo.');if(isDemo){if(!sampleProfiles.some(p=>p.id===id))throw new Error('Profilo non disponibile.');db.blocks=blocked?[...new Set([...db.blocks,id])]:db.blocks.filter(x=>x!==id);save();return;}await rpc('set_user_block',{p_user:id,p_blocked:Boolean(blocked)});},
   async submitReport(id,reason,details,context={}){requireUser();resourceId(id,isDemo);details=String(details||'').trim();if(id===api.user().id||!reportReasons.includes(reason)||details.length<10||details.length>2000)throw new Error('Controlla il motivo e la descrizione della segnalazione.');if(isDemo){const p=sampleProfiles.find(p=>p.id===id);if(!p)throw new Error('Profilo non disponibile.');db.reports.push({id:uuid(),name:p.display_name,reported_id:id,reason,details,status:'open',created_at:new Date().toISOString()});save();return;}await rpc('submit_report',{p_user:id,p_reason:reason,p_details:details,p_listing:context.listing||null,p_booking:context.booking||null,p_conversation:context.conversation||null});},
+  async savedSearches(){requireUser();return isDemo?structuredClone(db.savedSearches):restAll('saved_searches','?order=created_at.desc,id.desc');},
+  async saveSearch(label,filters,alerts=true){requireUser();const clean=validateSavedSearch(label,filters);if(isDemo){if(db.savedSearches.length>=SAVED_SEARCH_MAX)throw new Error('Puoi salvare fino a 10 ricerche.');const row={id:uuid(),user_id:'demo-me',...clean,alerts:Boolean(alerts),created_at:new Date().toISOString()};db.savedSearches.unshift(row);save();return row;}return (await post('saved_searches',{...clean,alerts:Boolean(alerts)}))[0];},
+  async deleteSavedSearch(id){requireUser();resourceId(id,isDemo);if(isDemo){db.savedSearches=db.savedSearches.filter(s=>s.id!==id);save();return;}const rows=await request('/rest/v1/saved_searches?id=eq.'+id,{method:'DELETE',headers:{Prefer:'return=representation'}});if(!Array.isArray(rows)||rows.length!==1)throw new Error('Ricerca non trovata.');},
   async moderationQueue(){requireUser();if(isDemo)throw new Error('La demo non ha moderatori reali.');return rpc('moderation_queue',{});},
   async resolveReport(id,status,note){requireUser();if(isDemo)throw new Error('La demo non ha moderatori reali.');await rpc('resolve_report',{p_report:id,p_status:status,p_note:note});},
   async evidence(id){requireUser();resourceId(id,isDemo);return isDemo?structuredClone(db.evidence.filter(e=>e.booking_id===id)):rest('handoffs','?booking_id=eq.'+id+'&order=created_at.asc');},
