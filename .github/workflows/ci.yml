@@ -1,0 +1,50 @@
+name: CI
+
+# Runs the full test suite and both static builds on every pull request and on
+# every push to main. Uses no secrets: builds run in demo mode, and the database
+# tests use PGlite locally, never the production Supabase project.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test, scan and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Same Node major as package.json "engines" (>=22) and Vercel.
+    container: node:22-bookworm
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          # security:scan also inspects Git history blobs.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Trust workspace for git inside the container
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Unit, client and SQL tests
+        run: npm test
+
+      - name: Secret pattern scan
+        run: npm run security:scan
+
+      - name: Build Vercel output (demo mode)
+        run: npm run build
+
+      - name: Build Cloudflare Pages output (demo mode)
+        run: npm run build:pages
