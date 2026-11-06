@@ -27,6 +27,7 @@ test('labels name known services and fall back to the host',()=>{
 test('client rule and SQL constraint accept the same normalised URLs',async()=>{
  const sql=await readFile(new URL('../supabase/migrations/20261107090000_profile_portfolio.sql',import.meta.url),'utf8');
  const one=sql.match(/'\^(https:[^ ]+?)\( https/)[1];
- const re=new RegExp('^'+one.replace('[^[:space:]<>"]','[^\\s<>"]')+'$');
+ assert.ok(!/\{\d+,(2[6-9]\d|[3-9]\d\d)\}/.test(sql),'PostgreSQL rejects repetition counts above 255');
+ const re=new RegExp('^'+one.replaceAll('[^[:space:]<>"]','[^\\s<>"]')+'$');
  for(const href of validatePortfolio(['vimeo.com/123','https://www.imdb.com/name/nm1/?ref=x#y','tuosito.it']))assert.ok(re.test(href),href);
 });
