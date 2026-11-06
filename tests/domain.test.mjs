@@ -47,5 +47,6 @@ test('listing validation rejects invalid money, blank fields and excess photos',
  assert.equal(validateListing(row).price,0);
  for (const price of [NaN,Infinity,-1,1.001,'',null]) assert.throws(()=>validateListing({...row,price}));
  assert.throws(()=>validateListing({...row,conditions:'   '}));
- assert.throws(()=>validateListing({...row,images:['a','b','c','d','e']}));
+ assert.equal(validateListing({...row,images:['a','b','c','d','e','f']}).images.length,6);
+ assert.throws(()=>validateListing({...row,images:['a','b','c','d','e','f','g']}),/sei foto/);
 });

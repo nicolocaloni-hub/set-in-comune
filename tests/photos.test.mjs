@@ -3,8 +3,11 @@ import assert from 'node:assert/strict';
 import {validatePhotoBatch,fitPhoto,PHOTO_MAX_BYTES} from '../src/photos.js';
 test('photo limits accept phone images but reject excessive batches and incompatible files',()=>{
  const photo={type:'image/jpeg',size:6*1024*1024};
- validatePhotoBatch([photo,photo,photo,photo]);
- assert.throws(()=>validatePhotoBatch(Array(5).fill(photo)),/massimo 4/);
+ validatePhotoBatch(Array(6).fill(photo));
+ assert.throws(()=>validatePhotoBatch(Array(7).fill(photo)),/massimo 6/);
+ // Pickup and return evidence keeps the four-photo limit.
+ validatePhotoBatch(Array(4).fill(photo),4);
+ assert.throws(()=>validatePhotoBatch(Array(5).fill(photo),4),/massimo 4/);
  assert.throws(()=>validatePhotoBatch([{...photo,type:'image/heic'}]),/HEIC/);
  assert.throws(()=>validatePhotoBatch([{...photo,size:16*1024*1024}]),/15 MB/);
  assert.throws(()=>validatePhotoBatch([{...photo,size:0}]),/15 MB/);

@@ -1,11 +1,14 @@
 export const PHOTO_MAX_BYTES = 500 * 1024;
 export const PHOTO_INPUT_MAX_BYTES = 15 * 1024 * 1024;
 export const PHOTO_MAX_EDGE = 1600;
-export const PHOTO_MAX_COUNT = 4;
+// Listings show up to six photos; pickup/return evidence stays at four (same as the DB checks).
+export const LISTING_PHOTO_MAX = 6;
+export const HANDOFF_PHOTO_MAX = 4;
+export const PHOTO_MAX_COUNT = LISTING_PHOTO_MAX;
 const types = ['image/jpeg', 'image/png', 'image/webp'];
 
-export function validatePhotoBatch(files) {
-  if (files.length > PHOTO_MAX_COUNT) throw new Error('Puoi aggiungere al massimo 4 foto.');
+export function validatePhotoBatch(files, max = PHOTO_MAX_COUNT) {
+  if (files.length > max) throw new Error(`Puoi aggiungere al massimo ${max} foto.`);
   for (const file of files) {
     if (!types.includes(file.type)) throw new Error('Usa foto JPG, PNG o WebP. Per HEIC, esporta prima in JPG.');
     if (!file.size || file.size > PHOTO_INPUT_MAX_BYTES) throw new Error('Ogni foto originale deve pesare meno di 15 MB.');

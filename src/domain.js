@@ -62,7 +62,8 @@ export function validateListing(data) {
   const pct = data.weekly_discount_pct === '' || data.weekly_discount_pct == null ? 0 : Number(data.weekly_discount_pct);
   if (!Number.isInteger(pct) || pct < 0 || pct > 50) throw new Error('Lo sconto settimanale deve essere un numero intero da 0 a 50.');
   clean.weekly_discount_pct = pct;
-  if (!Array.isArray(data.images) || data.images.length > 4 || data.images.some(x=>typeof x !== 'string')) throw new Error('Puoi aggiungere al massimo quattro foto.');
+  // Same limit as LISTING_PHOTO_MAX in photos.js and listings_images_check in SQL.
+  if (!Array.isArray(data.images) || data.images.length > 6 || data.images.some(x=>typeof x !== 'string')) throw new Error('Puoi aggiungere al massimo sei foto.');
   clean.images = [...data.images];
   return clean;
 }
