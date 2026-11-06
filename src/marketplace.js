@@ -1,4 +1,4 @@
-import {today,available,distance,zones,rentalDays} from './domain.js';
+import {today,available,distance,zones,rentalDays,quoteRental} from './domain.js';
 export const mounts=['Sony E','Canon RF','Canon EF','Nikon Z','Nikon F','Micro 4/3','L-Mount','PL','Altro'];
 export const accessoryTags=['Batterie','Caricatore','Custodia','Stativo','Softbox','Scheda memoria','Microfono','Monitor'];
 export const conditions=['Ottime','Buone','Segni di utilizzo'];
@@ -98,4 +98,32 @@ export function validateSavedSearch(label,filters){
 export function matchesSavedSearch(f,l){
  const text=[l.title,l.description,l.brand,l.model].join(' ').toLowerCase();
  return (!f.category||f.category===l.category)&&(!f.zone||f.zone===l.zone)&&(f.max_price==null||Number(l.price)<=f.max_price)&&(!f.brand||String(l.brand||'').toLowerCase()===f.brand.toLowerCase())&&(!f.mount||l.lens_mount===f.mount)&&(!f.accessory||(l.included_tags||[]).includes(f.accessory))&&(!f.condition||l.equipment_condition===f.condition)&&(!f.query||text.includes(f.query.toLowerCase()));
+}
+
+// Kits: 2–8 listings of the same owner requested together for the same dates.
+// Same limits as private.request_bundle; prices come from quoteRental per item.
+export const KIT_MAX=8;
+export function kitAdd(kit,listing){
+ const current=kit&&kit.owner_id===listing.owner_id?kit:{owner_id:listing.owner_id,ids:[]};
+ if(current.ids.includes(listing.id))return {kit:current,changed:false,replaced:false};
+ if(current.ids.length>=KIT_MAX)throw new Error(`Un kit può contenere fino a ${KIT_MAX} attrezzi.`);
+ return {kit:{owner_id:current.owner_id,ids:[...current.ids,listing.id]},changed:true,replaced:Boolean(kit?.ids?.length)&&current!==kit};
+}
+export function kitRemove(kit,id){
+ const ids=(kit?.ids||[]).filter(x=>x!==id);
+ return ids.length?{owner_id:kit.owner_id,ids}:null;
+}
+export function kitQuote(items,start,end,bookings){
+ const rows=items.map(l=>({listing:l,quote:quoteRental(l,start,end),free:available(l,start,end,bookings)}));
+ return {rows,total:Math.round(rows.reduce((s,r)=>s+r.quote.total*100,0))/100,deposit:Math.round(rows.reduce((s,r)=>s+Number(r.listing.deposit||0)*100,0))/100,available:rows.every(r=>r.free)};
+}
+// Groups bookings of the same kit, keeping the original order of the list.
+export function kitGroups(bookings){
+ const out=[],seen=new Map();
+ for(const b of bookings){
+  if(!b.bundle_id){out.push({bundle:null,items:[b]});continue;}
+  if(!seen.has(b.bundle_id)){const g={bundle:b.bundle_id,items:[]};seen.set(b.bundle_id,g);out.push(g);}
+  seen.get(b.bundle_id).items.push(b);
+ }
+ return out;
 }
