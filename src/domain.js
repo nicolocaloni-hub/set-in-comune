@@ -56,6 +56,14 @@ export function validateListing(data) {
   clean.images = [...data.images];
   return clean;
 }
+// Pickup or return happening today or tomorrow, for the in-app reminder banner.
+export function upcomingHandoff(booking, now = today()) {
+  const date = booking.status === 'accepted' ? booking.start_date : booking.status === 'collected' ? booking.end_date : '';
+  if (!date) return null;
+  const days = rentalDays(now, date) - 1;
+  if (days !== 0 && days !== 1) return null;
+  return {stage: booking.status === 'accepted' ? 'pickup' : 'return', when: days === 0 ? 'today' : 'tomorrow'};
+}
 export function filterBookings(bookings, userId, role='all', group='all') {
   const groups = {pending:['requested'],active:['accepted','collected','returned'],history:['completed','declined','cancelled']};
   return bookings.filter(b=>(role==='all'||(role==='owner'?b.owner_id===userId:b.renter_id===userId))&&(!groups[group]||groups[group].includes(b.status)));
