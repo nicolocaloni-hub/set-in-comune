@@ -29,7 +29,8 @@ test('an in-flight message locks its fields and restores its text after failure'
 });
 test('session removal clears private screen data immediately even before a new request',()=>{
  let rendered=false,closed=false;const state={bookings:[{id:'private-booking'}],threads:[{id:'private-chat'}],reviewed:['private-review'],legal:{accepted:true},currentChat:'private-chat',mobileChatOpen:true,safety:{moderator:true},counts:{messages:5,requests:2}};
- const ctx={state,location:{hash:'profile'},close(force){closed=force;},searchPage(){rendered=true;}};
+ let printCleared=false;const printRoot={replaceChildren(){printCleared=true;}};
+ const ctx={state,location:{hash:'profile'},document:{querySelector:s=>s==='#print-root'?printRoot:null},close(force){closed=force;},searchPage(){rendered=true;}};
  vm.createContext(ctx);vm.runInContext(source.split('\n').find(l=>l.startsWith('function clearPrivateState(')),ctx);ctx.clearPrivateState();
- assert.equal(state.bookings.length,0);assert.equal(state.threads.length,0);assert.equal(state.reviewed.length,0);assert.equal(state.currentChat,null);assert.equal(state.legal,null);assert.equal(state.safety.moderator,false);assert.equal(state.counts.messages,0);assert.equal(ctx.location.hash,'search');assert(closed&&rendered);
+ assert.equal(state.bookings.length,0);assert.equal(state.threads.length,0);assert.equal(state.reviewed.length,0);assert.equal(state.currentChat,null);assert.equal(state.legal,null);assert.equal(state.safety.moderator,false);assert.equal(state.counts.messages,0);assert.equal(ctx.location.hash,'search');assert(closed&&rendered);assert(printCleared,'a printed rental summary must not survive logout');
 });
