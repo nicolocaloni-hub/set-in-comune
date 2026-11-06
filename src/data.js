@@ -18,8 +18,8 @@ export const sampleProfiles = [
 
 // Structured technical details are example data, never reputation or identity claims.
 const sampleTechnical=[
- {brand:'Sony',model:'FX3',lens_mount:'Sony E',equipment_condition:'Ottime',included_tags:['Batterie','Caricatore','Custodia']},
- {brand:'Amaran',model:'200x S',light_power_w:200,equipment_condition:'Buone',included_tags:['Stativo','Softbox','Custodia']},
+ {brand:'Sony',model:'FX3',lens_mount:'Sony E',equipment_condition:'Ottime',included_tags:['Batterie','Caricatore','Custodia'],weekend_price:150,weekly_discount_pct:15},
+ {brand:'Amaran',model:'200x S',light_power_w:200,equipment_condition:'Buone',included_tags:['Stativo','Softbox','Custodia'],weekly_discount_pct:20},
  {brand:'Sigma',model:'24–70 mm f/2.8',lens_mount:'Sony E',equipment_condition:'Ottime',included_tags:['Custodia']},
  {brand:'Zoom',model:'H6',equipment_condition:'Buone',included_tags:['Microfono','Custodia']},
  {brand:'Manfrotto',model:'Treppiede video',equipment_condition:'Buone',included_tags:['Custodia']},

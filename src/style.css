@@ -264,3 +264,96 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
 .intro-skip:hover{text-decoration:underline;text-underline-offset:4px}
 .intro-skip:focus-visible{outline:3px solid var(--green);outline-offset:4px}
 @media(max-height:600px){dialog.brand-intro{padding:12px}.intro-content video{max-height:calc(85svh - 68px)}}
+
+/* Rental summary: printed (or saved as PDF) from Noleggi → Riepilogo PDF. */
+#print-root{display:none}
+.rental-summary{max-width:760px;margin:0 auto;color:#1c2529;font-size:12pt;line-height:1.5}
+.rental-summary h1{font-size:20pt;margin:2px 0 4px}
+.rental-summary h2{font-size:13pt;margin:22px 0 8px;padding-bottom:4px;border-bottom:1px solid #cfd8db}
+.rental-summary h3{font-size:11pt;margin:12px 0 4px}
+.rental-summary p{margin:0 0 6px}
+.summary-header{display:flex;gap:16px;align-items:center}
+.summary-eyebrow{font-size:9pt;letter-spacing:.06em;text-transform:uppercase;color:#007f73;font-weight:700}
+.summary-meta,.summary-note,.summary-footer{font-size:9.5pt;color:#55666b}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:0}
+.summary-grid dt{font-size:9pt;color:#55666b}
+.summary-grid dd{margin:0;font-weight:600}
+.summary-entry{padding:10px 0;border-top:1px dashed #d6dee0;break-inside:avoid}
+.summary-checks{margin:6px 0;padding:0;list-style:none}
+.summary-photos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}
+.summary-photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px}
+.rental-summary .summary-footer{margin-top:24px;padding:10px 0 0;border-top:1px solid #cfd8db;background:none;display:block}
+@media print{
+ @page{margin:16mm}
+ body:has(#print-root:not(:empty))>:not(#print-root){display:none!important}
+ body:has(#print-root:not(:empty)) #print-root{display:block}
+}
+
+/* Schematic neighbourhood map (Esplora → Mappa). */
+.zone-map{margin:0 0 22px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px 24px;align-items:start}
+.zone-map-heading{grid-column:1/-1}
+.zone-map-heading h3{margin:0 0 4px}
+.zone-map svg{width:100%;height:auto;max-height:360px;background:#f3f8f6;border-radius:12px}
+.map-river{fill:none;stroke:#b9dbe4;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.map-zone{cursor:pointer}
+.map-zone circle{fill:var(--accent);fill-opacity:.78;stroke:#fff;stroke-width:2;transition:fill .15s}
+.map-zone.empty circle{fill:#c9d4d6}
+.map-zone.selected circle,.map-zone:hover circle{fill:var(--green);fill-opacity:1}
+.map-count{fill:#fff;font-size:11px;font-weight:700;text-anchor:middle;pointer-events:none}
+.map-label{fill:var(--ink);font-size:11px;paint-order:stroke;stroke:#f3f8f6;stroke-width:3px;pointer-events:none}
+.zone-map-list{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+.zone-map-list button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
+.zone-map-list button.selected{background:var(--green);border-color:var(--green);color:#fff}
+@media (max-width:720px){.zone-map{grid-template-columns:1fr}.zone-map-list{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.zone-map-list button{flex:none}}
+
+/* Portfolio links (profile form and public profile). */
+.portfolio-fields{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:10px}
+.portfolio-fields legend{font-weight:600;padding:0 6px}
+.portfolio-links{list-style:none;padding:0;margin:6px 0 4px;display:flex;flex-wrap:wrap;gap:8px}
+.portfolio-links a{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;color:var(--green);font-weight:600;text-decoration:none;max-width:100%;overflow-wrap:anywhere}
+.portfolio-links a .icon{width:14px;height:14px}
+
+/* Duration pricing. */
+.pricing-extras{display:flex;flex-wrap:wrap;gap:8px;margin:-10px 0 18px}
+.pricing-extras span{background:#fff6e5;color:#7a4b00;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600}
+.quote b.struck{text-decoration:line-through;color:var(--muted);font-weight:500}
+
+/* Pickup/return happening today or tomorrow. */
+.handoff-soon{display:flex;align-items:center;gap:8px;background:#fff6e5;color:#7a4b00;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:600;margin:6px 0 10px}
+.handoff-soon .icon{width:16px;height:16px;flex:none}
+
+/* Saved searches strip in Esplora. */
+.saved-searches{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.saved-search{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
+.saved-search button{border:0;background:none;font:inherit;font-size:13px;color:var(--ink);padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.saved-search button .icon{width:14px;height:14px;color:var(--green)}
+.saved-search .saved-search-remove{border-left:1px solid var(--line);padding:7px 9px;color:var(--muted)}
+.save-search{border:1px dashed var(--green);background:#f1faf7;color:var(--green);border-radius:999px;padding:7px 13px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.save-search .icon{width:14px;height:14px}
+
+/* Kit: floating bar while collecting items, grouped bookings, dialog rows */
+.kit-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:10px;width:min(640px,calc(100% - 32px));padding:12px 14px;background:var(--ink);color:#fff;border-radius:14px;box-shadow:0 12px 32px #25323840}
+.kit-bar[hidden]{display:none}
+.kit-bar-text{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.3}
+.kit-bar-text span{font-size:13px;color:#d6e0e3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kit-bar .btn.text{color:#fff}
+.kit-bar .btn[disabled]{opacity:.55;cursor:not-allowed}
+.kit-toggle{margin-top:8px}
+.kit-items{list-style:none;margin:0 0 16px;padding:0;border:1px solid var(--line);border-radius:12px}
+.kit-items li{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+.kit-items li:first-child{border-top:0}
+.kit-item-title{flex:1;min-width:0;font-weight:600;overflow-wrap:break-word}
+.kit-item-price{font-size:14px;color:var(--muted);text-align:right}
+.kit-item-price.unavailable{color:var(--orange);font-weight:600}
+.kit-group{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px;padding:16px;border:2px solid var(--lime);border-radius:18px;background:#f7fcfb}
+.kit-group-head{grid-column:1/-1}
+.kit-group-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.kit-group-head p{margin:4px 0 0}
+@media(max-width:760px){
+  .kit-bar{bottom:calc(var(--mobile-nav-height) + 10px + env(safe-area-inset-bottom));flex-wrap:wrap}
+  .kit-bar-text{flex-basis:100%}
+  .kit-items li{flex-wrap:wrap}
+  .kit-item-title{flex-basis:100%}
+  .kit-item-price{text-align:left}
+  .kit-group{padding:12px}
+}
