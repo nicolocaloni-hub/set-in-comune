@@ -1,7 +1,15 @@
 const hosts=new Set(['fcm.googleapis.com','updates.push.services.mozilla.com','web.push.apple.com']);
 export function allowedPushEndpoint(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.hash&&value.length<=2048&&(hosts.has(u.hostname)||/^[a-z0-9-]+\.notify\.windows\.com$/.test(u.hostname));}catch{return false;}}
 export function pushPayload(job){
- if(!/^[a-f0-9-]{36}$/i.test(job.bookingId)||!/^[a-f0-9-]{36}$/i.test(job.userId)||!['message','request'].includes(job.kind))throw new Error('Invalid job');
+ if(job?.kind==='search'){
+  if(!/^[a-f0-9-]{36}$/i.test(job.listingId)||!/^[a-f0-9-]{36}$/i.test(job.userId))throw new Error('Invalid job');
+  return {kind:'search',userId:job.userId,url:`/#search?listing=${job.listingId}`,tag:`search-${job.listingId}`,unreadTotal:Math.max(0,Number(job.unreadTotal)||0)};
+ }
+ if(!/^[a-f0-9-]{36}$/i.test(job.bookingId)||!/^[a-f0-9-]{36}$/i.test(job.userId)||!['message','request','reminder'].includes(job.kind))throw new Error('Invalid job');
+ if(job.kind==='reminder'){
+  if(!['pickup','return'].includes(job.reminderStage)||job.threadType==='inquiry')throw new Error('Invalid job');
+  return {kind:'reminder',stage:job.reminderStage,userId:job.userId,url:`/#bookings?booking=${job.bookingId}`,tag:`reminder-${job.reminderStage}-${job.bookingId}`,unreadTotal:Math.max(0,Number(job.unreadTotal)||0)};
+ }
  return {kind:job.kind,userId:job.userId,url:job.threadType==='inquiry'?`/#messages?conversation=${job.bookingId}`:`/#${job.kind==='message'?'messages':'bookings'}?booking=${job.bookingId}`,tag:`${job.kind}-${job.bookingId}`,unreadTotal:Math.max(0,Number(job.unreadTotal)||0)};
 }
 export async function processPushJobs({jobs,config,send,finish}){
