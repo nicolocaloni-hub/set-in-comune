@@ -47,3 +47,23 @@ export function chooseCalendarDate(item,date,start='',end=''){
  if(!available(item,start,date))throw new Error('Il periodo comprende giorni già occupati. Scegli un’altra restituzione.');
  return {start,end:date};
 }
+// Portfolio links: same rule as the profiles.portfolio_links CHECK constraint.
+export const PORTFOLIO_MAX=4;
+const portfolioPattern=/^https:\/\/([a-z0-9-]+\.)+[a-z]{2,24}\/[^\s<>"]{0,270}$/;
+export function validatePortfolio(values=[]){
+ if(!Array.isArray(values))throw new Error('Link del portfolio non validi.');
+ const out=[];
+ for(const raw of values){
+  const value=String(raw??'').trim();if(!value)continue;
+  let url;try{url=new URL(/^[a-z][a-z0-9+.-]*:/i.test(value)?value:'https://'+value);}catch{throw new Error('Controlla il link: '+value.slice(0,60));}
+  if(url.protocol!=='https:'||url.username||url.password||url.port||!portfolioPattern.test(url.href))throw new Error('Usa link https completi, senza spazi, fino a 300 caratteri: '+value.slice(0,60));
+  if(!out.includes(url.href))out.push(url.href);
+ }
+ if(out.length>PORTFOLIO_MAX)throw new Error('Puoi aggiungere fino a 4 link al portfolio.');
+ return out;
+}
+const portfolioServices=[[/(^|\.)vimeo\.com$/,'Vimeo'],[/(^|\.)(youtube\.com|youtu\.be)$/,'YouTube'],[/(^|\.)instagram\.com$/,'Instagram'],[/(^|\.)imdb\.com$/,'IMDb'],[/(^|\.)behance\.net$/,'Behance'],[/(^|\.)filmfreeway\.com$/,'FilmFreeway'],[/(^|\.)linkedin\.com$/,'LinkedIn'],[/(^|\.)tiktok\.com$/,'TikTok']];
+export function portfolioLabel(href){
+ let host;try{host=new URL(href).hostname;}catch{return 'Link';}
+ return portfolioServices.find(([re])=>re.test(host))?.[1]||host.replace(/^www\./,'');
+}
