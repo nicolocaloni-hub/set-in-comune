@@ -52,9 +52,37 @@ export function validateListing(data) {
     if (data[key] === '' || data[key] == null || !Number.isFinite(value) || value < 0 || value > max || Math.abs(value*100-Math.round(value*100)) > 0.000001) throw new Error('Prezzo e cauzione devono essere importi validi, con massimo due decimali.');
     clean[key] = Math.round(value*100)/100;
   }
+  const weekend = data.weekend_price;
+  if (weekend === '' || weekend == null) clean.weekend_price = null;
+  else {
+    const value = Number(weekend);
+    if (!Number.isFinite(value) || value < 0 || value > 10000 || Math.abs(value*100-Math.round(value*100)) > 0.000001) throw new Error('Il prezzo weekend deve essere un importo valido, con massimo due decimali.');
+    clean.weekend_price = Math.round(value*100)/100;
+  }
+  const pct = data.weekly_discount_pct === '' || data.weekly_discount_pct == null ? 0 : Number(data.weekly_discount_pct);
+  if (!Number.isInteger(pct) || pct < 0 || pct > 50) throw new Error('Lo sconto settimanale deve essere un numero intero da 0 a 50.');
+  clean.weekly_discount_pct = pct;
   if (!Array.isArray(data.images) || data.images.length > 4 || data.images.some(x=>typeof x !== 'string')) throw new Error('Puoi aggiungere al massimo quattro foto.');
   clean.images = [...data.images];
   return clean;
+}
+// Duration pricing, identical to private.duration_quote in SQL. Amounts in euros.
+export const priceRuleLabels = {daily:'Tariffa giornaliera', weekly:'Sconto settimanale', weekend:'Tariffa weekend'};
+export function isWeekendRental(start, end) {
+  const days = rentalDays(start, end);
+  const from = new Date(start+'T12:00:00Z').getUTCDay(), to = new Date(end+'T12:00:00Z').getUTCDay();
+  return days >= 2 && days <= 4 && [5,6].includes(from) && [0,1].includes(to);
+}
+export function quoteRental(listing, start, end) {
+  const days = rentalDays(start, end);
+  if (!days) return {days:0, total:0, standard:0, rule:'daily'};
+  const standard = Math.round(Number(listing.price)*100)*days;
+  let total = standard, rule = 'daily';
+  const pct = Number(listing.weekly_discount_pct) || 0;
+  if (days >= 7 && pct > 0) { total = Math.round(standard*(100-pct)/100); rule = 'weekly'; }
+  const weekend = listing.weekend_price === '' || listing.weekend_price == null ? null : Math.round(Number(listing.weekend_price)*100);
+  if (weekend !== null && isWeekendRental(start, end) && weekend < total) { total = weekend; rule = 'weekend'; }
+  return {days, total: total/100, standard: standard/100, rule};
 }
 export function filterBookings(bookings, userId, role='all', group='all') {
   const groups = {pending:['requested'],active:['accepted','collected','returned'],history:['completed','declined','cancelled']};
