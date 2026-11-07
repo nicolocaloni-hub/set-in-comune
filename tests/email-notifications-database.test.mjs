@@ -8,9 +8,6 @@ const MIGRATIONS=['migrations/20261107090000_profile_portfolio.sql','migrations/
 async function world(){
  const env=await createDb({migrations:MIGRATIONS,users:[[A,'Alice'],[B,'Bruno'],[C,'Carla'],[D,'Dario']]});
  const {db}=env;
- await db.exec(`alter table auth.users add column email text,add column created_at timestamptz default now(),add column last_sign_in_at timestamptz;
-  create table auth.sessions(id uuid primary key default gen_random_uuid(),user_id uuid,updated_at timestamptz,refreshed_at timestamp);
-  create table auth.identities(id uuid primary key default gen_random_uuid(),user_id uuid);`);
  await db.query("update auth.users set email=substr(id::text,1,1)||'@example.test',last_sign_in_at=now()");
  return env;
 }

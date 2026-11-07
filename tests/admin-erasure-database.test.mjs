@@ -10,7 +10,6 @@ const MIGRATIONS=['migrations/20261107090000_profile_portfolio.sql','migrations/
 async function world(){
  const env=await createDb({migrations:MIGRATIONS,users:[[A,'Alice'],[B,'Bruno'],[C,'Carla'],[D,'Dario']]});
  const {db,as,listing}=env;
- await db.exec('create table auth.identities(id uuid primary key default gen_random_uuid(),user_id uuid)');
  await db.query('insert into auth.identities(user_id) values($1),($2),($3),($4)',[A,B,C,D]);
  const l1=await listing(A),l2=await listing(A);
  const book=(s,e)=>as(B,tx=>tx.query("select (public.request_booking($1,(current_date+$2::int)::date,(current_date+$3::int)::date,'')).id",[l1.id,s,e])).then(r=>r.rows[0].id);
