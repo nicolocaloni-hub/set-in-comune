@@ -357,3 +357,7 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
   .kit-item-price{text-align:left}
   .kit-group{padding:12px}
 }
+
+/* Share button in the listing detail */
+.share-button{margin:6px 0 0 8px;vertical-align:middle}
+@media(max-width:760px){.share-button{margin:8px 0 0}}
