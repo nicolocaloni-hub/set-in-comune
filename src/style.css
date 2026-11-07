@@ -293,14 +293,26 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
 .zone-map{margin:0 0 22px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px 24px;align-items:start}
 .zone-map-heading{grid-column:1/-1}
 .zone-map-heading h3{margin:0 0 4px}
-.zone-map svg{width:100%;height:auto;max-height:360px;background:#f3f8f6;border-radius:12px}
-.map-river{fill:none;stroke:#b9dbe4;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.zone-map-figure{margin:0;display:grid;gap:4px}
+.zone-map svg{display:block;width:100%;height:auto;max-height:480px;background:#f2efe9;border-radius:12px;border:1px solid var(--line)}
+.map-credit{font-size:11px;color:var(--muted);text-align:right}
+.map-land{fill:#f2efe9}
+.map-park{fill:#cde8c0;stroke:none}
+.map-water{fill:#aad3df;stroke:none}
+.map-rail{fill:none;stroke:#bdbab4;stroke-width:1.2;stroke-dasharray:5 3}
+.map-road{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.map-road-secondary{stroke:#fff;stroke-width:2}
+.map-road-primary{stroke:#fff;stroke-width:3.4}
+.map-road-major{stroke:#f9d987;stroke-width:4.4}
+.map-walls{fill:none;stroke:#c8a97e;stroke-width:2;stroke-linecap:round}
+.map-park-label{fill:#4d7a45;font-size:13px;font-style:italic;text-anchor:middle;paint-order:stroke;stroke:#cde8c0;stroke-width:3px;pointer-events:none}
+.map-river{fill:none;stroke:#aad3df;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
 .map-zone{cursor:pointer}
 .map-zone circle{fill:var(--accent);fill-opacity:.78;stroke:#fff;stroke-width:2;transition:fill .15s}
 .map-zone.empty circle{fill:#c9d4d6}
 .map-zone.selected circle,.map-zone:hover circle{fill:var(--green);fill-opacity:1}
-.map-count{fill:#fff;font-size:11px;font-weight:700;text-anchor:middle;pointer-events:none}
-.map-label{fill:var(--ink);font-size:11px;paint-order:stroke;stroke:#f3f8f6;stroke-width:3px;pointer-events:none}
+.map-count{fill:#fff;font-size:15px;font-weight:700;text-anchor:middle;pointer-events:none}
+.map-label{fill:var(--ink);font-size:16px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
 .zone-map-list{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
 .zone-map-list button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
 .zone-map-list button.selected{background:var(--green);border-color:var(--green);color:#fff}

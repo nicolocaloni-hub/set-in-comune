@@ -6,12 +6,12 @@ import {project,countByZone,zoneMapMarkup} from '../src/zone-map.js';
 test('every neighbourhood lands inside the map and keeps its geography',()=>{
  for(const [name,coords] of Object.entries(zones)){
   const [x,y]=project(coords);
-  assert.ok(x>0&&x<400&&y>0&&y<340,`${name} fuori dalla mappa: ${x},${y}`);
+  assert.ok(x>40&&x<560&&y>40&&y<570,`${name} fuori dalla mappa: ${x},${y}`);
  }
  const [flaminioX,flaminioY]=project(zones.Flaminio),[eurX,eurY]=project(zones.EUR),[tuscolanoX]=project(zones.Tuscolano),[monteverdeX]=project(zones.Monteverde);
  assert.ok(flaminioY<eurY,'Flaminio è a nord dell’EUR');
  assert.ok(tuscolanoX>monteverdeX,'Tuscolano è a est di Monteverde');
- assert.ok(Math.abs(flaminioX-eurX)<40);
+ assert.ok(Math.abs(flaminioX-eurX)<60);
 });
 
 test('counts ignore unknown zones and default to zero',()=>{
@@ -29,4 +29,14 @@ test('markup marks the selected zone, totals listings and links every zone',()=>
  for(const z of Object.keys(zones))assert.ok(html.includes(`data-value="${z}"`),z);
  assert.ok(!/https?:\/\//.test(html.replace('http://www.w3.org','')),'no external resources');
  assert.ok(html.includes('non l’indirizzo'));
+ assert.ok(html.includes('© contributori OpenStreetMap'),'ODbL attribution');
+});
+
+test('the base map is generated data with the expected layers and no markup',async()=>{
+ const {FRAME,basemap,parkLabels}=await import('../src/rome-basemap.js');
+ assert.equal(FRAME.W,600);assert.ok(FRAME.H>500&&FRAME.H<700);
+ for(const layer of ['water','park','river','secondary','primary','major','walls'])assert.ok(basemap[layer].length>100,layer);
+ for(const d of Object.values(basemap))assert.match(d,/^[Mlz0-9 .\-]*$/,'path data only');
+ assert.ok(parkLabels.some(p=>p.name==='Villa Borghese'));
+ for(const zone of Object.values(zones)){const [x,y]=project(zone);assert.ok(x<FRAME.W&&y<FRAME.H);}
 });
