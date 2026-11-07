@@ -373,3 +373,46 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
 /* Share button in the listing detail */
 .share-button{margin:6px 0 0 8px;vertical-align:middle}
 @media(max-width:760px){.share-button{margin:8px 0 0}}
+
+/* Profile hub: identity card on a coloured band, then sections of rows */
+.profile-page{max-width:720px;margin-inline:auto}
+.profile-hero{margin:0 0 22px;border-radius:22px;overflow:hidden;background:var(--green)}
+.profile-hero-band{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px 46px;color:#fff}
+.profile-hero-tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#ffffff24;border-radius:999px;padding:6px 12px}
+.profile-hero-chip{display:inline-flex;align-items:center;gap:6px;border:2px solid #f3cf6b;background:#fffaf0;color:#8a5700;font:inherit;font-size:14px;font-weight:700;border-radius:999px;padding:6px 14px;cursor:pointer}
+.profile-hero-chip.done{border-color:#ffffff80;background:#ffffff1f;color:#fff;cursor:default}
+.profile-hero-chip .icon{width:16px;height:16px}
+.profile-card{display:flex;align-items:center;gap:16px;width:100%;margin-top:-30px;padding:20px 18px 22px;border:0;border-radius:24px 24px 0 0;background:var(--white);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.profile-card:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.profile-card .person-avatar.large{flex:none;width:88px;height:88px;font-size:34px}
+.profile-card-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.profile-name{font-size:28px;font-weight:800;line-height:1.1;overflow-wrap:break-word}
+.profile-card-text small{color:var(--muted);font-size:14px}
+.profile-rating{font-size:15px}
+.profile-rating .stars{color:var(--ink);letter-spacing:1px}
+.profile-rating .stars .off{color:#d3dbde}
+.profile-rating .muted,.profile-rating.muted{color:var(--muted)}
+.profile-section{margin:0 0 22px}
+.profile-section h2{margin:0 0 8px;padding:0 4px;font-size:19px}
+.profile-rows{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--white)}
+.profile-row{display:flex;align-items:center;gap:14px;width:100%;min-height:60px;padding:14px 16px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.profile-row:first-child{border-top:0}
+.profile-row:hover{background:#f5f9f8}
+.profile-row:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.profile-row-icon{display:flex;color:var(--ink)}
+.profile-row-icon .icon{width:26px;height:26px}
+.profile-row-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.profile-row-text b{font-size:16px;font-weight:600}
+.profile-row-text small{font-size:13px;color:var(--muted)}
+.profile-row-chevron{display:flex;color:var(--muted)}
+.profile-row-chevron .icon{width:20px;height:20px}
+.profile-row.danger,.profile-row.danger .profile-row-icon{color:#b42335}
+.profile-back{display:inline-flex;align-items:center;gap:4px;margin:0 0 14px;padding:6px 0;border:0;background:none;color:var(--green);font:inherit;font-weight:700;cursor:pointer}
+.profile-back .icon{width:18px;height:18px;transform:rotate(180deg)}
+.profile-edit-head{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.profile-edit-head h1{margin:0 0 6px;font-size:24px}
+@media(max-width:760px){
+  .profile-hero{margin-inline:-16px;border-radius:0}
+  .profile-name{font-size:24px}
+  .profile-card .person-avatar.large{width:72px;height:72px;font-size:28px}
+}
