@@ -62,7 +62,7 @@ test('messages already read in the app are not emailed; clients cannot use the w
 test('inactive accounts: warned after 6 months, reset by a visit, erased or sent to review after 30 days',async t=>{
  const {db,as,listing,close}=await world();t.after(close);
  const l=await listing(A);await request(as,l,2); // A and B share a rental
- await db.query("insert into auth.users(id,email_confirmed_at,raw_user_meta_data,email,created_at) values($1,null,'{"display_name":"Elena"}','e@example.test',now()-interval '7 months')",[E]);
+ await db.query("insert into auth.users(id,email_confirmed_at,raw_user_meta_data,email,created_at) values($1,null,$2,'e@example.test',now()-interval '7 months')",[E,JSON.stringify({display_name:'Elena'})]);
  await db.query("update auth.users set created_at=now()-interval '1 year',last_sign_in_at=now()-interval '7 months' where id in($1,$2,$3)",[A,C,D]);
  await db.query("insert into auth.sessions(user_id,updated_at,refreshed_at) values($1,now()-interval '2 days',now()-interval '2 days')",[C]);
  assert.deepEqual((await one(db,'select private.review_inactive_accounts() r')).r,{},'switched off');
