@@ -12,7 +12,9 @@ async function runJobs(){const jobs=await rpc('claim_account_erasures');let comp
  revoke:async(uid:string)=>{await http('/auth/v1/admin/users/'+uid,'PUT',{ban_duration:'876000h'});},
  list:listFiles,remove:(bucket:string,paths:string[])=>http('/storage/v1/object/'+bucket,'DELETE',{prefixes:paths}),
  eraseRecords:(uid:string,lease:string)=>rpc('erase_account_records',{p_user:uid,p_lease:lease}),
- deleteAuth:(uid:string)=>http('/auth/v1/admin/users/'+uid,'DELETE'),finish:(uid:string,lease:string,done:boolean)=>rpc('finish_account_erasure',{p_user:uid,p_lease:lease,p_done:done})}))completed++;}return completed;}
+ deleteAuth:(uid:string)=>http('/auth/v1/admin/users/'+uid,'DELETE'),
+ anonymizeRecords:(uid:string,lease:string)=>rpc('anonymize_account_records',{p_user:uid,p_lease:lease}),
+ scrubAuth:(uid:string)=>http('/auth/v1/admin/users/'+uid,'PUT',{email:`eliminato-${uid}@rent-to-a-friend.invalid`,email_confirm:true,password:crypto.randomUUID()+crypto.randomUUID(),user_metadata:{},ban_duration:'876000h'}),finish:(uid:string,lease:string,done:boolean)=>rpc('finish_account_erasure',{p_user:uid,p_lease:lease,p_done:done})}))completed++;}return completed;}
 Deno.serve(async(req:Request)=>{
  const origin=req.headers.get('origin')||'',cors=allowedOrigin(origin,origins)?{'Access-Control-Allow-Origin':origin,'Vary':'Origin','Access-Control-Allow-Headers':'authorization, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS'}:{};
  const reply=(data:unknown,status=200)=>Response.json(data,{status,headers:{...cors,'Cache-Control':'no-store'}});

@@ -31,7 +31,7 @@ test('reviewed connected documents describe active email and account features wi
   retentionPolicy.approved=true;
   const privacy=privacyMarkup(false),terms=termsMarkup(false);
   assert.ok(privacy.includes('consegna le email di conferma indirizzo e recupero password'));
-  assert.ok(privacy.includes('Non invia email per messaggi, noleggi o marketing'));
+  assert.ok(privacy.includes('Non invia email di marketing')&&privacy.includes('senza il testo delle chat'));
   assert.ok(privacy.includes('Criteri di prova approvati'));
   assert.ok(terms.includes('Recapito di prova &lt;non pubblicare&gt;'));
   for(const text of ['demo pubblica','collegamento email non attivo','non è conclusa','bozza da approvare'])assert.ok(!privacy.includes(text),text);
@@ -66,7 +66,7 @@ test('public service documents separate browsing, login and signup without claim
  assert.ok(privacy.includes('Accedi con email usa esclusivamente'));
  assert.ok(terms.includes('Chiunque può consultare annunci, prezzi, profili pubblici e recensioni'));
  assert.ok(terms.includes('il modulo Accedi non registra nuovi account'));
- assert.ok(privacy.includes('non è attiva una pulizia automatica generale'));
+ assert.ok(privacy.includes('gli account inattivi')&&privacy.includes('6 mesi senza accessi'));
  assert.ok(!privacy.includes('accesso tramite Google'));
  const {readFile}=await import('node:fs/promises');
  const app=await readFile(new URL('../src/app.js',import.meta.url),'utf8');

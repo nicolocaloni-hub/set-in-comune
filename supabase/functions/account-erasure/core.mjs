@@ -12,8 +12,14 @@ export async function eraseJob(job,io){
    if(files.length)await io.remove(bucket,files);
    if((await io.list(bucket,uid+'/')).length)throw new Error('Storage cleanup incomplete');
   }
-  await io.eraseRecords(uid,job.lease);
-  await io.deleteAuth(uid);
+  if(job.mode==='anonymize'){
+   // Shared rentals and chats stay for the other party: keep the Auth row they reference, emptied and locked.
+   await io.anonymizeRecords(uid,job.lease);
+   await io.scrubAuth(uid);
+  }else{
+   await io.eraseRecords(uid,job.lease);
+   await io.deleteAuth(uid);
+  }
   await io.finish(uid,job.lease,true);
   return true;
  }catch{await io.finish(uid,job.lease,false);return false;}

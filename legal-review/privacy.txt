@@ -34,7 +34,7 @@ Email, credenziali e nome visibile servono per creare e gestire l’account; dat
 
 • Supabase: gestisce autenticazione, database, foto e funzioni server; progetto dedicato a Francoforte.
 
-• Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth. Non invia email per messaggi, noleggi o marketing.
+• Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth, gli avvisi sui noleggi (richieste, risposte, annullamenti, promemoria e nuovi messaggi non letti, senza il testo delle chat) e l’avviso di account inattivo. Non invia email di marketing.
 
 • Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Scrivere a questo recapito invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Non inviare documenti o dati sensibili non necessari.
 
@@ -68,7 +68,7 @@ I preferiti sono salvati nel browser; la sessione di accesso è conservata nella
 
 ## Criteri di conservazione
 
-I tempi seguenti sono criteri di conservazione e riesame. La revisione periodica è manuale: non è attiva una pulizia automatica generale. Quando servono dati per un obbligo o una controversia concreta, il gestore limita la conservazione a ciò che è necessario e riesamina le eccezioni. I tempi delle copie e dei log dei fornitori restano distinti.
+I tempi seguenti sono criteri di conservazione e riesame. La revisione periodica è manuale, con un’eccezione automatica: gli account inattivi, descritti nella riga dedicata. Quando servono dati per un obbligo o una controversia concreta, il gestore limita la conservazione a ciò che è necessario e riesamina le eccezioni. I tempi delle copie e dei log dei fornitori restano distinti.
 
 Consulta i criteri di conservazione
 
@@ -81,6 +81,8 @@ Foto sostituite o rimosse | Dopo il salvataggio della modifica | Eliminazione de
 Upload interrotti o mai utilizzati | Riesame dei file non associati a contenuti e rimozione quando non più necessari | Pulizia manuale da I tuoi dati; i file più recenti di un’ora sono esclusi per evitare di interrompere un caricamento. Non è garantita una rimozione automatica entro 24 ore. |
 
 Account senza noleggi, chat o segnalazioni | Alla conferma di cancellazione | La procedura verifica le condizioni dell’account; quando il caso richiede una valutazione umana viene indicato il motivo e la richiesta passa al gestore. |
+
+Account inattivi | 6 mesi senza accessi, poi 30 giorni dall’avviso email | Avviso email con un link per mantenere l’account: un accesso azzera il conteggio. Senza risposta, l’account senza noleggi, chat o segnalazioni viene cancellato; negli altri casi decide il gestore. Le registrazioni mai confermate vengono cancellate dopo 6 mesi, senza avviso. |
 
 Domande e chat senza noleggio | 12 mesi dall’ultimo messaggio | Verifica e rimozione dei dati non necessari. Escludere le parti interessate da una controversia concreta, con motivazione e riesame. |
 
