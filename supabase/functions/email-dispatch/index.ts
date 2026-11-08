@@ -1,6 +1,6 @@
 import {processEmailWork} from './core.mjs';
 const base=Deno.env.get('SUPABASE_URL')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,anon=Deno.env.get('SUPABASE_ANON_KEY')!;
-const resendKey=Deno.env.get('RESEND_API_KEY')||'';
+const resendKey=Deno.env.get('RESEND_API_KEY')||'',brevoKey=Deno.env.get('BREVO_API_KEY')||'';
 const from=Deno.env.get('EMAIL_FROM')||'Rent to a Friend <assistenza@rent-to-a-friend.it>';
 async function rpc(name:string,body:unknown={}){
  const r=await fetch(base+'/rest/v1/rpc/'+name,{method:'POST',headers:{apikey:service,Authorization:'Bearer '+service,'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(15000),redirect:'error'});
@@ -16,8 +16,13 @@ Deno.serve(async(req:Request)=>{
   if(!config?.hookSecret||!await secureEqual(authorization.slice(7),config.hookSecret))return new Response('Unauthorized',{status:401});
   const work=await rpc('claim_email_work');
   const result=await processEmailWork(work,{
-   // Booking digests go through the Resend API with a send-only key kept as a function secret.
+   // Booking digests go through Brevo (300/day free); Resend only while no Brevo key is set.
    sendEmail:async(m:{to:string,subject:string,text:string,html:string})=>{
+    if(brevoKey){
+     const r=await fetch('https://api.brevo.com/v3/smtp/email',{method:'POST',headers:{'api-key':brevoKey,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({sender:{name:'Rent to a Friend',email:'assistenza@rent-to-a-friend.it'},to:[{email:m.to}],replyTo:{email:'assistenza@rent-to-a-friend.it'},subject:m.subject,textContent:m.text,htmlContent:m.html}),signal:AbortSignal.timeout(15000),redirect:'error'});
+     if(!r.ok)throw new Error('Send failed');
+     return;
+    }
     if(!resendKey)throw new Error('Missing key');
     const r=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+resendKey,'Content-Type':'application/json'},body:JSON.stringify({from,to:[m.to],reply_to:'assistenza@rent-to-a-friend.it',subject:m.subject,text:m.text,html:m.html}),signal:AbortSignal.timeout(15000),redirect:'error'});
     if(!r.ok)throw new Error('Send failed');

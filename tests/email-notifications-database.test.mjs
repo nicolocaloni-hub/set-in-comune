@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createDb,A,B,C} from './db-harness.mjs';
 
 const D='dddddddd-dddd-4ddd-8ddd-dddddddddddd',E='eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
-const MIGRATIONS=['migrations/20261107090000_profile_portfolio.sql','migrations/20261107091000_duration_pricing.sql','migrations/20261107092000_rental_reminders.sql','migrations/20261107093000_saved_searches.sql','migrations/20261107094000_rental_kits.sql','migrations/20261107100000_six_listing_photos.sql','migrations/20261107110000_admin_account_erasure.sql','migrations/20261107111000_email_notifications.sql'];
+const MIGRATIONS=['migrations/20261107090000_profile_portfolio.sql','migrations/20261107091000_duration_pricing.sql','migrations/20261107092000_rental_reminders.sql','migrations/20261107093000_saved_searches.sql','migrations/20261107094000_rental_kits.sql','migrations/20261107100000_six_listing_photos.sql','migrations/20261107110000_admin_account_erasure.sql','migrations/20261107111000_email_notifications.sql','migrations/20261108090000_brevo_booking_emails.sql'];
 
 async function world(){
  const env=await createDb({migrations:MIGRATIONS,users:[[A,'Alice'],[B,'Bruno'],[C,'Carla'],[D,'Dario']]});
@@ -92,4 +92,17 @@ test('an inactive account with nothing shared is queued for erasure',async t=>{
  await db.query('select private.review_inactive_accounts()');
  assert.equal((await one(db,'select status from private.inactivity_notices where user_id=$1',[D])).status,'erasing');
  assert.equal((await one(db,'select status from private.account_erasure_jobs where user_id=$1',[D])).status,'queued');
+});
+
+test('booking digests (Brevo) and inactivity notices (Resend) have separate daily caps',async t=>{
+ const {db,as,listing,close}=await world();t.after(close);
+ await db.query('update private.email_settings set enabled=true,inactivity_enabled=true,daily_cap=300,inactivity_cap=1');
+ await assert.rejects(db.query('update private.email_settings set daily_cap=301'),/check/);
+ const l=await listing(A);await request(as,l,2);
+ await db.query("update private.email_events set created_at=now()-interval '11 minutes'");
+ await db.query("insert into private.inactivity_notices(user_id,last_seen_at) values($1,now()-interval '7 months'),($2,now()-interval '7 months')",[C,D]);
+ await db.query("insert into private.email_log(kind) select 'digest' from generate_series(1,150)");
+ const w=(await one(db,'select private.claim_email_work() w')).w;
+ assert.equal(w.digests.length,1,'150 digests sent today still leave Brevo room');
+ assert.equal(w.inactivity.length,1,'inactivity notices stop at their own cap');
 });
