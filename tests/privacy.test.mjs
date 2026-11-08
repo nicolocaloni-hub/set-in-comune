@@ -48,7 +48,7 @@ test('connected browser-storage disclosure omits local demo data and keeps PKCE 
  assert.ok(!connected.includes('Cancella e ripristina demo'));
  assert.ok(demo.includes('sic-demo-v1'));
  assert.ok(demo.includes('Cancella e ripristina demo'));
- for(const text of ['sic-pkce-v1','stesso browser','sic-session-v2','ripristino delle schede','non cancella un account sui server'])assert.ok(connected.includes(text),text);
+ for(const text of ['sic-pkce-v1','stesso browser','sic-session-v2','Resta connesso','sic-install-v1','non cancella un account sui server'])assert.ok(connected.includes(text),text);
 });
 
 test('publication approval does not require publishing a private home address or fabricate an assessment',()=>{

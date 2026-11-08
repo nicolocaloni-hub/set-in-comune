@@ -25,7 +25,12 @@ function demoState(value){
  return defaults;
 }
 function pkceFlow(){const flow=read(PKCE_KEY,null);if(!flow||typeof flow.verifier!=='string'||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000){localStorage.removeItem(PKCE_KEY);return null;}return flow;}
+const REMEMBER_KEY='sic-remember-v1';
+// "Resta connesso" (default on): the session survives closing the home-screen app; off keeps it in this tab only.
+const remembered=()=>{try{return localStorage.getItem(REMEMBER_KEY)!=='0';}catch{return false;}};
+let sessionStore=globalThis.sessionStorage;
 let session=storedSession(read(SESSION_KEY,null,globalThis.sessionStorage));
+if(!session){try{session=storedSession(read(SESSION_KEY,null,globalThis.localStorage));if(session)sessionStore=globalThis.localStorage;}catch{}}
 let sessionGeneration=0;
 const changedSession=()=>new Error('L’accesso è cambiato. Riprova dalla schermata attuale.');
 function assertSession(generation){if(generation!==sessionGeneration)throw changedSession();}
@@ -34,7 +39,7 @@ let db=demoState(isDemo?read(DEMO_KEY,null):null);
 for(const sample of sampleListings){const existing=db.listings.find(l=>l.id===sample.id);if(existing)for(const key of ['brand','model','lens_mount','light_power_w','equipment_condition','included_tags','weekend_price','weekly_discount_pct'])if(existing[key]===undefined)existing[key]=sample[key]??(key==='included_tags'?[]:key==='light_power_w'?null:'');}
 let savedDemo = JSON.stringify(db);
 const save=()=>{const json=JSON.stringify(db);try{localStorage.setItem(DEMO_KEY,json);savedDemo=json;}catch{db=JSON.parse(savedDemo);throw new Error('Spazio della demo esaurito su questo browser. Rimuovi alcune foto dai tuoi annunci o ripristina la demo dal Profilo. Nessun piano a pagamento viene attivato.');}};
-const storeSession=(value,renewal=false)=>{if(value){const {provider_token,provider_refresh_token,...appSession}=value;value={...appSession,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');sessionStorage.setItem(SESSION_KEY,JSON.stringify(value));}else{sessionStorage.removeItem(SESSION_KEY);recoverySession=false;}if(!renewal)sessionGeneration++;session=value;if(!value)globalThis.dispatchEvent?.(new Event('rtaf-session-cleared'));};
+const storeSession=(value,renewal=false,temporary=false)=>{if(value){const {provider_token,provider_refresh_token,...appSession}=value;value={...appSession,expires_at:value.expires_at??(Number.isFinite(value.expires_in)?Math.floor(Date.now()/1000)+value.expires_in:NaN)};if(!value.access_token||!value.refresh_token||!value.user?.id||!Number.isFinite(value.expires_at))throw new Error('Risposta di accesso non valida. Riprova.');if(!renewal)sessionStore=!temporary&&remembered()?localStorage:sessionStorage;sessionStore.setItem(SESSION_KEY,JSON.stringify(value));(sessionStore===localStorage?sessionStorage:localStorage).removeItem(SESSION_KEY);}else{sessionStorage.removeItem(SESSION_KEY);localStorage.removeItem(SESSION_KEY);recoverySession=false;}if(!renewal)sessionGeneration++;session=value;if(!value)globalThis.dispatchEvent?.(new Event('rtaf-session-cleared'));};
 let refreshPromise,refreshGeneration;
 let recoverySession=false;
 const safeFetch=(url,options={})=>fetch(url,{...options,mode:'cors',credentials:'omit',redirect:'error',referrerPolicy:'no-referrer',cache:'no-store',signal:AbortSignal.timeout(20000)});
@@ -110,12 +115,14 @@ export const api={
       localStorage.removeItem(PKCE_KEY);
       if(!flow||!flow.verifier||!Number.isFinite(flow.created_at)||flow.created_at>Date.now()+5000||Date.now()-flow.created_at>3600000)throw new Error('Richiedi un nuovo link e aprilo nello stesso browser usato per la richiesta.');
       const generation=++sessionGeneration;const result=await auth('token?grant_type=pkce',{auth_code:code,code_verifier:flow.verifier});assertSession(generation);
-      storeSession(result);recovery=flow.purpose==='recovery';recoverySession=recovery;
+      recovery=flow.purpose==='recovery';storeSession(result,false,recovery);recoverySession=recovery;
     }
     if(session){const generation=sessionGeneration;await token(generation);const user=await request('/auth/v1/user');assertSession(generation);storeSession({...session,user},true);}
     return recovery;
   },
   isPasswordRecovery:()=>recoverySession,
+  remembered,
+  setRemember(on){try{localStorage.setItem(REMEMBER_KEY,on?'1':'0');}catch{}},
   async changePassword(password,currentPassword){
     if(isDemo)throw new Error('Il cambio password richiede un account reale. Non inserire password nella demo.');
     requireUser();
