@@ -416,3 +416,14 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
   .profile-name{font-size:24px}
   .profile-card .person-avatar.large{width:72px;height:72px;font-size:28px}
 }
+
+/* Aggiungi alla Home guide */
+.install-tabs{display:flex;gap:8px;margin:12px 0}
+.install-tabs button{border:1px solid currentColor;border-radius:999px;padding:6px 14px;background:transparent;color:inherit;font:inherit;cursor:pointer;opacity:.7}
+.install-tabs button.active{opacity:1;background:#1f5d48;border-color:#1f5d48;color:#fff}
+.install-steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.install-steps li{display:grid;gap:6px;justify-items:center;text-align:center}
+.install-steps p{margin:0;font-size:13px;line-height:1.4}
+.install-shot{width:100%;max-width:110px;height:auto;color:inherit}
+.install-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+@media (max-width:420px){.install-steps{grid-template-columns:1fr}.install-steps li{grid-template-columns:72px 1fr;justify-items:start;text-align:left;align-items:center}.install-shot{max-width:72px}}

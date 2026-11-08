@@ -11,7 +11,7 @@ const source=await readFile(new URL('../src/app.js',import.meta.url),'utf8');
 function ui({signedIn=false,accountCheck=false}={}){
  let html='';const box={isConnected:true,hidden:true};
  const state={start:'',end:'',listings:[{id:'fixture',owner_id:'owner',title:'Camera',category:'Camere',zone:'Prati',price:25,deposit:100,description:'Descrizione',accessories:'Batteria',conditions:'Buone',insurance:'Nessuna'}]};
- const context={state,api:{user:()=>signedIn?{id:'renter'}:null,authOptions:async()=>({google:false})},config:{accountCheck},isDemo:false,esc:escapeHtml,icon:()=>'',today:()=> '2026-11-02',euro:n=>n+' €',listingGallery:()=>'<div>Foto</div>',calendarMarkup:()=>'<div>Calendario</div>',updateQuote(){},open:s=>{html=s;},modal:{querySelector:()=>box}};
+ const context={state,api:{user:()=>signedIn?{id:'renter'}:null,authOptions:async()=>({google:false}),remembered:()=>true,setRemember(){}},config:{accountCheck},isDemo:false,esc:escapeHtml,icon:()=>'',today:()=> '2026-11-02',euro:n=>n+' €',listingGallery:()=>'<div>Foto</div>',calendarMarkup:()=>'<div>Calendario</div>',updateQuote(){},open:s=>{html=s;},modal:{querySelector:()=>box}};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('function authChoices('),source.indexOf('\nfunction calendarMarkup(')),context);
  return {context,html:()=>html,detail:()=>context.detail('fixture'),login:v=>context.loginDialog(v)};
 }
@@ -26,7 +26,7 @@ test('email login and registration have distinct titles, fields and actions; res
 });
 test('mismatched registration email stops before calling the signup service',async()=>{
  let handler,calls=0;const err={textContent:''},button={disabled:false};const form={id:'auth-form',dataset:{signup:'true'},classList:{contains:()=>false},querySelector:s=>s==='.form-error'?err:button};
- const ctx={document:{addEventListener:(kind,fn)=>{if(kind==='submit')handler=fn;}},FormData:class{get(k){return {email:'one@example.test',email_confirmation:'two@example.test'}[k];}},api:{signup:async()=>{calls++;}},captcha:{reset(){}},error(e){throw e;}};
+ const ctx={document:{addEventListener:(kind,fn)=>{if(kind==='submit')handler=fn;}},FormData:class{get(k){return {email:'one@example.test',email_confirmation:'two@example.test'}[k];}},api:{signup:async()=>{calls++;},setRemember(){}},captcha:{reset(){}},error(e){throw e;}};
  vm.createContext(ctx);vm.runInContext(source.slice(source.indexOf("document.addEventListener('submit'"),source.indexOf("window.addEventListener('hashchange'")),ctx);
  await handler({target:form,submitter:button,preventDefault(){}});assert.equal(calls,0);assert.match(err.textContent,/non coincidono/);assert.equal(button.disabled,false);
 });
@@ -46,7 +46,7 @@ test('Google uses a fixed callback and PKCE; provider tokens are discarded after
  globalThis.fetch=async url=>new Response(JSON.stringify(url.endsWith('/settings')?{external:{google:enabled}}:url.endsWith('/user')?user:{access_token:'fixture-access',refresh_token:'fixture-refresh',expires_in:3600,user,provider_token:'google-private-fixture',provider_refresh_token:'google-refresh-fixture'}));
  const url=new URL(await api.googleSignInUrl()),flow=JSON.parse(localStorage.getItem('sic-pkce-v1'));
  assert.equal(url.origin,'https://example.supabase.co');assert.equal(url.pathname,'/auth/v1/authorize');assert.equal(url.searchParams.get('provider'),'google');assert.equal(url.searchParams.get('redirect_to'),'https://rent-to-a-friend.it/');assert.equal(url.searchParams.get('scopes'),'openid email profile');assert.equal(url.searchParams.get('code_challenge'),createHash('sha256').update(flow.verifier).digest('base64url'));assert.equal(flow.purpose,'oauth');
- location.href='https://rent-to-a-friend.it/?code=fixture-google-code';assert.equal(await api.init(),false);assert.equal(api.isPasswordRecovery(),false);assert.doesNotMatch(sessionStorage.getItem('sic-session-v2'),/google-private-fixture|google-refresh-fixture|provider_token|provider_refresh_token/);
+ location.href='https://rent-to-a-friend.it/?code=fixture-google-code';assert.equal(await api.init(),false);assert.equal(api.isPasswordRecovery(),false);assert.doesNotMatch(localStorage.getItem('sic-session-v2'),/google-private-fixture|google-refresh-fixture|provider_token|provider_refresh_token/);
  enabled=false;await assert.rejects(api.googleSignInUrl(),/non è ancora disponibile/);
  location.origin='https://preview.example';assert.equal((await api.authOptions()).google,false);
 });

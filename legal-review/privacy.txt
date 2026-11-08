@@ -64,7 +64,7 @@ Conserviamo i dati per il tempo necessario alle funzioni richieste, all’assist
 
 ## Memoria del browser e notifiche
 
-I preferiti sono salvati nel browser; la sessione di accesso è conservata nella memoria della scheda. Il service worker conserva la pagina offline, stile e icona. Le funzioni per sessione, link email e push degli account reali sono descritte separatamente nella pagina Cookie e memoria (https://rent-to-a-friend.it/#cookies). Non installiamo strumenti di analisi del pubblico o cookie pubblicitari.
+I preferiti sono salvati nel browser; la sessione di accesso è conservata nella memoria del browser se scegli «Resta connesso» (impostazione predefinita), altrimenti solo nella memoria della scheda; Esci la cancella. Il service worker conserva la pagina offline, stile e icona. Le funzioni per sessione, link email e push degli account reali sono descritte separatamente nella pagina Cookie e memoria (https://rent-to-a-friend.it/#cookies). Non installiamo strumenti di analisi del pubblico o cookie pubblicitari.
 
 ## Criteri di conservazione
 

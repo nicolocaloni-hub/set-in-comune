@@ -56,5 +56,5 @@ export function createPushClient(api,{env=globalThis,demo=false}={}) {
  async function updateBadge(value){try{if(value>0&&env.navigator?.setAppBadge)await env.navigator.setAppBadge(value);else await clearBadge();}catch{}}
  async function clearBadge(){try{await env.navigator?.clearAppBadge?.();}catch{}}
  async function install(){if(installPrompt){await installPrompt.prompt();installPrompt=null;return true;}return false;}
- return {init,status,enable,disable,refreshBinding,updateBadge,install,capabilities:caps};
+ return {init,status,enable,disable,refreshBinding,updateBadge,install,canInstall:()=>Boolean(installPrompt),capabilities:caps};
 }
