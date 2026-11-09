@@ -28,3 +28,23 @@ export function enhanceFormFields(root){
   field.setAttribute('aria-describedby',[...new Set(described)].join(' '));
  }
 }
+
+// Plain-language reason a field blocks submission (the browser bubble is easy to miss on phones).
+export function fieldProblem(field){
+ const v=field.validity||{};
+ if(field.type==='checkbox')return 'spunta la casella per continuare.';
+ if(v.valueMissing)return 'è obbligatorio.';
+ if(field.type==='number'&&(v.badInput||v.rangeUnderflow||v.rangeOverflow||v.stepMismatch)){
+  const whole=field.step==='1'||field.getAttribute?.('step')==='1';
+  return `inserisci ${whole?'un numero intero':'un importo'} tra ${field.min} e ${field.max}${whole?'':', con massimo due decimali'} (solo cifre, senza simboli come % o €).`;
+ }
+ return field.validationMessage||'controlla il valore.';
+}
+export function fieldName(field){
+ const label=field.closest?.('label');
+ const text=(label?.querySelector('.field-label')?.firstChild?.textContent||label?.textContent||field.name||'Campo').replace(/\s+/g,' ').trim();
+ return field.type==='checkbox'?'Dichiarazione':text.replace(/\s*\(.*$/,'').slice(0,60);
+}
+export function invalidFields(form){
+ return [...form.elements].filter(el=>el.willValidate&&!el.checkValidity());
+}

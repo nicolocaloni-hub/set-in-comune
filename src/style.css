@@ -427,3 +427,13 @@ dialog.brand-intro::backdrop{background:#e7f5ee}
 .install-shot{width:100%;max-width:110px;height:auto;color:inherit}
 .install-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
 @media (max-width:420px){.install-steps{grid-template-columns:1fr}.install-steps li{grid-template-columns:72px 1fr;justify-items:start;text-align:left;align-items:center}.install-shot{max-width:72px}}
+
+/* Publish form: clickable problems above the button, field flash, ? help */
+.error-link{display:block;width:100%;text-align:left;background:none;border:0;padding:4px 0;color:#b43852;text-decoration:underline;font:inherit;font-size:13px;line-height:1.4;cursor:pointer}
+.field-flash{animation:field-flash 3s ease-out}
+@keyframes field-flash{0%,70%{background:#fde3e8;outline:2px solid #b43852;outline-offset:3px;border-radius:8px}100%{background:transparent;outline-color:transparent}}
+@media (prefers-reduced-motion:reduce){.field-flash{animation:none;outline:2px solid #b43852;outline-offset:3px}}
+.help-dot{display:inline-grid;place-items:center;width:20px;height:20px;margin:0 4px;padding:0;border:1.5px solid currentColor;border-radius:50%;background:transparent;color:inherit;font:600 12px/1 inherit;cursor:pointer;vertical-align:middle}
+.help-box{margin:4px 0 0;padding:10px 12px;border-radius:10px;background:#eef4f0;color:#1d2a24;font-size:13px;line-height:1.5}
+.label-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.label-row .help-dot{margin:0}
