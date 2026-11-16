@@ -25,6 +25,7 @@ Deno.serve(async(req:Request)=>{
  const bearer=authorization.slice(7);
  try{
   // Dedicated 256-bit server hook, compared without logging or returning it.
+  // Origin check intentionally stays after this branch: server-to-server hook calls carry no Origin header.
   if(/^[A-Za-z0-9_-]{43}$/.test(bearer)){const c=await rpc('push_worker_config');if(!c?.hookSecret||!await secureEqual(bearer,c.hookSecret))return reply({error:'Unauthorized'},401);return reply({completed:await runJobs()});}
   if(!allowedOrigin(origin,origins))return reply({error:'Origine non consentita.'},403);
   if(Number(req.headers.get('content-length')||0)>4096)return reply({error:'Richiesta non valida.'},400);

@@ -9,7 +9,7 @@ const config=JSON.parse((await readFile('dist/config.js','utf8')).replace(/^expo
 const captcha=JSON.parse((await readFile('dist/captcha-config.js','utf8')).replace(/^export default /,'').trim().replace(/;$/,''));
 const headers={
   ...securityHeaders(config.url,Boolean(config.url&&captcha.siteKey)),
-  'Strict-Transport-Security':'max-age=63072000; includeSubDomains',
+  'Strict-Transport-Security':'max-age=63072000; includeSubDomains; preload',
   'X-Frame-Options':'DENY',
   'Cross-Origin-Opener-Policy':'same-origin',
   'Cache-Control':'no-cache'
