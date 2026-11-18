@@ -9,12 +9,13 @@ test('listing photos must be the owner\'s own uploads',async t=>{
  const {as,listing,close}=await createDb({migrations:MIGRATIONS});t.after(close);
  const l=await listing(A);
  const setImages=images=>as(A,tx=>tx.query('update public.listings set images=$1 where id=$2 returning cardinality(images) n',[images,l.id]));
+ const refused=/caricate nel servizio della piattaforma/;
  assert.equal((await setImages([photo(A,0),photo(A,1)])).rows[0].n,2);
- assert.equal((await setImages([])).rows[0].n,0);
- await assert.rejects(setImages(['https://evil.example/track.jpg']),/foto dell'annuncio/);
- await assert.rejects(setImages([photo(B)]),/foto dell'annuncio/);
- await assert.rejects(setImages([photo(A).replace('listing-photos','profile-photos')]),/foto dell'annuncio/);
- await assert.rejects(setImages([photo(A)+'?x=1']),/foto dell'annuncio/);
+ await assert.rejects(setImages([]),refused);
+ await assert.rejects(setImages(['https://evil.example/track.jpg']),refused);
+ await assert.rejects(setImages([photo(B)]),refused);
+ await assert.rejects(setImages([photo(A).replace('listing-photos','profile-photos')]),refused);
+ await assert.rejects(setImages([photo(A)+'?x=1']),refused);
 });
 
 test('reputation view is read-only for app roles',async t=>{

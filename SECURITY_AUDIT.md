@@ -17,8 +17,8 @@ Ambito: progetto Supabase reale `srjdysdhxnafjrutufmk`, sito in produzione `rent
 
 ## Corretto in questa revisione
 
-- `20261118100000_security_hardening.sql`: le foto degli annunci devono essere file caricati dal proprietario nel bucket `listing-photos` (prima il database accettava qualsiasi indirizzo; browser e pagina di condivisione lo filtravano già). Stessa regola già in vigore per le foto profilo.
-- Vista `reputation_summary`: tolti i permessi di scrittura predefiniti per `anon` e `authenticated` (resta solo la lettura).
+- `20261118100000_security_hardening.sql`: vista `reputation_summary`, tolti i permessi di scrittura predefiniti per `anon` e `authenticated` (resta solo la lettura; la scrittura falliva già, ora è negata dal permesso).
+- Nuovo test di regressione: le foto annuncio sono accettate solo se caricate dal proprietario nel bucket `listing-photos` (regola già attiva in `private.listing_owner_name`).
 
 ## Da decidere / azioni del gestore
 
