@@ -1,3 +1,30 @@
+# Audit pre-lancio · 18 novembre 2026
+
+Ambito: progetto Supabase reale `srjdysdhxnafjrutufmk`, sito in produzione `rent-to-a-friend.it`, funzioni edge, codice su `main` (9ac048d). Prove eseguite dall'esterno con la sola chiave pubblica, come farebbe un visitatore anonimo. Nessun account creato, nessuna password inserita.
+
+## Verificato e respinto (nessuna azione)
+
+- Lettura anonima di prenotazioni, chat, notifiche, consegne, richieste, ricerche salvate: `42501 permission denied`.
+- Schema `private` via API: non esposto (`PGRST106`). GraphQL disattivato.
+- Funzioni di gestione (`admin_erase_account`, `claim_email_work`, `push_worker_config`, `moderation_queue`, `export_my_data`): non eseguibili da anonimi; le code del gestore richiedono anche il ruolo in `private.app_moderators`.
+- Scrittura anonima su annunci, profili, bucket foto: rifiutata. Bucket `handoff-photos` privato, lista vuota per anonimi.
+- Funzioni edge: `email-dispatch` e `push-dispatch` richiedono il segreto di servizio (confronto a tempo costante); `account-erasure` richiede sessione, origine consentita e nuova password.
+- Tutte le funzioni `SECURITY DEFINER` hanno `search_path` vuoto; i wrapper pubblici sono `SECURITY INVOKER`.
+- Header in produzione: CSP senza script inline, HSTS 2 anni, `frame-ancestors 'none'`, `nosniff`, `no-referrer`, COOP.
+- Browser: ogni testo passa da `escapeHtml`, ogni immagine da `safePhotoUrl`; il service worker non salva risposte dell'API. Pagina di condivisione `/a/<id>`: id validato, sola chiave pubblica, testi e immagine filtrati.
+- Nessuna chiave segreta nel repository; `npm audit`: 0 vulnerabilità.
+- Advisor Supabase: 15 tabelle private senza policy dirette (voluto: accesso solo tramite funzioni controllate).
+
+## Corretto in questa revisione
+
+- `20261118100000_security_hardening.sql`: le foto degli annunci devono essere file caricati dal proprietario nel bucket `listing-photos` (prima il database accettava qualsiasi indirizzo; browser e pagina di condivisione lo filtravano già). Stessa regola già in vigore per le foto profilo.
+- Vista `reputation_summary`: tolti i permessi di scrittura predefiniti per `anon` e `authenticated` (resta solo la lettura).
+
+## Da decidere / azioni del gestore
+
+- **CAPTCHA (Turnstile) non attivo**: il login senza token CAPTCHA risponde `invalid_credentials`, quindi il server non lo richiede. Restano i limiti di frequenza di Supabase Auth. Il codice è pronto (`TURNSTILE_SETUP.md`): servono la Site Key in Vercel e la Secret Key nel pannello Supabase Auth.
+- **Protezione password compromesse** (HaveIBeenPwned): disponibile solo dal piano Supabase Pro. Oggi l'app impone 10–128 caratteri.
+
 # Verifica di sicurezza richiesta dal video
 
 Data: 30 ottobre 2026. Ambito: sorgenti locali di Set in comune, build pubblico, cronologia Git disponibile localmente, test di autenticazione con risposte simulate e test SQL su PostgreSQL locale tramite PGlite. Nessun servizio o piano a pagamento attivato. Lo schema non è applicato a un progetto Supabase reale. Gli esiti SQL e Auth riportati qui sono locali; la pubblicazione della demo non li trasforma in verifiche del backend remoto.
