@@ -1,5 +1,15 @@
 # Cloudflare Turnstile · rinviato dal gestore
 
+## Incidente del 18 novembre 2026 e ordine obbligatorio di attivazione
+
+Il 18 novembre il widget è stato acceso sul sito (`PUBLIC_TURNSTILE_ENABLED=true`) senza prima verificare i domini consentiti del widget su Cloudflare: la verifica falliva nel browser e per circa 7 ore nessuna iscrizione è arrivata a Supabase Auth. Rimedio: widget spento alle 20:12 e, nel codice, un widget che non riesce a funzionare non blocca più i moduli (il server decide). Per riattivare, seguire questo ordine:
+
+1. Su Cloudflare, nel widget con Site Key `0x4AAAAAAFwUSi…`, verificare che i domini consentiti includano `rent-to-a-friend.it` e `www.rent-to-a-friend.it`.
+2. Accendere `PUBLIC_TURNSTILE_ENABLED=true` in Vercel (Production) e ridistribuire.
+3. Dal telefono, aprire Registrati: il riquadro deve mostrare «Verifica di sicurezza completata». Se mostra «non disponibile», tornare al punto 1.
+4. Solo dopo il punto 3, il gestore incolla la Secret Key in Supabase → Authentication → Attack Protection e salva.
+5. Verificare dai log Auth che compaiano `/signup` con stato 200 e che un login senza token venga rifiutato.
+
 Decisione successiva del 2 novembre 2026: **non includere Turnstile nella prima versione** e proseguire con backup e prove. Non è un requisito per il lancio. Il build usa `PUBLIC_TURNSTILE_ENABLED=false` per impostazione predefinita: ignora una Site Key rimasta nell'ambiente e genera configurazione vuota/CSP senza il provider. I moduli collegati senza Site Key non caricano il widget e non richiedono token; API e worker continuano a funzionare con il controllo Auth non configurato per CAPTCHA. Nessun segreto, Site Key remota o altra impostazione di sicurezza è modificato da questa revisione.
 
 Il codice di integrazione rimane disponibile per un eventuale opt-in futuro (`PUBLIC_TURNSTILE_ENABLED=true` più Site Key valida e server coordinato). Le verifiche del token, il monouso e la scadenza restano obbligatori quando il widget è configurato. Non disabilitare una verifica server già attiva per aggirare un errore: in quel caso fermare il rilascio e riallineare il piano.

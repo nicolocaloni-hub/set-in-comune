@@ -25,11 +25,20 @@ test('widgets have isolated lifecycles and demo never contacts the provider',asy
  callbacks[0].callback('old');await client.mount(second);callbacks[0].callback('stale');assert.throws(()=>client.take(second));
  callbacks[1].callback('second');callbacks[1]['expired-callback']();assert.throws(()=>client.take(second));
  callbacks[1].callback('second');client.reset(second);assert.throws(()=>client.take(second));
- callbacks[1].callback('second');callbacks[1]['error-callback']();assert.throws(()=>client.take(second));
+ // A widget error (e.g. domain not allowed) must not block the form: take() hands over null and the server decides.
+ callbacks[1].callback('second');callbacks[1]['error-callback']();assert.equal(client.take(second),null);
+ callbacks[1].callback('recovered');assert.equal(client.take(second),'recovered');
  client.clear();assert.deepEqual(events,['remove:1','reset:2','remove:2']);
  const demo=createCaptchaClient({demo:true,siteKey,document:undefined,window:undefined});await demo.mount(first);assert.equal(demo.take(first),'');
  assert.ok(!securityHeaders()['Content-Security-Policy'].includes('cloudflare'));
  assert.match(securityHeaders('https://example.supabase.co',true)['Content-Security-Policy'],/frame-src https:\/\/challenges.cloudflare.com/);
+});
+test('a Turnstile script that cannot load leaves the form usable',async()=>{
+ const doc={head:{append(s){queueMicrotask(()=>s.onerror());}},createElement:()=>({append(){},setAttribute(){},remove(){}})};
+ const form={id:'auth-form',dataset:{signup:'true'},isConnected:true,querySelector:()=>null,insertBefore(){}};
+ const client=createCaptchaClient({siteKey,document:doc,window:{}});
+ await client.mount(form);assert.equal(client.take(form),null);
+ assert.deepEqual(captchaPayload(null,true),{});assert.throws(()=>captchaPayload('',true));
 });
 test('signup, login and recovery require captcha when configured, but token refresh does not',async t=>{
  const dir=await mkdtemp(join(tmpdir(),'rtaf-captcha-'));t.after(()=>rm(dir,{recursive:true,force:true}));
@@ -46,6 +55,7 @@ test('signup, login and recovery require captcha when configured, but token refr
  const {api}=await import(pathToFileURL(join(dir,'src/api.js')));
  for(const run of [token=>api.login('fixture@example.test','fixture-password',token),token=>api.signup('fixture@example.test','fixture-password','Fixture',token),token=>api.reset('fixture@example.test',token)]){
   const n=calls.length;await assert.rejects(run(),/sicurezza/);assert.equal(calls.length,n);await run('captcha-fixture');assert.equal(calls.at(-1).body.gotrue_meta_security.captcha_token,'captcha-fixture');
+  await run(null);assert.equal(calls.at(-1).body.gotrue_meta_security,undefined);
  }
  await api.eraseAccount('fixture-password','erasure-fixture');
  const refresh=calls.find(c=>c.url.includes('grant_type=refresh_token'));assert.ok(refresh);assert.equal(refresh.body.gotrue_meta_security,undefined);
