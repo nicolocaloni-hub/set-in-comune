@@ -4,7 +4,11 @@ export function validateCaptchaSiteKey(value=''){
  if(typeof value!=='string'||!/^0x[A-Za-z0-9_-]{20,30}$/.test(value))throw new Error('Chiave pubblica Turnstile non valida. Non inserire la chiave segreta nel frontend.');
  return value;
 }
+// null = the widget could not run (blocked domain, network, Cloudflare outage): send without a
+// token and let Supabase Auth decide. The browser gate is UX only; enforcement is server-side,
+// so a broken widget must never silently stop every signup (incident of 18 November 2026).
 export function captchaPayload(token,required=false){
+ if(token===null)return {};
  if(!required&&!token)return {};
  if(typeof token!=='string'||!token.trim()||token.length>2048)throw new Error('Completa la verifica di sicurezza e riprova.');
  return {gotrue_meta_security:{captcha_token:token}};
@@ -37,16 +41,20 @@ export function createCaptchaClient({demo=false,siteKey='',document:doc=globalTh
   async mount(form){
    clear();if(demo||!siteKey||!form)return;
    const box=doc.createElement('div'),status=doc.createElement('p');status.className='fineprint';status.setAttribute('role','status');status.textContent='Caricamento della verifica di sicurezza…';box.append(status);form.insertBefore(box,form.querySelector('button'));
-   const entry={form,gate:createCaptchaGate(),id:undefined};active=entry;
-   const provider=await load();if(active!==entry||!form.isConnected)return;
-   entry.id=provider.render(box,{sitekey:siteKey,language:'it',action:form.id==='automatic-erasure-form'?'erasure':form.id==='reset-form'?'recovery':form.dataset.signup==='true'?'signup':'login','response-field':false,
-    callback:value=>{if(active!==entry)return;entry.gate.accept(value);status.textContent='Verifica di sicurezza completata.';},
+   const entry={form,gate:createCaptchaGate(),id:undefined,failed:false};active=entry;
+   const unavailable=()=>{if(active!==entry)return;entry.gate.clear();entry.failed=true;status.textContent='Verifica di sicurezza non disponibile: puoi continuare comunque.';};
+   let provider;try{provider=await load();}catch{unavailable();return;}
+   if(active!==entry||!form.isConnected)return;
+   try{entry.id=provider.render(box,{sitekey:siteKey,language:'it',action:form.id==='automatic-erasure-form'?'erasure':form.id==='reset-form'?'recovery':form.dataset.signup==='true'?'signup':'login','response-field':false,
+    callback:value=>{if(active!==entry)return;entry.gate.accept(value);entry.failed=false;status.textContent='Verifica di sicurezza completata.';},
     'expired-callback':()=>{if(active===entry){entry.gate.clear();status.textContent='Verifica scaduta: completala di nuovo.';}},
-    'error-callback':()=>{if(active===entry){entry.gate.clear();status.textContent='Verifica non riuscita. Controlla la connessione e riprova.';}},
+    'error-callback':()=>{unavailable();return true;},
+    'unsupported-callback':unavailable,
     'timeout-callback':()=>{if(active===entry){entry.gate.clear();status.textContent='Verifica scaduta: riprova.';}}
-   });
+   });}catch{unavailable();}
   },
-  take(form){if(demo||!siteKey)return '';if(active?.form!==form)throw new Error('Completa la verifica di sicurezza e riprova.');return active.gate.take();},
+  // Returns a token, or null when the widget could not run (see captchaPayload).
+  take(form){if(demo||!siteKey)return '';if(active?.form!==form)throw new Error('Completa la verifica di sicurezza e riprova.');if(active.failed)return null;return active.gate.take();},
   reset(form){if(active?.form===form){active.gate.clear();if(active.id!==undefined)try{win.turnstile?.reset(active.id);}catch{};}}
  };
 }
