@@ -1,4 +1,4 @@
-TRASPARENZA · AGGIORNATA IL 3 NOVEMBRE 2026
+TRASPARENZA · AGGIORNATA IL 18 NOVEMBRE 2026
 
 # I tuoi dati, spiegati.
 
@@ -34,11 +34,13 @@ Email, credenziali e nome visibile servono per creare e gestire l’account; dat
 
 • Supabase: gestisce autenticazione, database, foto e funzioni server; progetto dedicato a Francoforte.
 
-• Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth, gli avvisi sui noleggi (richieste, risposte, annullamenti, promemoria e nuovi messaggi non letti, senza il testo delle chat) e l’avviso di account inattivo. Non invia email di marketing.
+• Resend: consegna le email di conferma indirizzo e recupero password tramite il servizio Auth e l’avviso di account inattivo. Non invia email di marketing.
+
+• Brevo: consegna gli avvisi sui noleggi (richieste, risposte, annullamenti, promemoria e nuovi messaggi non letti, senza il testo delle chat). Riceve indirizzo email, nome visibile, titolo dell’annuncio e collegamento all’app. Società francese che dichiara server nell’Unione europea. Non invia email di marketing.
 
 • Assistenza via email: il recapito del gestore è configurato come inoltro IONOS verso una casella Gmail. Scrivere a questo recapito invia un messaggio reale. La corrispondenza di assistenza è distinta dalla chat dell’app. La versione consumer di Gmail è disciplinata dai termini e dalla privacy di Google; Google dichiara di non offrire per essa un accordo da responsabile del trattamento. Non inviare documenti o dati sensibili non necessari.
 
-• Cloudflare Turnstile: non attivo in questa versione; non carichiamo il widget né inviamo segnali a Cloudflare Turnstile.
+• Cloudflare Turnstile: verifica antiabuso nei moduli di registrazione, accesso, recupero password e conferma cancellazione. Il browser comunica a Cloudflare segnali tecnici come IP, caratteristiche della connessione e del browser, Site Key e origine. Cloudflare dichiara di agire da responsabile per proteggere il sito e da titolare autonomo per migliorare il rilevamento dei bot. Il token è verificato da Supabase e non conservato dall’app.
 
 • Push del browser: facoltative, soltanto su richiesta e con il permesso del browser. Non includono il testo della chat.
 
@@ -50,7 +52,7 @@ Gli utenti vedono i dati pubblici degli annunci e dei profili; chat e foto di co
 
 ## Documenti dei fornitori e garanzie
 
-Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Per il recapito di assistenza valgono le caratteristiche di IONOS e Gmail descritte sopra; l’uso di Gmail per la posta non abilita l’accesso Google all’app.
+Puoi chiedere al gestore informazioni sugli accordi e sulle garanzie per i trasferimenti. Sono consultabili i documenti di Supabase (https://supabase.com/legal/customer-resources/data-processing-addendum), Resend (https://resend.com/legal/dpa), Brevo (https://www.brevo.com/legal/termsofuse/), Cloudflare Turnstile (https://www.cloudflare.com/turnstile-privacy-policy/), Vercel (https://vercel.com/legal/privacy-policy), IONOS (https://www.ionos.it/terms-gtc/condizioni-generali-per-litalia/) e Google (https://policies.google.com/privacy?hl=it). Per il recapito di assistenza valgono le caratteristiche di IONOS e Gmail descritte sopra; l’uso di Gmail per la posta non abilita l’accesso Google all’app.
 
 ## Intelligenza artificiale
 
@@ -99,6 +101,8 @@ Notifiche lette e log operativi dell’app | 90 giorni; i log dei fornitori segu
 Assistenza ricevuta via email | 12 mesi dalla chiusura della pratica, salvo un motivo specifico documentato | Revisione manuale di posta ricevuta, inviata e allegati; eliminare le copie non necessarie anche dalla casella di assistenza. Le copie dei fornitori seguono scadenze proprie. Nessuna pulizia automatica della posta è attiva. |
 
 Email e log Resend | Secondo il fornitore: 30 giorni; backup 7 giorni; dati residui entro 90 giorni dalla cessazione | Riscontro pubblico del 1 novembre 2026. La scelta della regione di invio non sposta la conservazione negli USA. |
+
+Email e log Brevo | Secondo le scadenze del fornitore | Il contenuto degli avvisi non include il testo delle chat. I log di invio seguono le scadenze del fornitore; per dettagli puoi contattare il gestore. |
 
 Cache, backup e log degli altri fornitori | Secondo le scadenze effettive dei servizi e del piano scelto | La rimozione dalle copie e dai log segue i cicli dei fornitori e non è istantanea. Supabase Free non include backup automatici gestiti. Per dettagli sul servizio e sul piano puoi contattare il gestore. |
 
