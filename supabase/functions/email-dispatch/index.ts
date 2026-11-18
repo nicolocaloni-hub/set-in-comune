@@ -1,5 +1,5 @@
 import {processEmailWork} from './core.mjs';
-const base=Deno.env.get('SUPABASE_URL')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,anon=Deno.env.get('SUPABASE_ANON_KEY')!;
+const base=Deno.env.get('SUPABASE_URL')!,service=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const resendKey=Deno.env.get('RESEND_API_KEY')||'',brevoKey=Deno.env.get('BREVO_API_KEY')||'';
 const from=Deno.env.get('EMAIL_FROM')||'Rent to a Friend <assistenza@rent-to-a-friend.it>';
 async function rpc(name:string,body:unknown={}){
@@ -28,8 +28,9 @@ Deno.serve(async(req:Request)=>{
     if(!r.ok)throw new Error('Send failed');
    },
    // Inactivity notices reuse Supabase Auth's Magic Link email (same Resend SMTP): its link signs the person in, which resets the clock.
+   // Service-role bearer: Auth skips the CAPTCHA check for admin credentials, so this keeps working once Turnstile is enforced.
    sendMagicLink:async(email:string,redirect:string)=>{
-    const r=await fetch(base+'/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{method:'POST',headers:{apikey:anon,Authorization:'Bearer '+anon,'Content-Type':'application/json'},body:JSON.stringify({email,create_user:false}),signal:AbortSignal.timeout(15000),redirect:'error'});
+    const r=await fetch(base+'/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{method:'POST',headers:{apikey:service,Authorization:'Bearer '+service,'Content-Type':'application/json'},body:JSON.stringify({email,create_user:false}),signal:AbortSignal.timeout(15000),redirect:'error'});
     if(!r.ok)throw new Error('Send failed');
    },
    finishDigest:(u:string,l:string,ok:boolean)=>rpc('finish_email_digest',{p_user:u,p_lease:l,p_ok:ok}),
