@@ -2,7 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createDb,A,B,C} from './db-harness.mjs';
 
-const MIGRATIONS=['migrations/20261122100000_broadcast_emails.sql'];
+const MIGRATIONS=['migrations/20261122100000_broadcast_emails.sql','migrations/20261122120000_broadcast_campaigns.sql'];
+
+test('panel campaigns are stored privately and validated',async t=>{
+ const {db,close}=await createDb({migrations:MIGRATIONS});t.after(close);
+ await db.query("insert into private.broadcast_campaigns(slug,subject,html) values('c-20261122-1200','Novità','<p>Ciao a tutti, novità in arrivo</p>')");
+ assert.equal((await db.query("select private.get_broadcast_campaign('c-20261122-1200')->>'subject' s")).rows[0].s,'Novità');
+ await assert.rejects(db.query("insert into private.broadcast_campaigns(slug,subject,html) values('Bad Slug','Ok ok','<p>abcdefghijklmnopqrstuv</p>')"));
+ await assert.rejects(db.query("insert into private.broadcast_campaigns(slug,subject,html) values('c-vuota','Ok ok','')"));
+ const r=(await db.query(`select has_function_privilege('authenticated','public.get_broadcast_campaign(text)','execute') a,has_function_privilege('anon','private.get_broadcast_campaign(text)','execute') b`)).rows[0];
+ assert.deepEqual(r,{a:false,b:false});
+});
 const CAMPAIGN='lancio-community-2026-11';
 
 test('announcements: test copy first, then everyone eligible exactly once',async t=>{
