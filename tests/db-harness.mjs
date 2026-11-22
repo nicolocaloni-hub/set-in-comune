@@ -20,7 +20,7 @@ export async function createDb({migrations=[],users=[[A,'Alice'],[B,'Bruno'],[C,
  const db=new PGlite();
  await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;
  create schema auth;create schema storage;create schema vault;create schema net;create schema cron;
- create table auth.users(id uuid primary key,email_confirmed_at timestamptz,raw_user_meta_data jsonb default '{}',email text,created_at timestamptz default now(),last_sign_in_at timestamptz);
+ create table auth.users(id uuid primary key,email_confirmed_at timestamptz,raw_user_meta_data jsonb default '{}',email text,created_at timestamptz default now(),last_sign_in_at timestamptz,banned_until timestamptz);
  create table auth.sessions(id uuid primary key default gen_random_uuid(),user_id uuid,updated_at timestamptz,refreshed_at timestamp);
  create table auth.identities(id uuid primary key default gen_random_uuid(),user_id uuid);
  create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
