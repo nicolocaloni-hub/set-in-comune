@@ -15,6 +15,7 @@ Deno.serve(async(req:Request)=>{
   if(!brevoKey)return new Response('Email provider not configured',{status:503});
   let request;try{request=parseRequest(await req.json());}catch{return new Response('Bad request',{status:400});}
   const result=await processBroadcast(request,{
+   load:(slug:string)=>rpc('get_broadcast_campaign',{p_slug:slug}),
    claim:(campaign:string,mode:string)=>rpc('claim_broadcast',{p_campaign:campaign,p_mode:mode}),
    send:async(m:{to:string,subject:string,html:string,text:string})=>{
     const r=await fetch('https://api.brevo.com/v3/smtp/email',{method:'POST',headers:{'api-key':brevoKey,'Content-Type':'application/json',Accept:'application/json'},
