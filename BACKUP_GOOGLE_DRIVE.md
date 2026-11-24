@@ -8,7 +8,7 @@ Il [run 41723359506](https://github.com/nicolocaloni-hub/set-in-comune/actions/r
 
 Il risultato prova il recupero **logico del database di questa copia**, non il recupero completo del servizio: restano configurazione Auth/SMTP, chiavi API, funzioni e segreti, chiave radice Vault e login applicativo. Non è stato provato il recupero di foto reali perché la copia non ne contiene. Backup periodici e upload automatico a Drive non sono configurati. Da concludere lato titolare: custodire la chiave privata cifrata con seconda copia indipendente e passphrase separata; poi eliminare il segreto temporaneo GitHub `RTAF_RECOVERY_PASSPHRASE` e l'artifact di generazione. Questa eliminazione non è stata eseguita dall'assistente; le credenziali di sola lettura usate per creare copie future e la chiave pubblica non vanno confuse con il segreto temporaneo di recupero.
 
-Destinazione verificata: account `rent.to.a.friend@gmail.com`, cartella privata [RENT TO A FRIEND – Backup](https://drive.google.com/drive/folders/1v6XMqTwAZZQSxwrqyz_XFQCIjcxtYxM9). Il 3 novembre un file fittizio di 109 byte è stato caricato, riscaricato e confrontato byte per byte; aveva come unico proprietario l'account previsto. Il file di collaudo è stato eliminato. Questo prova soltanto il trasferimento tramite il collegamento Drive.
+Destinazione verificata: account Google del progetto, cartella privata «RENT TO A FRIEND – Backup». Il 3 novembre un file fittizio di 109 byte è stato caricato, riscaricato e confrontato byte per byte; aveva come unico proprietario l'account previsto. Il file di collaudo è stato eliminato. Questo prova soltanto il trasferimento tramite il collegamento Drive.
 
 ## Esecuzione cloud dal browser: nessuna installazione sul PC
 

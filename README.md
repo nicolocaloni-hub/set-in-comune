@@ -54,7 +54,7 @@ Il client conserva la sessione nel sessionStorage della singola scheda, rinnova 
 
 Per la preparazione alternativa gratuita Cloudflare Pages, vedi `CLOUDFLARE_PREPARATION.md`: `npm run build:pages` produce il sito statico con gli header e il nome del fornitore corretti. Nessun cambio di DNS o migrazione è implicito nel build. Le conclusioni su recapito e conservazione sono in `CONTACT_RETENTION_REVIEW.md`.
 
-Il progetto è predisposto per Vercel con `vercel.json`: build `npm run build`, output `dist`, nessun framework richiesto. Repository privata: https://github.com/nicolocaloni-hub/set-in-comune. Progetto Vercel collegato: `set-in-comune-app` (ID `prj_Zo54HpvO655WojjmyK7cN1LWmdCN`). Demo verificata online: https://set-in-comune-app.vercel.app/. Il progetto `set-in-comune` rimane la prima anteprima senza collegamento Git; per gli aggiornamenti usare `set-in-comune-app`.
+Il progetto è predisposto per Vercel con `vercel.json`: build `npm run build`, output `dist`, nessun framework richiesto.   Demo verificata online: https://set-in-comune-app.vercel.app/. Il progetto `set-in-comune` rimane la prima anteprima senza collegamento Git; per gli aggiornamenti usare `set-in-comune-app`.
 
 Non eseguire upgrade a piani a pagamento senza una scelta esplicita del proprietario dell'account. La protezione Vercel esistente non viene disattivata dal codice.
 
